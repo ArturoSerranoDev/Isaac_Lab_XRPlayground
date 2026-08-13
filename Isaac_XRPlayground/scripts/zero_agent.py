@@ -58,16 +58,30 @@ def main():
 
         # create environment
         env = gym.make(args_cli.task, cfg=env_cfg)
+        base_env = env.unwrapped
+        device = base_env.device
+        is_marl = hasattr(base_env, "possible_agents")
 
         # print info (this is vectorized environment)
-        print(f"[INFO]: Gym observation space: {env.observation_space}")
-        print(f"[INFO]: Gym action space: {env.action_space}")
+        if is_marl:
+            print(f"[INFO]: MARL agents: {base_env.possible_agents}")
+            print(f"[INFO]: Observation spaces: {base_env.observation_spaces}")
+            print(f"[INFO]: Action spaces: {base_env.action_spaces}")
+        else:
+            print(f"[INFO]: Gym observation space: {env.observation_space}")
+            print(f"[INFO]: Gym action space: {env.action_space}")
         # reset environment
         env.reset()
         # simulate environment
         # keep running while any visualizer is open, otherwise fall back to MAX_STEPS
-        sim = env.unwrapped.sim
-        actions = torch.zeros(env.action_space.shape, device=env.unwrapped.device)
+        sim = base_env.sim
+        if is_marl:
+            actions = {
+                agent: torch.zeros(base_env.num_envs, *base_env.action_spaces[agent].shape, device=device)
+                for agent in base_env.possible_agents
+            }
+        else:
+            actions = torch.zeros(env.action_space.shape, device=device)
         while True:
             if sim.visualizers:
                 # visualizer mode: run until the visualizer window is closed

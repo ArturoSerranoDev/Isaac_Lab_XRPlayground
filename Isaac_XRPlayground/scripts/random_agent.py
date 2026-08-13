@@ -57,14 +57,22 @@ def main():
 
         # create environment
         env = gym.make(args_cli.task, cfg=env_cfg)
+        base_env = env.unwrapped
+        device = base_env.device
+        is_marl = hasattr(base_env, "possible_agents")
 
         # print info (this is vectorized environment)
-        print(f"[INFO]: Gym observation space: {env.observation_space}")
-        print(f"[INFO]: Gym action space: {env.action_space}")
+        if is_marl:
+            print(f"[INFO]: MARL agents: {base_env.possible_agents}")
+            print(f"[INFO]: Observation spaces: {base_env.observation_spaces}")
+            print(f"[INFO]: Action spaces: {base_env.action_spaces}")
+        else:
+            print(f"[INFO]: Gym observation space: {env.observation_space}")
+            print(f"[INFO]: Gym action space: {env.action_space}")
         # reset environment
         env.reset()
         # simulate environment
-        sim = env.unwrapped.sim
+        sim = base_env.sim
         while True:
             if sim.visualizers:
                 # visualizer mode: run until the visualizer window is closed
@@ -73,7 +81,15 @@ def main():
             # run everything in inference mode
             with torch.inference_mode():
                 # sample actions from -1 to 1
-                actions = 2 * torch.rand(env.action_space.shape, device=env.unwrapped.device) - 1
+                if is_marl:
+                    actions = {
+                        agent: 2
+                        * torch.rand(base_env.num_envs, *base_env.action_spaces[agent].shape, device=device)
+                        - 1
+                        for agent in base_env.possible_agents
+                    }
+                else:
+                    actions = 2 * torch.rand(env.action_space.shape, device=device) - 1
                 # apply actions
                 env.step(actions)
 
