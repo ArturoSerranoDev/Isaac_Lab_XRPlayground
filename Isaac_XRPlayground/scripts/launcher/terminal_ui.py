@@ -190,6 +190,13 @@ def print_config_summary(config: dict[str, Any], profile_label: str) -> None:
     )
     mode = config.get("train_visual_mode", "ask")
     print(f"  Train default view: {mode}")
+    bridge_mode = str(config.get("bridge_mode", "mirror"))
+    bridge_label = "Mirror Isaac" if bridge_mode == "mirror" else "Await player throw"
+    print(
+        f"  XR Bridge: {bridge_label}"
+        f"  ·  {config.get('bridge_host', '127.0.0.1')}:{config.get('bridge_port', 9090)}"
+        f"  ·  real-time={'on' if config.get('real_time_bridge', True) else 'off'}"
+    )
     if config.get("checkpoint"):
         print(f"  Checkpoint: {Style.paint(shorten_path(config['checkpoint']), Style.DIM)}")
 
@@ -212,6 +219,7 @@ def print_main_menu() -> None:
     print("  [2] Play trained policy (task + checkpoint + run config)")
     print("  [3] Demo — random actions (task + run config)")
     print("  [4] Demo — zero actions   (task + run config)")
+    print("  [B] XR Bridge → Unity     (Mirror Isaac / Await throw)")
     print(Style.paint("\n  Project shortcuts", Style.BLUE, Style.BOLD))
     print("  [5] Open shared assets folder")
     print("  [6] Open active task source code")

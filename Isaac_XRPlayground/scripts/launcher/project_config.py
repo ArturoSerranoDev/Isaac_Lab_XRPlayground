@@ -157,6 +157,14 @@ DEFAULT_CONFIG: dict[str, Any] = {
     "record_video": False,
     "real_time_play": False,
     "real_time_demo": False,
+    "real_time_bridge": True,
+    "bridge_mode": "mirror",  # mirror | await_throw
+    "bridge_action_mode": "zero",  # zero | random | policy (fallback without ckpt)
+    "bridge_host": "127.0.0.1",
+    "bridge_port": 9090,
+    "num_envs_bridge": 1,
+    "device_bridge": "cuda:0",
+    "physics_sync_bridge": "fabric",
     "confirm_before_run": True,
     "show_command_preview": True,
     "recent_runs": [],

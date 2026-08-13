@@ -38,10 +38,15 @@ parser.add_argument(
 )
 parser.add_argument("--num_envs", type=int, default=1, help="Number of environments (use 1 for bridge).")
 parser.add_argument("--task", type=str, default="Template-Xrplayground-Ball-Catch-Direct-v0")
-parser.add_argument("--real-time", action="store_true", default=True, help="Cap to wall-clock step_dt.")
+parser.add_argument(
+    "--real-time",
+    action=argparse.BooleanOptionalAction,
+    default=True,
+    help="Cap sim to wall-clock step_dt (default on). Use --no-real-time to run as fast as Kit allows.",
+)
 parser.add_argument("--host", type=str, default="127.0.0.1")
 parser.add_argument("--port", type=int, default=9090)
-parser.add_argument("--publish_hz", type=float, default=60.0, help="Robot state publish rate.")
+parser.add_argument("--publish_hz", type=float, default=60.0, help="Robot/ball state publish rate.")
 parser.add_argument("--log_robot", action="store_true", help="Print robot_state summaries.")
 parser.add_argument(
     "--mode",
@@ -224,19 +229,24 @@ def main():
                                 else:
                                     gym_env.reset()
                     elif topic == TOPIC_BALL_STATE:
+                        # Ignore our own echo / Isaac-sourced packets from other tools
+                        if str(data.get("source", "unity")).lower() == "isaac":
+                            continue
                         if session.mode == MODE_MIRROR:
                             continue  # Isaac owns the ball in mirror mode
                         grasped = bool(data.get("grasped", False))
                         throw_event = bool(data.get("throw_event", False))
-                        # Release edge or explicit throw_event starts catch
                         released = (session._was_grasped and not grasped) or throw_event
                         session._was_grasped = grasped
-                        if session.phase == "waiting" and released and not grasped:
-                            pending_throw = data
-                        elif session.phase == "catching" and not grasped:
-                            # optional mid-air corrections from Unity (light touch)
-                            if not throw_event:
-                                pass
+                        if session.phase == "waiting":
+                            # Replicate Unity ball into Isaac while player holds / aims
+                            try:
+                                adapter.apply_ball_state(data)
+                            except Exception as exc:  # noqa: BLE001
+                                print(f"[XR Bridge] ball replicate failed: {exc}")
+                            if released and not grasped:
+                                pending_throw = data
+                        # catching: Isaac physics owns the ball
                     elif topic == TOPIC_HEARTBEAT:
                         pass
 
@@ -270,8 +280,7 @@ def main():
                         ):
                             gym_env.reset()
                             adapter.reset_robot_hold()
-                    # keep ball parked while waiting
-                    adapter.park_ball()
+                    # Ball pose comes from Unity replicate above (park only on mode/reset).
                 else:
                     # mirror OR catching
                     if runner is not None:
@@ -306,6 +315,11 @@ def main():
                 if now - last_publish >= publish_period:
                     envelope = adapter.build_robot_state_envelope(stamp_s=now)
                     server.broadcast(envelope)
+                    # Stream Isaac ball so Unity can visualize (mirror + post-throw catch)
+                    try:
+                        server.broadcast(adapter.build_ball_state_envelope(stamp_s=now))
+                    except Exception as exc:  # noqa: BLE001
+                        print(f"[XR Bridge] ball publish failed: {exc}")
                     last_publish = now
                     if args_cli.log_robot:
                         ee = envelope["data"]["ee"]["position"]

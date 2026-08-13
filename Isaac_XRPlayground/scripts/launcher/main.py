@@ -487,6 +487,147 @@ class XRLauncher:
         command = append_sim_flags(command, run)
         self.execute(command, f"demo-{mode}", task_key=task_key)
 
+    def action_bridge(self) -> None:
+        """Launch Unity ↔ Isaac XR bridge with Mirror Isaac / Await throw selection."""
+        tasks = self.all_tasks()
+        default_key = "ball_catch" if "ball_catch" in tasks else self.config.get("task_key")
+
+        task_key = self.select_task("XR Bridge → Unity", default_key)
+        if not task_key:
+            return
+        self.config["task_key"] = task_key
+        task = self.get_task(task_key)
+
+        if task_key != "ball_catch":
+            print(
+                Style.paint(
+                    "\n  Warning: the TCP bridge script is built for Ball Catch.\n"
+                    "  Other tasks may not stream correctly until a matching adapter exists.",
+                    Style.YELLOW,
+                )
+            )
+            if not prompt_yes_no("  Continue anyway?", default=False):
+                return
+
+        clear()
+        print_banner()
+        print(Style.paint("\n  XR Bridge — session mode", Style.YELLOW, Style.BOLD))
+        print(Style.paint(f"  Task: {task['label']}", Style.DIM))
+        print(
+            """
+  How Unity should interact with this training:
+
+  Mirror Isaac
+    · Isaac owns throws and robot actions (policy / zero / random)
+    · Unity puppets the Kinova from streamed link poses
+    · Unity ball is ignored — good for watching a trained catch
+
+  Await player throw
+    · Robot waits in ready pose
+    · Grab & release the ball in Unity → throw_event
+    · Isaac runs the policy to catch that throw
+"""
+        )
+        saved_mode = str(self.config.get("bridge_mode", "mirror"))
+        mode = prompt_choice(
+            "Session mode:",
+            [
+                ("mirror", "Mirror Isaac — watch / debug policy in Unity"),
+                ("await_throw", "Await player throw — XR throw, then catch"),
+            ],
+            saved_mode if saved_mode in {"mirror", "await_throw"} else "mirror",
+        )
+        self.config["bridge_mode"] = mode
+
+        checkpoint = ""
+        want_policy = mode == "await_throw" or prompt_yes_no(
+            "  Load a trained checkpoint for this bridge session?",
+            default=bool(self.config.get("checkpoint")) or mode == "mirror",
+        )
+        if want_policy:
+            picked = self.select_checkpoint(task)
+            if picked:
+                checkpoint = picked
+                self.config["checkpoint"] = checkpoint
+            elif mode == "await_throw":
+                print(
+                    Style.paint(
+                        "\n  Await throw needs a policy to catch. Continuing without checkpoint"
+                        " will use the fallback action mode only.",
+                        Style.YELLOW,
+                    )
+                )
+                if not prompt_yes_no("  Continue without checkpoint?", default=False):
+                    return
+
+        if checkpoint:
+            action_mode = "policy"
+        else:
+            saved_action = str(self.config.get("bridge_action_mode", "zero"))
+            action_mode = prompt_choice(
+                "Fallback actions (no policy loaded):",
+                [
+                    ("zero", "Zero — hold / park"),
+                    ("random", "Random — motion smoke test"),
+                    ("policy", "Policy — try load via skrl search"),
+                ],
+                saved_action if saved_action in {"zero", "random", "policy"} else "zero",
+            )
+        self.config["bridge_action_mode"] = action_mode
+
+        self.config["real_time_bridge"] = prompt_yes_no(
+            "  Real-time (wall-clock) stepping?",
+            bool(self.config.get("real_time_bridge", True)),
+        )
+        self.config["bridge_host"] = prompt_text(
+            "  Bridge host",
+            str(self.config.get("bridge_host", "127.0.0.1")),
+        )
+        self.config["bridge_port"] = prompt_int(
+            "  Bridge port",
+            int(self.config.get("bridge_port", 9090)),
+            minimum=1,
+        )
+        self.config["num_envs_bridge"] = 1
+        self.save_config()
+
+        physics = str(self.config.get("physics_sync_bridge", self.config.get("physics_sync_play", "fabric")))
+        device = str(self.config.get("device_bridge", self.config.get("device_play", "cuda:0")))
+        if physics == "usd" and device.startswith("cuda"):
+            device = "cpu"
+
+        command = self.base_cmd() + [
+            "scripts/bridge/run_xr_bridge.py",
+            f"--task={task['task_id']}",
+            f"--num_envs={int(self.config.get('num_envs_bridge', 1))}",
+            f"--mode={mode}",
+            f"--action_mode={action_mode}",
+            f"--host={self.config['bridge_host']}",
+            f"--port={int(self.config['bridge_port'])}",
+            f"--seed={int(self.config.get('seed', 42))}",
+            f"--device={device}",
+            "--viz",
+            "kit",
+        ]
+        if self.config.get("real_time_bridge", True):
+            command.append("--real-time")
+        else:
+            command.append("--no-real-time")
+        if checkpoint:
+            command.append(f"--checkpoint={checkpoint}")
+        if physics == "usd":
+            command.append("--disable_fabric")
+
+        print(Style.paint("\n  Next in Unity:", Style.CYAN, Style.BOLD))
+        print("    1. XRPlayground → Setup XR Bridge Scene (once)")
+        print("    2. Play → Mirror Isaac (or Await throw) → Connect bridge")
+        if mode == "mirror":
+            print(Style.paint("    Mirror: Unity ball ignored; watch Isaac catch.", Style.DIM))
+        else:
+            print(Style.paint("    Await: grab & throw the ball toward the robot.", Style.DIM))
+
+        self.execute(command, f"bridge-{mode}", task_key=task_key)
+
     def action_list_envs(self) -> None:
         command = self.base_cmd() + ["scripts/list_envs.py"]
         self.execute(command, "list-envs")
@@ -646,6 +787,8 @@ class XRLauncher:
                 self.action_demo("random")
             elif choice == "4":
                 self.action_demo("zero")
+            elif choice in {"b", "bridge", "xr"}:
+                self.action_bridge()
             elif choice == "5":
                 self.action_open_assets()
             elif choice == "6":

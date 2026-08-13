@@ -12,6 +12,8 @@ namespace XRPlayground.ROS
         public float[] angular_velocity;
         public bool grasped;
         public bool throw_event;
+        /// <summary>"unity" or "isaac" — follower only applies isaac-sourced packets.</summary>
+        public string source;
     }
 
     [Serializable]
@@ -168,6 +170,23 @@ namespace XRPlayground.ROS
                 topic = env.topic;
                 data = env.data;
                 return topic == RosTopics.RobotState;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool TryParseBallState(string json, out BallStateData data)
+        {
+            data = null;
+            try
+            {
+                var env = JsonUtility.FromJson<BallEnvelope>(json);
+                if (env == null || env.data == null || env.topic != RosTopics.BallState)
+                    return false;
+                data = env.data;
+                return true;
             }
             catch
             {

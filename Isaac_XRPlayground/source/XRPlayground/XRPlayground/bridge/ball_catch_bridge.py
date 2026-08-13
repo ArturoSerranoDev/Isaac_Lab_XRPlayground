@@ -13,6 +13,7 @@ from .names import (
     EE_BODY_NAME,
     KINOVA_JOINT_NAMES,
     KINOVA_LINK_NAMES,
+    TOPIC_BALL_STATE,
     TOPIC_ROBOT_STATE,
 )
 from .protocol import make_envelope
@@ -22,9 +23,9 @@ def _as_tensor(data) -> torch.Tensor:
     return data.torch if hasattr(data, "torch") else data
 
 
-def _pose_dict(pos: torch.Tensor, quat_wxyz: torch.Tensor) -> dict[str, list[float]]:
-    # Isaac Lab stores quaternion as (w, x, y, z); wire format is xyzw.
-    w, x, y, z = [float(v) for v in quat_wxyz.tolist()]
+def _pose_dict(pos: torch.Tensor, quat_xyzw: torch.Tensor) -> dict[str, list[float]]:
+    """Pack env-local pose. Isaac Lab body quats are already (x, y, z, w)."""
+    x, y, z, w = [float(v) for v in quat_xyzw.tolist()]
     return {
         "position": [float(v) for v in pos.tolist()],
         "orientation_xyzw": [x, y, z, w],
@@ -48,6 +49,8 @@ class BallCatchBridgeAdapter:
             ids, found = robot.find_bodies([name])
             if len(ids) == 1:
                 self._link_ids[name] = int(ids[0])
+            else:
+                print(f"[XR Bridge] Warning: link not found: {name}")
         ids, found = robot.find_bodies([EE_BODY_NAME])
         if len(ids) >= 1:
             self._ee_id = int(ids[0])
@@ -59,6 +62,8 @@ class BallCatchBridgeAdapter:
                 self._joint_pairs.append((name, int(jids[0])))
             else:
                 print(f"[XR Bridge] Warning: joint not found: {name}")
+
+        print(f"[XR Bridge] Resolved {len(self._link_ids)} links, {len(self._joint_pairs)} joints.")
 
     def build_robot_state_envelope(self, stamp_s: float | None = None) -> dict[str, Any]:
         robot = self.env.robot
@@ -72,12 +77,18 @@ class BallCatchBridgeAdapter:
             names.append(name)
             positions.append(float(joint_pos[jid].item()))
 
-        body_pos = _as_tensor(robot.data.body_pos_w)[i]
-        body_quat = _as_tensor(robot.data.body_quat_w)[i]
+        # Link (actor) frames. Prefer body_link_* ; fall back to body_* shorthands.
+        data = robot.data
+        if hasattr(data, "body_link_pos_w"):
+            body_pos = _as_tensor(data.body_link_pos_w)[i]
+            body_quat = _as_tensor(data.body_link_quat_w)[i]  # (x, y, z, w)
+        else:
+            body_pos = _as_tensor(data.body_pos_w)[i]
+            body_quat = _as_tensor(data.body_quat_w)[i]
 
         links: list[dict[str, Any]] = []
         for name, bid in self._link_ids.items():
-            # env-local position for Unity rootOffset alignment
+            # env-local position for Unity envAnchor alignment
             pos_local = body_pos[bid] - origin
             links.append({"name": name, **_pose_dict(pos_local, body_quat[bid])})
 
@@ -101,6 +112,32 @@ class BallCatchBridgeAdapter:
             stamp_s=stamp_s,
         )
 
+    def build_ball_state_envelope(self, stamp_s: float | None = None) -> dict[str, Any]:
+        """Publish env-local ball pose/vel so Unity can mirror Isaac's ball."""
+        ball = self.env.ball
+        i = self.env_id
+        origin = _as_tensor(self.env.scene.env_origins)[i]
+        data = ball.data
+        # root_pos_w / root_quat_w / root_lin_vel_w / root_ang_vel_w
+        pos_w = _as_tensor(data.root_pos_w)[i]
+        quat = _as_tensor(data.root_quat_w)[i]  # (x, y, z, w)
+        lin_w = _as_tensor(data.root_lin_vel_w)[i]
+        ang_w = _as_tensor(data.root_ang_vel_w)[i]
+        pos_local = pos_w - origin
+        return make_envelope(
+            TOPIC_BALL_STATE,
+            {
+                **_pose_dict(pos_local, quat),
+                "linear_velocity": [float(v) for v in lin_w.tolist()],
+                "angular_velocity": [float(v) for v in ang_w.tolist()],
+                "grasped": False,
+                "throw_event": False,
+                "source": "isaac",
+            },
+            frame_id="isaac_env",
+            stamp_s=stamp_s,
+        )
+
     def apply_ball_state(self, data: dict[str, Any]) -> None:
         """Write Unity-provided ball pose/vel into Isaac (env-local → world)."""
         ball = self.env.ball
@@ -114,11 +151,12 @@ class BallCatchBridgeAdapter:
         ang = data.get("angular_velocity", [0.0, 0.0, 0.0])
 
         x, y, z, w = [float(v) for v in quat_xyzw]
-        quat_wxyz = torch.tensor([[w, x, y, z]], device=device, dtype=torch.float32)
+        # Isaac Lab write_root_pose expects (x, y, z, w), same as the wire format.
+        quat = torch.tensor([[x, y, z, w]], device=device, dtype=torch.float32)
         pos_w = torch.tensor([[float(pos[0]), float(pos[1]), float(pos[2])]], device=device, dtype=torch.float32)
         pos_w = pos_w + origin.unsqueeze(0)
 
-        pose = torch.cat((pos_w, quat_wxyz), dim=-1)
+        pose = torch.cat((pos_w, quat), dim=-1)
         vel = torch.tensor(
             [[float(lin[0]), float(lin[1]), float(lin[2]), float(ang[0]), float(ang[1]), float(ang[2])]],
             device=device,

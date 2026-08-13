@@ -46,23 +46,36 @@ namespace XRPlayground.ROS.Editor
                 follower = robot.GetComponent<KinovaLinkPoseFollower>() ?? Undo.AddComponent<KinovaLinkPoseFollower>(robot);
                 follower.client = client;
                 follower.linkMap = map;
+                follower.envAnchor = robot.transform;
                 follower.rootOffset = robot.transform.position;
                 follower.applyEeOnly = false;
+                follower.calibrateVisualFrames = false;
+                follower.CaptureUnityBindPose();
             }
 
-            var ball = EnsureBall();
+            var ball = EnsureBall(robot != null ? robot.transform : null);
             var pub = ball.GetComponent<BallStatePublisher>() ?? Undo.AddComponent<BallStatePublisher>(ball);
             pub.client = client;
             pub.ballRoot = ball.transform;
             pub.ballBody = ball.GetComponent<Rigidbody>();
+            pub.envAnchor = robot != null ? robot.transform : null;
             pub.isaacRootOffset = robot != null ? robot.transform.position : Vector3.zero;
             pub.publishWhileHeld = true;
             pub.publishingEnabled = false; // default mirror mode
+
+            var followerBall = ball.GetComponent<BallPoseFollower>() ?? Undo.AddComponent<BallPoseFollower>(ball);
+            followerBall.client = client;
+            followerBall.ballRoot = ball.transform;
+            followerBall.ballBody = ball.GetComponent<Rigidbody>();
+            followerBall.envAnchor = robot != null ? robot.transform : null;
+            followerBall.rootOffset = robot != null ? robot.transform.position : Vector3.zero;
+            followerBall.followingEnabled = true;
 
             EnsureEventSystem();
             var panel = EnsureWorldUi(robot != null ? robot.transform.position : Vector3.zero);
             panel.client = client;
             panel.ballPublisher = pub;
+            panel.ballFollower = followerBall;
             panel.robotFollower = follower;
             panel.mode = XrBridgeUiMode.MirrorIsaac;
 
@@ -143,33 +156,55 @@ namespace XRPlayground.ROS.Editor
             return panel;
         }
 
-        static GameObject EnsureBall()
+        static GameObject EnsureBall(Transform robot)
         {
+            const float Diameter = 0.0825f; // Isaac radius 0.04125
             var existing = GameObject.Find("Ball");
             if (existing != null)
+            {
+                PlaceBallNearRobot(existing.transform, robot, Diameter);
                 return existing;
+            }
 
             var grab = GameObject.Find("Grab Cube");
             if (grab != null)
             {
                 Undo.RecordObject(grab, "Rename Grab Cube to Ball");
                 grab.name = "Ball";
+                PlaceBallNearRobot(grab.transform, robot, Diameter);
                 return grab;
             }
 
             var ball = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             Undo.RegisterCreatedObjectUndo(ball, "Create Ball");
             ball.name = "Ball";
-            ball.transform.position = new Vector3(0.4f, 1.1f, 0.5f);
-            ball.transform.localScale = Vector3.one * 0.0825f; // ~75% of prior visual
+            PlaceBallNearRobot(ball.transform, robot, Diameter);
 
             var rb = ball.GetComponent<Rigidbody>() ?? ball.AddComponent<Rigidbody>();
             rb.mass = 0.08f;
             rb.interpolation = RigidbodyInterpolation.Interpolate;
 
+            var renderer = ball.GetComponent<MeshRenderer>();
+            if (renderer != null && renderer.sharedMaterial != null)
+            {
+                var mat = new Material(renderer.sharedMaterial);
+                mat.color = new Color(0.95f, 0.35f, 0.2f, 1f);
+                renderer.sharedMaterial = mat;
+            }
+
             var grabable = ball.AddComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
             grabable.movementType = UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable.MovementType.Instantaneous;
             return ball;
+        }
+
+        static void PlaceBallNearRobot(Transform ball, Transform robot, float diameter)
+        {
+            ball.localScale = Vector3.one * diameter;
+            // Isaac env-local (0.55, 0.05, 0.95) Z-up → Unity near the arm
+            Vector3 isaacLocal = new Vector3(0.55f, 0.05f, 0.95f);
+            Vector3 unityLocal = new Vector3(isaacLocal.x, isaacLocal.z, isaacLocal.y);
+            ball.position = robot != null ? robot.TransformPoint(unityLocal) : unityLocal + new Vector3(0.4f, 1.1f, 0.5f);
+            ball.rotation = Quaternion.identity;
         }
 
         static GameObject CreateUiObject(string name, Transform parent)

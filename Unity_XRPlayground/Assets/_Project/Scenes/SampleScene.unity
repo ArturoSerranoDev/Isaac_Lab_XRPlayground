@@ -258,8 +258,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -356,7 +358,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.264, g: 0.42000002, b: 0.66, a: 1.2}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.26399997, g: 0.42, b: 0.65999997, a: 1.2}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -2697,8 +2699,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -2795,7 +2799,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.264, g: 0.42000002, b: 0.66, a: 1.2}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.26399997, g: 0.42, b: 0.65999997, a: 1.2}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -2815,6 +2819,7 @@ GameObject:
   - component: {fileID: 671937512}
   - component: {fileID: 671937511}
   - component: {fileID: 671937516}
+  - component: {fileID: 671937517}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -2830,9 +2835,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 671937509}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4, y: 1.1, z: 0.5}
-  m_LocalScale: {x: 0.12, y: 0.12, z: 0.12}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.45, y: 0.95, z: -1.95}
+  m_LocalScale: {x: 0.0825, y: 0.0825, z: 0.0825}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 738072656}
@@ -3089,8 +3094,28 @@ MonoBehaviour:
   ballBody: {fileID: 671937512}
   publishWhileHeld: 1
   publishHz: 30
+  envAnchor: {fileID: 1025908686}
   isaacRootOffset: {x: -3, y: 0, z: -2}
   publishingEnabled: 0
+--- !u!114 &671937517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671937509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f954bac2cadce444b1ef526beaafc2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::XRPlayground.ROS.BallPoseFollower
+  client: {fileID: 1460303724}
+  ballRoot: {fileID: 671937510}
+  ballBody: {fileID: 671937512}
+  envAnchor: {fileID: 1025908686}
+  rootOffset: {x: -3, y: 0, z: -2}
+  followingEnabled: 1
+  applyVelocity: 1
 --- !u!1 &729858071
 GameObject:
   m_ObjectHideFlags: 0
@@ -4339,9 +4364,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::XRPlayground.ROS.KinovaLinkPoseFollower
   client: {fileID: 1460303724}
   linkMap: {fileID: 1025908689}
+  envAnchor: {fileID: 1025908686}
   rootOffset: {x: -3, y: 0, z: -2}
   applyEeOnly: 0
   eeDebug: {fileID: 0}
+  calibrateVisualFrames: 0
+  logFirstApply: 1
 --- !u!114 &1025908689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4435,6 +4463,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::XRPlayground.ROS.XrBridgePanel
   client: {fileID: 1460303724}
   ballPublisher: {fileID: 671937516}
+  ballFollower: {fileID: 671937517}
   robotFollower: {fileID: 1025908688}
   statusText: {fileID: 1981076111}
   modeText: {fileID: 1442708415}
@@ -5120,14 +5149,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1435463604}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.2, y: 0, z: -4.2}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -2.8496025, y: -0.16143525, z: -0.8850113}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1502306139}
   m_Father: {fileID: 1036515346}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &1435463606
 MonoBehaviour:
   m_ObjectHideFlags: 0

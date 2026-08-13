@@ -16,6 +16,7 @@ namespace XRPlayground.ROS
     {
         public RosTcpClient client;
         public BallStatePublisher ballPublisher;
+        public BallPoseFollower ballFollower;
         public KinovaLinkPoseFollower robotFollower;
 
         [Header("UI (classic uGUI)")]
@@ -85,6 +86,8 @@ namespace XRPlayground.ROS
         public void SetMode(XrBridgeUiMode newMode)
         {
             mode = newMode;
+            if (mode == XrBridgeUiMode.AwaitPlayerThrow)
+                ResetBallForPlayerThrow();
             ApplyModeLocal();
             SendModeCommand();
             RefreshUi();
@@ -93,13 +96,75 @@ namespace XRPlayground.ROS
         void ApplyModeLocal()
         {
             bool awaitThrow = mode == XrBridgeUiMode.AwaitPlayerThrow;
+            bool catching = awaitThrow && _isaacPhase == "catching";
+            bool playerOwnsBall = awaitThrow && !catching;
+
             if (ballPublisher != null)
             {
-                ballPublisher.publishingEnabled = awaitThrow;
-                ballPublisher.publishWhileHeld = awaitThrow;
+                ballPublisher.publishingEnabled = playerOwnsBall;
+                ballPublisher.publishWhileHeld = true;
             }
+
+            if (ballFollower != null)
+            {
+                // Mirror: always follow Isaac. Await throw: follow Isaac only during catch.
+                ballFollower.followingEnabled = !playerOwnsBall;
+                ballFollower.SetKinematic(!playerOwnsBall);
+            }
+
             if (robotFollower != null)
-                robotFollower.enabled = true; // always puppet from Isaac when connected
+                robotFollower.enabled = true;
+        }
+
+        /// <summary>
+        /// Place a grabable ball near the Kinova for the player (env-local Isaac spawn ≈ (0.55, 0, 0.95)).
+        /// </summary>
+        public void ResetBallForPlayerThrow()
+        {
+            Transform ball = null;
+            if (ballPublisher != null && ballPublisher.ballRoot != null)
+                ball = ballPublisher.ballRoot;
+            else if (ballFollower != null && ballFollower.ballRoot != null)
+                ball = ballFollower.ballRoot;
+            if (ball == null)
+            {
+                var go = GameObject.Find("Ball");
+                if (go != null)
+                    ball = go.transform;
+            }
+            if (ball == null)
+                return;
+
+            Transform anchor = null;
+            if (ballPublisher != null && ballPublisher.envAnchor != null)
+                anchor = ballPublisher.envAnchor;
+            else if (ballFollower != null && ballFollower.envAnchor != null)
+                anchor = ballFollower.envAnchor;
+            else
+            {
+                var robot = GameObject.Find("Kinova_Jaco2_j2n7s300");
+                if (robot != null)
+                    anchor = robot.transform;
+            }
+
+            // Isaac env-local ready pose (Z-up) → Unity, near the arm for XR grab
+            Vector3 isaacLocal = new Vector3(0.55f, 0.05f, 0.95f);
+            Vector3 unityLocal = XrFrameConverter.IsaacPosToUnity(isaacLocal);
+            Vector3 worldPos = anchor != null ? anchor.TransformPoint(unityLocal) : unityLocal;
+            ball.position = worldPos;
+            ball.rotation = Quaternion.identity;
+
+            var rb = ball.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.isKinematic = false;
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+
+            // Diameter matches Isaac radius 0.04125 (Unity default sphere radius 0.5)
+            float diameter = 0.0825f;
+            ball.localScale = Vector3.one * diameter;
         }
 
         void SendModeCommand()
@@ -120,6 +185,7 @@ namespace XRPlayground.ROS
                 return;
             if (!RosJson.TryParseSessionStatus(json, out var status) || status == null)
                 return;
+            string prevPhase = _isaacPhase;
             _isaacPhase = string.IsNullOrEmpty(status.phase) ? "-" : status.phase;
             _policyLoaded = status.policy_loaded;
             if (!string.IsNullOrEmpty(status.mode))
@@ -129,6 +195,13 @@ namespace XRPlayground.ROS
                 else if (status.mode == RosTopics.ModeMirror)
                     mode = XrBridgeUiMode.MirrorIsaac;
             }
+
+            // When Isaac returns to waiting after a catch, re-spawn the Unity ball
+            if (mode == XrBridgeUiMode.AwaitPlayerThrow && prevPhase == "catching" && _isaacPhase == "waiting")
+                ResetBallForPlayerThrow();
+
+            ApplyModeLocal();
+            RefreshUi();
         }
 
         void RefreshUi()
@@ -151,8 +224,8 @@ namespace XRPlayground.ROS
                 return;
             bool connected = client != null && client.IsConnected;
             string tip = mode == XrBridgeUiMode.AwaitPlayerThrow
-                ? "Grab & throw the ball. Robot waits, then tries to catch."
-                : "Robot mirrors Isaac Sim. Unity ball is ignored.";
+                ? "Grab & throw the ball. It replicates to Isaac; after release Isaac catches."
+                : "Robot + ball mirror Isaac Sim.";
             statusText.text =
                 (connected ? "Bridge: CONNECTED" : "Bridge: disconnected") +
                 $"\nIsaac phase: {_isaacPhase}" +
