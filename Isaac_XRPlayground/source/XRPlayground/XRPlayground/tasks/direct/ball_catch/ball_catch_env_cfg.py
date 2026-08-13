@@ -28,8 +28,11 @@ class BallCatchEnvCfg(DirectRLEnvCfg):
     observation_space = 25
     state_space = 0
 
-    action_scale = 8.0
+    # Delta joint commands; keep moderate so continuous joints (esp. base) don't wind up.
+    action_scale = 5.0
     dof_velocity_scale = 0.1
+    # PhysX revolute drive targets must stay in [-2π, 2π]
+    physx_drive_angle_limit = 6.283185307179586
     arm_joint_names = [
         "j2n7s300_joint_1",
         "j2n7s300_joint_2",
@@ -185,15 +188,20 @@ class BallCatchEnvCfg(DirectRLEnvCfg):
     dist_reward_scale = 4.0
     approach_reward_scale = 6.0
     catch_reward_scale = 50.0
-    grasp_reward_scale = 12.0
+    grasp_reward_scale = 8.0
+    # Reward staying still while gripping (joint-speed + action quiet)
+    hold_still_reward_scale = 3.0
+    hold_action_penalty_scale = 0.08
     body_contact_penalty = 8.0
     drop_penalty = 5.0
-    action_penalty_scale = 0.004
+    action_penalty_scale = 0.006
     gripper_near_dist = 0.12
     success_dist_threshold = 0.09
     success_speed_threshold = 1.2
     success_close_min = 0.35
     grasp_hold_steps = 8
+    # After a confirmed catch, freeze and hold until episode timeout (do not end early).
+    terminate_on_catch = False
     body_contact_radius = 0.11
     body_fail_steps = 12
     fall_height_threshold = 0.06

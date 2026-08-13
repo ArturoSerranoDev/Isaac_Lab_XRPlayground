@@ -55,11 +55,21 @@ class BallCatchEnv(DirectRLEnv):
         self._arm_body_ids = self._resolve_arm_body_indices()
 
         self._episode_caught = torch.zeros(self.num_envs, dtype=torch.bool, device=self.device)
+        self._just_caught = torch.zeros(self.num_envs, dtype=torch.bool, device=self.device)
         self._prev_dist = torch.ones(self.num_envs, device=self.device)
         self._grasp_hold_count = torch.zeros(self.num_envs, dtype=torch.long, device=self.device)
         self._body_contact_count = torch.zeros(self.num_envs, dtype=torch.long, device=self.device)
         self._body_fail = torch.zeros(self.num_envs, dtype=torch.bool, device=self.device)
         self._dropped = torch.zeros(self.num_envs, dtype=torch.bool, device=self.device)
+
+        # Drive targets must satisfy both soft joint limits and PhysX revolute ±2π.
+        two_pi = self.cfg.physx_drive_angle_limit
+        self.robot_dof_drive_lower = torch.maximum(
+            self.robot_dof_lower_limits, torch.full_like(self.robot_dof_lower_limits, -two_pi)
+        )
+        self.robot_dof_drive_upper = torch.minimum(
+            self.robot_dof_upper_limits, torch.full_like(self.robot_dof_upper_limits, two_pi)
+        )
 
     def _resolve_gripper_body_indices(self) -> tuple[int, int]:
         candidates = (
@@ -97,6 +107,11 @@ class BallCatchEnv(DirectRLEnv):
 
     def _pre_physics_step(self, actions: torch.Tensor) -> None:
         self.actions = actions.clone().clamp(-1.0, 1.0)
+
+        # Once grasping / catch confirmed: freeze arm pose and keep fingers closed.
+        # Uses flags from the previous step (updated in _get_dones).
+        freeze_arm = self._episode_caught | (self._grasp_hold_count > 0)
+
         arm_delta = self.robot_dof_speed_scales[self._arm_ids] * self.dt * self.actions[:, :-1] * self.cfg.action_scale
         grip_delta = (
             self.robot_dof_speed_scales[self._gripper_ids]
@@ -104,10 +119,36 @@ class BallCatchEnv(DirectRLEnv):
             * self.actions[:, -1:]
             * self.cfg.action_scale
         )
+        arm_delta = torch.where(freeze_arm.unsqueeze(-1), torch.zeros_like(arm_delta), arm_delta)
+
         self.robot_dof_targets[:, self._arm_ids] += arm_delta
         self.robot_dof_targets[:, self._gripper_ids] += grip_delta
+
+        joint_pos = _as_tensor(self.robot.data.joint_pos)
+        if freeze_arm.any():
+            # Lock PD targets to current arm configuration so the arm stays put.
+            self.robot_dof_targets[:, self._arm_ids] = torch.where(
+                freeze_arm.unsqueeze(-1),
+                joint_pos[:, self._arm_ids],
+                self.robot_dof_targets[:, self._arm_ids],
+            )
+            # Hold a firm close; ignore open commands while grasping.
+            close = torch.full(
+                (self.num_envs, self._gripper_ids.numel()),
+                self.cfg.gripper_close_target,
+                device=self.device,
+                dtype=self.robot_dof_targets.dtype,
+            )
+            self.robot_dof_targets[:, self._gripper_ids] = torch.where(
+                freeze_arm.unsqueeze(-1),
+                close,
+                self.robot_dof_targets[:, self._gripper_ids],
+            )
+            # Zero reported actions for frozen envs so action penalty reflects hold-still intent.
+            self.actions = torch.where(freeze_arm.unsqueeze(-1), torch.zeros_like(self.actions), self.actions)
+
         self.robot_dof_targets[:] = torch.clamp(
-            self.robot_dof_targets, self.robot_dof_lower_limits, self.robot_dof_upper_limits
+            self.robot_dof_targets, self.robot_dof_drive_lower, self.robot_dof_drive_upper
         )
 
     def _apply_action(self) -> None:
@@ -185,7 +226,9 @@ class BallCatchEnv(DirectRLEnv):
         self._body_contact_count = torch.where(
             on_body, self._body_contact_count + 1, torch.zeros_like(self._body_contact_count)
         )
-        self._episode_caught |= self._grasp_hold_count >= self.cfg.grasp_hold_steps
+        newly_caught = (self._grasp_hold_count >= self.cfg.grasp_hold_steps) & (~self._episode_caught)
+        self._just_caught = newly_caught
+        self._episode_caught |= newly_caught
         self._body_fail |= self._body_contact_count >= self.cfg.body_fail_steps
 
         # Cache for rewards (dones run before rewards in DirectRLEnv.step)
@@ -210,7 +253,9 @@ class BallCatchEnv(DirectRLEnv):
             dist, closing, in_grasp, on_body = self._update_grasp_and_body_flags()
 
         joint_pos = _as_tensor(self.robot.data.joint_pos)
+        joint_vel = _as_tensor(self.robot.data.joint_vel)
         gripper_pos = joint_pos[:, self._gripper_ids].mean(dim=-1)
+        arm_speed = torch.linalg.norm(joint_vel[:, self._arm_ids], dim=-1)
 
         dropped = ball_pos[:, 2] < self.cfg.fall_height_threshold
         self._dropped |= dropped
@@ -219,15 +264,20 @@ class BallCatchEnv(DirectRLEnv):
             dist,
             self._prev_dist,
             ball_speed,
+            arm_speed,
             gripper_pos,
             closing,
             in_grasp.float(),
             on_body.float(),
             dropped.float(),
+            self._just_caught.float(),
+            self._episode_caught.float(),
             self.cfg.dist_reward_scale,
             self.cfg.approach_reward_scale,
             self.cfg.catch_reward_scale,
             self.cfg.grasp_reward_scale,
+            self.cfg.hold_still_reward_scale,
+            self.cfg.hold_action_penalty_scale,
             self.cfg.body_contact_penalty,
             self.cfg.drop_penalty,
             self.cfg.action_penalty_scale,
@@ -280,7 +330,9 @@ class BallCatchEnv(DirectRLEnv):
         dropped = ball_pos[:, 2] < self.cfg.fall_height_threshold
         self._dropped |= dropped
 
-        terminated = dropped | self._episode_caught | self._body_fail
+        terminated = dropped | self._body_fail
+        if self.cfg.terminate_on_catch:
+            terminated = terminated | self._episode_caught
         time_out = self.episode_length_buf >= self.max_episode_length - 1
         return terminated, time_out
 
@@ -297,6 +349,7 @@ class BallCatchEnv(DirectRLEnv):
             log["Metrics/drop_rate"] = self._dropped[env_ids].float().mean().item()
 
         self._episode_caught[env_ids] = False
+        self._just_caught[env_ids] = False
         self._body_fail[env_ids] = False
         self._dropped[env_ids] = False
         self._grasp_hold_count[env_ids] = 0
@@ -381,15 +434,20 @@ def compute_rewards(
     dist: torch.Tensor,
     prev_dist: torch.Tensor,
     ball_speed: torch.Tensor,
+    arm_speed: torch.Tensor,
     gripper_pos: torch.Tensor,
     closing: torch.Tensor,
     in_grasp: torch.Tensor,
     on_body: torch.Tensor,
     dropped: torch.Tensor,
+    just_caught: torch.Tensor,
+    episode_caught: torch.Tensor,
     dist_reward_scale: float,
     approach_reward_scale: float,
     catch_reward_scale: float,
     grasp_reward_scale: float,
+    hold_still_reward_scale: float,
+    hold_action_penalty_scale: float,
     body_contact_penalty: float,
     drop_penalty: float,
     action_penalty_scale: float,
@@ -407,16 +465,20 @@ def compute_rewards(
 
     closing_clamped = torch.clamp(closing, 0.0, 1.0)
     # Closing only pays when ball is already near fingers
-    close_rew = 4.0 * closing_clamped * (dist < gripper_near_dist).float()
-    # Continuous grasp shaping + sparse success
+    close_rew = 4.0 * closing_clamped * (dist < gripper_near_dist).float() * (1.0 - episode_caught)
+    # Continuous grasp shaping + one-shot catch bonus (not every near frame)
     grasp_rew = grasp_reward_scale * in_grasp
-    success_bonus = catch_reward_scale * (dist < success_dist_threshold).float() * (closing_clamped > success_close_min).float()
+    success_bonus = catch_reward_scale * just_caught
+    # Prefer a quiet hold after catch: reward low arm speed while gripping / holding
+    holding = torch.clamp(in_grasp + episode_caught, 0.0, 1.0)
+    hold_still_rew = hold_still_reward_scale * holding * torch.exp(-1.5 * arm_speed)
 
     body_pen = body_contact_penalty * on_body
     drop_pen = drop_penalty * dropped
     # Mild keep-alive so timeout without grasp is worse than a clean miss
-    alive_pen = 0.02 * (1.0 - in_grasp)
+    alive_pen = 0.02 * (1.0 - holding)
     action_penalty = action_penalty_scale * torch.sum(actions * actions, dim=-1)
+    hold_action_pen = hold_action_penalty_scale * holding * torch.sum(actions * actions, dim=-1)
 
     return (
         dist_rew
@@ -424,8 +486,10 @@ def compute_rewards(
         + close_rew
         + grasp_rew
         + success_bonus
+        + hold_still_rew
         - body_pen
         - drop_pen
         - alive_pen
         - action_penalty
+        - hold_action_pen
     )
