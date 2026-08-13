@@ -40,6 +40,8 @@ docker/.container.cfg
 **/videos/*
 **/wandb/*
 **/.neptune/*
+.xr_launcher.json
+.xr_tasks.json
 docker/artifacts/
 *.tmp
 

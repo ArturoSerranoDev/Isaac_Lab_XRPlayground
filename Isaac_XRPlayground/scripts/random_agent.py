@@ -8,6 +8,7 @@
 import argparse
 import contextlib
 import sys
+import time
 
 import gymnasium as gym
 import torch
@@ -30,6 +31,7 @@ parser.add_argument(
 )
 parser.add_argument("--num_envs", type=int, default=None, help="Number of environments to simulate.")
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
+parser.add_argument("--real-time", action="store_true", default=False, help="Run at real-time speed (1x wall clock).")
 # append AppLauncher cli args
 add_launcher_args(parser)
 # simple agents should open Kit visualizer by default
@@ -73,6 +75,7 @@ def main():
         env.reset()
         # simulate environment
         sim = base_env.sim
+        step_dt = base_env.step_dt
         while True:
             if sim.visualizers:
                 # visualizer mode: run until the visualizer window is closed
@@ -80,6 +83,7 @@ def main():
                     break
             # run everything in inference mode
             with torch.inference_mode():
+                step_start = time.time()
                 # sample actions from -1 to 1
                 if is_marl:
                     actions = {
@@ -92,6 +96,10 @@ def main():
                     actions = 2 * torch.rand(env.action_space.shape, device=device) - 1
                 # apply actions
                 env.step(actions)
+                if args_cli.real_time:
+                    sleep_time = step_dt - (time.time() - step_start)
+                    if sleep_time > 0:
+                        time.sleep(sleep_time)
 
         # close the simulator
         env.close()
