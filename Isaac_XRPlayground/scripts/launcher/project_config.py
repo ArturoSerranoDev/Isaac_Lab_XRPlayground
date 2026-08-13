@@ -66,6 +66,17 @@ TASKS: dict[str, dict[str, Any]] = {
         "source_dir": "xrplayground_marl",
         "description": "Two agents control cart force and pendulum torque. Useful to study MARL, not your main XR task yet.",
     },
+    "ball_catch": {
+        "label": "Ball Catch (Kinova Jaco2)",
+        "subtitle": "7-DoF arm · Kinova Jaco2 + 3-finger gripper",
+        "tier": "Intermediate",
+        "task_id": "Template-Xrplayground-Ball-Catch-Direct-v0",
+        "algorithms": ["PPO"],
+        "default_algorithm": "PPO",
+        "log_dir": "xrplayground_ball_catch_direct",
+        "source_dir": "ball_catch",
+        "description": "Kinova Jaco2 with 3-finger gripper learns to intercept tossed balls. Stepping stone toward XR player throws.",
+    },
 }
 
 # GPU-tuned presets for RTX 3060 Ti (8 GB)
@@ -107,6 +118,16 @@ PROFILES: dict[str, dict[str, Any]] = {
         "num_envs_train_visual": 64,
         "num_envs_play": 32,
         "num_envs_demo": 32,
+        "max_iterations": 2000,
+        "headless_train": True,
+    },
+    "catch": {
+        "label": "Ball catch",
+        "hint": "Kinova catch — low visual env count, longer training",
+        "num_envs_train": 128,
+        "num_envs_train_visual": 8,
+        "num_envs_play": 4,
+        "num_envs_demo": 4,
         "max_iterations": 2000,
         "headless_train": True,
     },
