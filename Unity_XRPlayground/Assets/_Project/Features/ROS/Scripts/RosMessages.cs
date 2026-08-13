@@ -38,6 +38,37 @@ namespace XRPlayground.ROS
         public float[] joint_positions;
         public PoseData ee;
         public LinkPoseData[] links;
+        public int target_color;
+        public string target_color_name;
+    }
+
+    [Serializable]
+    public class ConveyorObjectData
+    {
+        public int id;
+        public bool active;
+        public int color;
+        public string color_name;
+        public bool grasped;
+        public float[] position;
+        public float[] orientation_xyzw;
+        public float[] linear_velocity;
+        public float[] angular_velocity;
+    }
+
+    [Serializable]
+    public class ConveyorObjectsStateData
+    {
+        public ConveyorObjectData[] objects;
+        public int target_color;
+        public string source;
+    }
+
+    [Serializable]
+    public class ConveyorSpawnData
+    {
+        public int color;
+        public float[] position;
     }
 
     [Serializable]
@@ -61,6 +92,7 @@ namespace XRPlayground.ROS
         public string phase;
         public bool policy_loaded;
         public int clients;
+        public string task;
     }
 
     public static class RosTopics
@@ -71,8 +103,13 @@ namespace XRPlayground.ROS
         public const string SessionCommand = "/xr/session_command";
         public const string SessionStatus = "/xr/session_status";
 
+        public const string ConveyorRobotState = "/xr/conveyor/robot_state";
+        public const string ConveyorObjectsState = "/xr/conveyor/objects_state";
+        public const string ConveyorSpawn = "/xr/conveyor/spawn";
+
         public const string ModeMirror = "mirror";
         public const string ModeAwaitThrow = "await_throw";
+        public const string ModeAwaitSpawn = "await_spawn";
     }
 
     public static class RosJson
@@ -122,6 +159,24 @@ namespace XRPlayground.ROS
             public SessionStatusData data;
         }
 
+        [Serializable]
+        class ConveyorSpawnEnvelope
+        {
+            public string topic;
+            public double stamp_s;
+            public string frame_id;
+            public ConveyorSpawnData data;
+        }
+
+        [Serializable]
+        class ConveyorObjectsEnvelope
+        {
+            public string topic;
+            public double stamp_s;
+            public string frame_id;
+            public ConveyorObjectsStateData data;
+        }
+
         public static string SerializeBall(string topic, BallStateData data, string frameId = "unity")
         {
             var env = new BallEnvelope
@@ -158,6 +213,18 @@ namespace XRPlayground.ROS
             return JsonUtility.ToJson(env);
         }
 
+        public static string SerializeConveyorSpawn(int color, float[] positionIsaac = null)
+        {
+            var env = new ConveyorSpawnEnvelope
+            {
+                topic = RosTopics.ConveyorSpawn,
+                stamp_s = Time.realtimeSinceStartupAsDouble,
+                frame_id = "unity",
+                data = new ConveyorSpawnData { color = color, position = positionIsaac }
+            };
+            return JsonUtility.ToJson(env);
+        }
+
         public static bool TryParseRobotState(string json, out RobotStateData data, out string topic)
         {
             data = null;
@@ -169,7 +236,7 @@ namespace XRPlayground.ROS
                     return false;
                 topic = env.topic;
                 data = env.data;
-                return topic == RosTopics.RobotState;
+                return topic == RosTopics.RobotState || topic == RosTopics.ConveyorRobotState;
             }
             catch
             {
@@ -184,6 +251,23 @@ namespace XRPlayground.ROS
             {
                 var env = JsonUtility.FromJson<BallEnvelope>(json);
                 if (env == null || env.data == null || env.topic != RosTopics.BallState)
+                    return false;
+                data = env.data;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool TryParseConveyorObjects(string json, out ConveyorObjectsStateData data)
+        {
+            data = null;
+            try
+            {
+                var env = JsonUtility.FromJson<ConveyorObjectsEnvelope>(json);
+                if (env == null || env.data == null || env.topic != RosTopics.ConveyorObjectsState)
                     return false;
                 data = env.data;
                 return true;

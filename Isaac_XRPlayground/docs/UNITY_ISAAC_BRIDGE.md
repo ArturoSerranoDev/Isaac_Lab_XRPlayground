@@ -42,6 +42,10 @@ Positions/orientations in `/xr/*` payloads use **Isaac Z-up** frame (env-local f
 
 Unity converts with `XrFrameConverter` (Z-up → Y-up) and places links in the `KinovaLinkPoseFollower.envAnchor` frame (usually the Kinova root at the Manipulation station). Optional `calibrateVisualFrames` can bake a per-link USD visual correction when Unity bind and Isaac pose share the same joint configuration (leave off by default — Isaac init pose ≠ USD import rest pose).
 
+### Conveyor Color (second station)
+
+See [CONVEYOR_COLOR.md](CONVEYOR_COLOR.md). Uses **port 9091** and topics under `/xr/conveyor/*`. Unity menu **Setup Conveyor Color Station** adds Station B without touching Kinova / Ball Catch.
+
 ## Session modes
 
 | Mode | Unity | Isaac |

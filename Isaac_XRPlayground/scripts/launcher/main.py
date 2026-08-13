@@ -488,9 +488,10 @@ class XRLauncher:
         self.execute(command, f"demo-{mode}", task_key=task_key)
 
     def action_bridge(self) -> None:
-        """Launch Unity ↔ Isaac XR bridge with Mirror Isaac / Await throw selection."""
+        """Launch Unity ↔ Isaac XR bridge (Ball Catch or Conveyor Color)."""
         tasks = self.all_tasks()
-        default_key = "ball_catch" if "ball_catch" in tasks else self.config.get("task_key")
+        preferred = ("ball_catch", "conveyor_color")
+        default_key = next((k for k in preferred if k in tasks), self.config.get("task_key"))
 
         task_key = self.select_task("XR Bridge → Unity", default_key)
         if not task_key:
@@ -498,49 +499,83 @@ class XRLauncher:
         self.config["task_key"] = task_key
         task = self.get_task(task_key)
 
-        if task_key != "ball_catch":
+        bridge_script = task.get("bridge_script")
+        bridge_port_default = int(task.get("bridge_port", 9090))
+        is_conveyor = task_key == "conveyor_color" or "Conveyor-Color" in str(task.get("task_id", ""))
+        is_ball = task_key == "ball_catch" or "Ball-Catch" in str(task.get("task_id", ""))
+
+        if not is_ball and not is_conveyor:
             print(
                 Style.paint(
-                    "\n  Warning: the TCP bridge script is built for Ball Catch.\n"
-                    "  Other tasks may not stream correctly until a matching adapter exists.",
+                    "\n  No XR bridge adapter for this task yet.\n"
+                    "  Supported: Ball Catch (:9090) · Conveyor Color (:9091).",
                     Style.YELLOW,
                 )
             )
-            if not prompt_yes_no("  Continue anyway?", default=False):
+            if not prompt_yes_no("  Continue with Ball Catch bridge script anyway?", default=False):
                 return
+            bridge_script = "scripts/bridge/run_xr_bridge.py"
+            is_ball = True
+
+        if not bridge_script:
+            bridge_script = (
+                "scripts/bridge/run_xr_bridge_conveyor.py"
+                if is_conveyor
+                else "scripts/bridge/run_xr_bridge.py"
+            )
 
         clear()
         print_banner()
         print(Style.paint("\n  XR Bridge — session mode", Style.YELLOW, Style.BOLD))
         print(Style.paint(f"  Task: {task['label']}", Style.DIM))
-        print(
-            """
-  How Unity should interact with this training:
+        print(Style.paint(f"  Script: {bridge_script}  ·  default port {bridge_port_default}", Style.DIM))
 
+        if is_conveyor:
+            print(
+                """
   Mirror Isaac
-    · Isaac owns throws and robot actions (policy / zero / random)
-    · Unity puppets the Kinova from streamed link poses
-    · Unity ball is ignored — good for watching a trained catch
+    · Isaac auto-spawns colored cubes on the belt
+    · Unity puppets UR10e + cubes from streamed poses
+
+  Await Unity spawn
+    · Isaac waits; Unity Spawn RED/GREEN/BLUE adds cubes
+    · Policy picks the episode target color into the bin
+"""
+            )
+            mode_options = [
+                ("mirror", "Mirror Isaac — watch auto-spawn belt"),
+                ("await_spawn", "Await Unity spawn — XR adds cubes"),
+            ]
+            saved_mode = str(self.config.get("bridge_mode_conveyor", "mirror"))
+            default_mode = saved_mode if saved_mode in {"mirror", "await_spawn"} else "mirror"
+        else:
+            print(
+                """
+  Mirror Isaac
+    · Isaac owns throws and robot actions
+    · Unity puppets the Kinova (+ ball) from streamed poses
 
   Await player throw
-    · Robot waits in ready pose
     · Grab & release the ball in Unity → throw_event
-    · Isaac runs the policy to catch that throw
+    · Isaac runs the policy to catch
 """
-        )
-        saved_mode = str(self.config.get("bridge_mode", "mirror"))
-        mode = prompt_choice(
-            "Session mode:",
-            [
+            )
+            mode_options = [
                 ("mirror", "Mirror Isaac — watch / debug policy in Unity"),
                 ("await_throw", "Await player throw — XR throw, then catch"),
-            ],
-            saved_mode if saved_mode in {"mirror", "await_throw"} else "mirror",
-        )
-        self.config["bridge_mode"] = mode
+            ]
+            saved_mode = str(self.config.get("bridge_mode", "mirror"))
+            default_mode = saved_mode if saved_mode in {"mirror", "await_throw"} else "mirror"
 
+        mode = prompt_choice("Session mode:", mode_options, default_mode)
+        if is_conveyor:
+            self.config["bridge_mode_conveyor"] = mode
+        else:
+            self.config["bridge_mode"] = mode
+
+        needs_policy_hint = mode in {"await_throw", "await_spawn"}
         checkpoint = ""
-        want_policy = mode == "await_throw" or prompt_yes_no(
+        want_policy = needs_policy_hint or prompt_yes_no(
             "  Load a trained checkpoint for this bridge session?",
             default=bool(self.config.get("checkpoint")) or mode == "mirror",
         )
@@ -549,10 +584,10 @@ class XRLauncher:
             if picked:
                 checkpoint = picked
                 self.config["checkpoint"] = checkpoint
-            elif mode == "await_throw":
+            elif needs_policy_hint:
                 print(
                     Style.paint(
-                        "\n  Await throw needs a policy to catch. Continuing without checkpoint"
+                        "\n  This mode works best with a policy. Continuing without checkpoint"
                         " will use the fallback action mode only.",
                         Style.YELLOW,
                     )
@@ -585,7 +620,7 @@ class XRLauncher:
         )
         self.config["bridge_port"] = prompt_int(
             "  Bridge port",
-            int(self.config.get("bridge_port", 9090)),
+            int(self.config.get("bridge_port", bridge_port_default)),
             minimum=1,
         )
         self.config["num_envs_bridge"] = 1
@@ -597,7 +632,7 @@ class XRLauncher:
             device = "cpu"
 
         command = self.base_cmd() + [
-            "scripts/bridge/run_xr_bridge.py",
+            bridge_script,
             f"--task={task['task_id']}",
             f"--num_envs={int(self.config.get('num_envs_bridge', 1))}",
             f"--mode={mode}",
@@ -619,12 +654,12 @@ class XRLauncher:
             command.append("--disable_fabric")
 
         print(Style.paint("\n  Next in Unity:", Style.CYAN, Style.BOLD))
-        print("    1. XRPlayground → Setup XR Bridge Scene (once)")
-        print("    2. Play → Mirror Isaac (or Await throw) → Connect bridge")
-        if mode == "mirror":
-            print(Style.paint("    Mirror: Unity ball ignored; watch Isaac catch.", Style.DIM))
+        if is_conveyor:
+            print("    1. XRPlayground → Setup Conveyor Color Station (once)")
+            print("    2. Play → Mirror / Await spawn → Connect bridge (:9091)")
         else:
-            print(Style.paint("    Await: grab & throw the ball toward the robot.", Style.DIM))
+            print("    1. XRPlayground → Setup XR Bridge Scene (once)")
+            print("    2. Play → Mirror Isaac (or Await throw) → Connect bridge (:9090)")
 
         self.execute(command, f"bridge-{mode}", task_key=task_key)
 
