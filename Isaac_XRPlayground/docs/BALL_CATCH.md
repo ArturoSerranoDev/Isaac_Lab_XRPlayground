@@ -16,7 +16,7 @@ Goal: train a manipulator to catch thrown balls in Isaac Lab, then reuse the pol
 
 - **Gym ID:** `Template-Xrplayground-Ball-Catch-Direct-v0`
 - **Robot:** Kinova Jaco2 7-DoF + 3-finger gripper (instanceable USD; open 0.2, close 1.2)
-- **Ball:** 8 cm sphere, ~57 g, spawned with a randomized toss toward the arm
+- **Ball:** ~8.25 cm diameter sphere (radius 0.04125), ~80 g, spawned with a randomized toss toward the arm
 - **Actions:** 8-D joint position deltas (7 arm + 1 shared gripper command)
 - **Observations:** arm/gripper state, ball pose/velocity, gripper→ball vector
 - **Success:** ball near closing gripper, low speed, not on ground
@@ -43,8 +43,10 @@ The throw is isolated in `BallCatchEnv._launch_ball()`. For XR:
 
 1. Replace random `throw_pos_*` / `throw_vel_*` sampling with values from the XR client (hand release pose + velocity).
 2. Keep observations/actions identical so the trained policy still applies.
-3. Unity side: on "ball release", send `(position, linear_velocity)` to Isaac via socket/ROS/shared memory.
+3. Unity side: on "ball release", send `(position, linear_velocity)` to Isaac via the TCP ROS-like bridge (see [`UNITY_ISAAC_BRIDGE.md`](UNITY_ISAAC_BRIDGE.md)).
 4. Optional: train with domain randomization on throw parameters so the policy generalizes to human throws.
+
+**Bridge (Phase 4 MVP):** `python scripts/bridge/run_xr_bridge.py --task=Template-Xrplayground-Ball-Catch-Direct-v0 --num_envs=1` then Unity menu **XRPlayground → Setup XR Bridge Scene**.
 
 ## Files to edit first
 

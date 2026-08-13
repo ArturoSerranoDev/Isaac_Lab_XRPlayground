@@ -291,39 +291,7 @@ class BallCatchEnv(DirectRLEnv):
         self._prev_dist = dist.detach()
         return reward
 
-    def _apply_catch_assist(self) -> None:
-        """Pull ball only when it is already inside a closing finger volume."""
-        ball_pos = _as_tensor(self.ball.data.root_pos_w)
-        gripper_mid, _, closing, _ = self._gripper_state()
-        dist = torch.linalg.norm(ball_pos - gripper_mid, dim=-1)
-        arm_dist = self._ball_to_arm_dist(ball_pos)
-        # Do not assist body-balance cheats
-        assist = (
-            (dist < self.cfg.assist_capture_radius)
-            & (closing > self.cfg.assist_min_close)
-            & (arm_dist > self.cfg.body_contact_radius * 0.5)
-            & (ball_pos[:, 2] > self.cfg.fall_height_threshold)
-        )
-        env_ids = assist.nonzero(as_tuple=False).flatten()
-        if env_ids.numel() == 0:
-            return
-
-        ball_vel = _as_tensor(self.ball.data.root_lin_vel_w).clone()
-        ball_ang = _as_tensor(self.ball.data.root_ang_vel_w).clone()
-        ball_quat = _as_tensor(self.ball.data.root_quat_w)
-        new_pos = ball_pos.clone()
-        pull = gripper_mid - ball_pos
-        new_pos[assist] = ball_pos[assist] + self.cfg.assist_pull * pull[assist]
-        ball_vel[assist] *= self.cfg.assist_vel_damping
-        ball_ang[assist] *= 0.15
-
-        pose = torch.cat((new_pos[assist], ball_quat[assist]), dim=-1)
-        vel = torch.cat((ball_vel[assist], ball_ang[assist]), dim=-1)
-        self.ball.write_root_pose_to_sim(pose, env_ids)
-        self.ball.write_root_velocity_to_sim(vel, env_ids)
-
     def _get_dones(self) -> tuple[torch.Tensor, torch.Tensor]:
-        self._apply_catch_assist()
         self._update_grasp_and_body_flags()
 
         ball_pos = _as_tensor(self.ball.data.root_pos_w) - self.scene.env_origins

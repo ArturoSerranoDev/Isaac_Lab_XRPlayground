@@ -16,7 +16,7 @@ from isaaclab.sim import SimulationCfg
 from isaaclab.utils.configclass import configclass
 from isaaclab_assets.robots.kinova import KINOVA_JACO2_N7S300_CFG
 
-# Kinova Jaco2 7-DoF + 3-finger gripper. Arcade-style catch assists (not 1:1 real).
+# Kinova Jaco2 7-DoF + 3-finger gripper.
 
 
 @configclass
@@ -145,7 +145,7 @@ class BallCatchEnvCfg(DirectRLEnvCfg):
     ball_cfg: RigidObjectCfg = RigidObjectCfg(
         prim_path="/World/envs/env_.*/Ball",
         spawn=sim_utils.SphereCfg(
-            radius=0.055,
+            radius=0.04125,  # 75% of previous 0.055
             visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(0.95, 0.25, 0.15)),
             physics_material=sim_utils.RigidBodyMaterialCfg(static_friction=1.8, dynamic_friction=1.4, restitution=0.0),
             rigid_props=sim_utils.RigidBodyPropertiesCfg(
@@ -177,12 +177,6 @@ class BallCatchEnvCfg(DirectRLEnvCfg):
     aim_pos_z_easy = (0.48, 0.62)
     aim_pos_z_hard = (0.40, 0.72)
     throw_ang_vel = (-2.0, 2.0)
-
-    # Arcade grasp assist: only inside the finger volume while closing
-    assist_capture_radius = 0.10
-    assist_min_close = 0.25
-    assist_vel_damping = 0.18
-    assist_pull = 0.55
 
     # reward / success scales — grasp-centric (body balancing is penalized)
     dist_reward_scale = 4.0

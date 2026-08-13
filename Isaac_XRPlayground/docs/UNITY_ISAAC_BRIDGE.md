@@ -1,0 +1,85 @@
+# Unity ↔ Isaac Kinova Bridge
+
+TCP “ROS-like” bridge for XR playground ↔ Isaac Lab ball-catch.
+
+## Authority
+
+- **Isaac** owns physics and (optionally) the trained policy.
+- **Unity** owns XR input / rendering and puppets the Kinova USD from streamed link poses.
+
+## Hierarchy mapping
+
+Same Nucleus USD (`j2n7s300_instanceable.usd`). **Link names match.**
+
+| Role | Isaac | Unity |
+|------|--------|--------|
+| Root | Articulation `/World/envs/env_0/Robot` | `Kinova_Jaco2_j2n7s300` |
+| Base | `j2n7s300_link_base` | same (flat sibling) |
+| Arm links | `j2n7s300_link_1` … `_7` | same |
+| EE body | `j2n7s300_end_effector` | same |
+| Fingers | `j2n7s300_link_finger_*` / `_tip_*` | same |
+| Joints | `j2n7s300_joint_1` … `_7` + 6 finger joints | **not present** as GameObjects |
+
+Unity imports links as **flat siblings**. Drive visuals with **per-link poses**, not joint angles alone.
+
+Unity menu **XRPlayground → Audit Kinova Hierarchy** compares scene names to this list.
+
+## Topics (JSON envelope)
+
+```json
+{ "topic": "/xr/...", "stamp_s": 0.0, "frame_id": "isaac_env", "data": { } }
+```
+
+Framing on the wire: **4-byte little-endian length** + UTF-8 JSON.
+
+| Topic | Direction | Data |
+|-------|-----------|------|
+| `/xr/ball_state` | Unity → Isaac | `position[3]`, `orientation_xyzw[4]`, `linear_velocity[3]`, `angular_velocity[3]`, `grasped` |
+| `/xr/robot_state` | Isaac → Unity | `joint_names`, `joint_positions`, `ee`, `links[{name,position,orientation_xyzw}]` |
+| `/xr/heartbeat` | both | `role`, time fields |
+
+Positions/orientations in `/xr/*` payloads use **Isaac Z-up** frame (env-local for ball/robot relative to env origin). Unity converts with `XrFrameConverter` and applies a configurable `rootOffset` at the Manipulation station.
+
+## Session modes
+
+| Mode | Unity | Isaac |
+|------|--------|--------|
+| **mirror** | Puppets robot; ball publish OFF | Owns throws + actions (policy / zero / random) |
+| **await_throw** | Ball publish ON; release sends `throw_event` | Parks ball, waits, then catches with policy |
+
+Unity world UI (classic **Canvas / uGUI**, not UI Toolkit): **XRPlayground → Setup XR Bridge Scene**
+creates `XR Bridge World UI` near the Kinova with Connect / Mirror / Await throw.
+
+## Run
+
+### Isaac (1 env, publish robot, accept ball)
+
+```bat
+cd Isaac_XRPlayground
+conda activate env_isaaclab
+python scripts\bridge\run_xr_bridge.py --task=Template-Xrplayground-Ball-Catch-Direct-v0 --num_envs=1 --mode=mirror --checkpoint=PATH\TO\agent.pt --viz kit
+```
+
+`--mode=await_throw` starts in wait-for-player mode. Unity UI can switch modes at runtime.
+Omit `--checkpoint` only for mirror/debug; catch needs a trained policy.
+
+### Unity
+
+1. Open `SampleScene`.
+2. Ensure `Kinova_Jaco2_j2n7s300` has `KinovaLinkMap` + `KinovaLinkPoseFollower`.
+3. Scene object with `RosTcpClient` (host `127.0.0.1`, port `9090`).
+4. Ball / Grab Cube has `BallStatePublisher`.
+5. Enter Play Mode after Isaac bridge is listening.
+
+Menu **XRPlayground → Setup XR Bridge Scene** wires defaults.
+
+## Smoke checklist
+
+1. Isaac alone: heartbeats + `/xr/robot_state` in console (`--log_robot`).
+2. Unity connects: Kinova links move with Isaac.
+3. Grab/release ball in Unity: Isaac ball pose updates.
+
+### Unity menus
+
+- **XRPlayground → Audit Kinova Hierarchy** — expect 15 links, 0 missing.
+- **XRPlayground → Setup XR Bridge Scene** — creates `XR Bridge`, attaches map/follower/publisher.
