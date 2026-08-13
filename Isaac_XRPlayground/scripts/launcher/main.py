@@ -25,6 +25,13 @@ from .project_config import (
     TASKS_SOURCE,
 )
 from .scaffold_task import scaffold_training_task
+from .run_config import (
+    RunConfig,
+    RunConfigPrompts,
+    append_sim_flags,
+    edit_full_config_menu,
+    select_run_config_interactive,
+)
 from .tasks_registry import discover_tasks, find_latest_checkpoint, list_training_runs
 from .terminal_ui import (
     Style,
@@ -94,6 +101,13 @@ class XRLauncher:
             return "Custom"
         profile = PROFILES[key]
         return f"{profile['label']} — {profile['hint']}"
+
+    def run_prompts(self) -> RunConfigPrompts:
+        return RunConfigPrompts(
+            prompt_int=prompt_int,
+            prompt_yes_no=prompt_yes_no,
+            prompt_choice=prompt_choice,
+        )
 
     # ------------------------------------------------------------------ helpers
     def resolve_python(self) -> Path:
@@ -222,50 +236,6 @@ class XRLauncher:
                 return raw
             print("  Invalid choice.")
 
-    def select_train_visualization(self) -> tuple[bool, int] | None:
-        """Return (headless, num_envs) or None if cancelled."""
-        clear()
-        print_banner()
-        print(Style.paint("\n  Visualization during training", Style.YELLOW, Style.BOLD))
-        print("  [1] Headless — fastest, no Isaac window (recommended for long runs)")
-        print("  [2] Visual — open Isaac Sim and watch the robots train (slower)")
-        print("  [3] Use saved default")
-        print("  [0] Cancel")
-
-        default_mode = self.config.get("train_visual_mode", "ask")
-        default_choice = "2" if default_mode == "visual" else "1" if default_mode == "headless" else "1"
-        raw = input(f"\n  Choice [{default_choice}]: ").strip() or default_choice
-
-        if raw == "0":
-            return None
-        if raw == "3":
-            headless = bool(self.config.get("headless_train", True))
-        elif raw == "2":
-            headless = False
-            self.config["train_visual_mode"] = "visual"
-        else:
-            headless = True
-            self.config["train_visual_mode"] = "headless"
-
-        if headless:
-            num_envs = self.config["num_envs_train"]
-            print(Style.paint(f"\n  Using {num_envs} parallel envs (headless).", Style.DIM))
-        else:
-            num_envs = self.config.get("num_envs_train_visual", 32)
-            suggested = num_envs
-            print(
-                Style.paint(
-                    f"\n  Visual training works best with fewer envs (default {suggested}).",
-                    Style.DIM,
-                )
-            )
-            num_envs = prompt_int("  num_envs for visual training", suggested, minimum=1)
-            self.config["num_envs_train_visual"] = num_envs
-
-        self.config["headless_train"] = headless
-        self.save_config()
-        return headless, num_envs
-
     def select_checkpoint(self, task: dict[str, Any]) -> str | None:
         runs = list_training_runs(task["log_dir"])
         clear()
@@ -302,29 +272,27 @@ class XRLauncher:
     def build_train_command(
         self,
         task: dict[str, Any],
-        *,
-        headless: bool,
-        num_envs: int,
+        run: RunConfig,
         checkpoint: str = "",
     ) -> list[str]:
         algo = self.get_algorithm(task)
         command = self.base_cmd() + [
             "scripts/skrl/train.py",
             f"--task={task['task_id']}",
-            f"--num_envs={num_envs}",
+            f"--num_envs={run.num_envs}",
             f"--algorithm={algo}",
-            f"--seed={self.config['seed']}",
-            f"--max_iterations={self.config['max_iterations']}",
+            f"--seed={run.seed}",
+            f"--max_iterations={run.max_iterations}",
         ]
-        if headless:
+        if run.headless:
             command.append("--headless")
         else:
             command.extend(["--viz", "kit"])
         if checkpoint:
             command.append(f"--checkpoint={checkpoint}")
-        if self.config.get("record_video"):
+        if run.record_video:
             command.append("--video")
-        return command
+        return append_sim_flags(command, run)
 
     # ------------------------------------------------------------------ screens
     def render(self) -> None:
@@ -372,18 +340,11 @@ class XRLauncher:
             self.render()
             print(Style.paint("\n  Settings", Style.YELLOW, Style.BOLD))
             print("  [1] Change task")
-            print("  [2] Training num_envs")
-            print("  [3] Play / demo num_envs")
-            print("  [4] Headless training")
-            print("  [5] Max iterations")
-            print("  [6] Seed")
-            print("  [7] Algorithm")
-            print("  [8] Checkpoint (play / resume)")
-            print("  [9] Record video while training")
-            print("  [A] Real-time playback (play)")
-            print("  [D] Real-time demo (random/zero)")
-            print("  [B] Confirm before run")
-            print("  [C] Show command preview")
+            print("  [2] Full run configuration (envs, device, Fabric/USD)")
+            print("  [3] Algorithm")
+            print("  [4] Checkpoint (play / resume)")
+            print("  [5] Confirm before run")
+            print("  [6] Show command preview")
             print("  [R] Reset to 'Learning session' profile")
             print("  [0] Back")
             choice = input("\nChoice: ").strip().lower()
@@ -396,43 +357,22 @@ class XRLauncher:
                     self.config["algorithm"] = ""
                     self.config["profile"] = "custom"
             elif choice == "2":
-                self.config["num_envs_train"] = prompt_int("Training num_envs (headless)", self.config["num_envs_train"])
-                self.config["num_envs_train_visual"] = prompt_int(
-                    "Training num_envs (visual)", self.config.get("num_envs_train_visual", 32)
-                )
-                self.config["profile"] = "custom"
+                edit_full_config_menu(self.config, self.run_prompts())
             elif choice == "3":
-                self.config["num_envs_play"] = prompt_int("Play num_envs", self.config["num_envs_play"])
-                self.config["num_envs_demo"] = prompt_int("Demo num_envs", self.config["num_envs_demo"])
-                self.config["profile"] = "custom"
-            elif choice == "4":
-                self.config["headless_train"] = prompt_yes_no("Train headless?", self.config["headless_train"])
-                self.config["profile"] = "custom"
-            elif choice == "5":
-                self.config["max_iterations"] = prompt_int("Max iterations", self.config["max_iterations"], minimum=1)
-                self.config["profile"] = "custom"
-            elif choice == "6":
-                self.config["seed"] = prompt_int("Seed", self.config["seed"], minimum=0)
-            elif choice == "7":
                 self.config["algorithm"] = prompt_choice(
                     "Algorithm:",
                     [(algo, algo) for algo in task["algorithms"]],
                     self.get_algorithm(task),
                 )
-            elif choice == "8":
+                self.config["profile"] = "custom"
+            elif choice == "4":
                 suggested = self.config.get("checkpoint") or self.find_latest_checkpoint(task["log_dir"]) or ""
                 self.config["checkpoint"] = prompt_text("Checkpoint path", suggested)
-            elif choice == "9":
-                self.config["record_video"] = prompt_yes_no("Record video while training?", self.config["record_video"])
-            elif choice == "a":
-                self.config["real_time_play"] = prompt_yes_no("Play in real-time?", self.config["real_time_play"])
-            elif choice == "d":
-                self.config["real_time_demo"] = prompt_yes_no("Demo in real-time?", self.config["real_time_demo"])
-            elif choice == "b":
+            elif choice == "5":
                 self.config["confirm_before_run"] = prompt_yes_no(
                     "Ask before running commands?", self.config["confirm_before_run"]
                 )
-            elif choice == "c":
+            elif choice == "6":
                 self.config["show_command_preview"] = prompt_yes_no(
                     "Show command preview?", self.config["show_command_preview"]
                 )
@@ -458,10 +398,15 @@ class XRLauncher:
         self.config["task_key"] = task_key
         task = self.get_task(task_key)
 
-        visual = self.select_train_visualization()
-        if visual is None:
+        run = select_run_config_interactive(
+            self.config,
+            "train",
+            self.run_prompts(),
+            title="Run configuration — Train",
+        )
+        if run is None:
             return
-        headless, num_envs = visual
+        self.save_config()
 
         resume = prompt_yes_no("  Resume from a checkpoint?", default=False)
         checkpoint = ""
@@ -470,7 +415,7 @@ class XRLauncher:
             if picked:
                 checkpoint = picked
 
-        command = self.build_train_command(task, headless=headless, num_envs=num_envs, checkpoint=checkpoint)
+        command = self.build_train_command(task, run, checkpoint=checkpoint)
         self.execute(command, "train", task_key=task_key)
 
     def action_play(self) -> None:
@@ -486,19 +431,30 @@ class XRLauncher:
             pause()
             return
 
+        run = select_run_config_interactive(
+            self.config,
+            "play",
+            self.run_prompts(),
+            title="Run configuration — Play",
+        )
+        if run is None:
+            return
+        self.save_config()
+
         algo = self.get_algorithm(task)
         command = self.base_cmd() + [
             "scripts/skrl/play.py",
             f"--task={task['task_id']}",
-            f"--num_envs={self.config['num_envs_play']}",
+            f"--num_envs={run.num_envs}",
             f"--algorithm={algo}",
-            f"--seed={self.config['seed']}",
+            f"--seed={run.seed}",
             f"--checkpoint={checkpoint}",
             "--viz",
             "kit",
         ]
-        if self.config.get("real_time_play"):
+        if run.real_time:
             command.append("--real-time")
+        command = append_sim_flags(command, run)
         self.execute(command, "play", task_key=task_key)
 
     def action_demo(self, mode: str) -> None:
@@ -507,16 +463,28 @@ class XRLauncher:
             return
         self.config["task_key"] = task_key
         task = self.get_task(task_key)
+
+        run = select_run_config_interactive(
+            self.config,
+            "demo",
+            self.run_prompts(),
+            title=f"Run configuration — Demo ({mode})",
+        )
+        if run is None:
+            return
+        self.save_config()
+
         script = "scripts/random_agent.py" if mode == "random" else "scripts/zero_agent.py"
         command = self.base_cmd() + [
             script,
             f"--task={task['task_id']}",
-            f"--num_envs={self.config['num_envs_demo']}",
+            f"--num_envs={run.num_envs}",
             "--viz",
             "kit",
         ]
-        if self.config.get("real_time_demo"):
+        if run.real_time:
             command.append("--real-time")
+        command = append_sim_flags(command, run)
         self.execute(command, f"demo-{mode}", task_key=task_key)
 
     def action_list_envs(self) -> None:
@@ -638,6 +606,12 @@ class XRLauncher:
   ──────────────
   • render_interval in SimulationCfg — higher = fewer GPU renders
   • Fewer num_envs when using Visual mode
+
+  FABRIC vs USD (Settings → Full run configuration)
+  ─────────────────────────────────────────────────
+  • Fabric + cuda:0 — default, fast training & viewport motion
+  • USD + cpu — stage Transform panel updates (slow, num_envs ≤ 8)
+  • USD + cuda on Windows often crashes — launcher forces CPU
 """
         )
         pause()

@@ -97,6 +97,9 @@ parser.add_argument(
 parser.add_argument(
     "--ray-proc-id", "-rid", type=int, default=None, help="Automatically configured by Ray integration, otherwise None."
 )
+parser.add_argument(
+    "--disable_fabric", action="store_true", default=False, help="Disable fabric and use USD I/O operations."
+)
 add_launcher_args(parser)
 args_cli, hydra_args = setup_preset_cli(parser)
 sys.argv = [sys.argv[0]] + hydra_args
@@ -138,6 +141,8 @@ def main():
         # per-rank device otherwise).
         if not args_cli.distributed:
             env_cfg.sim.device = args_cli.device if args_cli.device is not None else env_cfg.sim.device
+        if args_cli.disable_fabric:
+            env_cfg.sim.use_fabric = False
 
         if args_cli.distributed and args_cli.device is not None and "cpu" in args_cli.device:
             raise ValueError(

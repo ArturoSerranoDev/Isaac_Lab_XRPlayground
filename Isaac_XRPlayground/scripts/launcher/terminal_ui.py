@@ -28,6 +28,7 @@ from .project_config import (
     UNITY_PROJECT_ROOT,
     WORKSPACE_OWNER,
 )
+from .project_config import physics_sync_from_config
 
 
 class Style:
@@ -178,6 +179,15 @@ def print_config_summary(config: dict[str, Any], profile_label: str) -> None:
         f"  ·  {config['max_iterations']} iters"
     )
     print(f"  Play {config['num_envs_play']} envs  ·  Demo {config['num_envs_demo']} envs  ·  seed={config['seed']}")
+    train_phys = physics_sync_from_config(config, "train")
+    play_phys = physics_sync_from_config(config, "play")
+    train_dev = config.get("device_train", config.get("device", "cuda:0"))
+    play_dev = config.get("device_play", config.get("device", "cuda:0"))
+    print(
+        f"  Train {train_phys}/{train_dev}"
+        f"  ·  Play {play_phys}/{play_dev}"
+        f"  ·  real-time play={'on' if config.get('real_time_play') else 'off'}"
+    )
     mode = config.get("train_visual_mode", "ask")
     print(f"  Train default view: {mode}")
     if config.get("checkpoint"):
@@ -198,10 +208,10 @@ def print_recent_runs(recent: list[dict[str, Any]]) -> None:
 
 def print_main_menu() -> None:
     print(Style.paint("\n  Train & evaluate", Style.GREEN, Style.BOLD))
-    print("  [1] Train policy        (pick task + headless/visual)")
-    print("  [2] Play trained policy (pick task + checkpoint)")
-    print("  [3] Demo — random actions (pick task)")
-    print("  [4] Demo — zero actions   (pick task)")
+    print("  [1] Train policy        (task + run config)")
+    print("  [2] Play trained policy (task + checkpoint + run config)")
+    print("  [3] Demo — random actions (task + run config)")
+    print("  [4] Demo — zero actions   (task + run config)")
     print(Style.paint("\n  Project shortcuts", Style.BLUE, Style.BOLD))
     print("  [5] Open shared assets folder")
     print("  [6] Open active task source code")

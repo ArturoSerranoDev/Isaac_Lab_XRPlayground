@@ -11,7 +11,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from .project_config import ISAAC_PROJECT_ROOT, TASKS, TASKS_SOURCE
+from .project_config import CHECKPOINT_SUFFIXES, ISAAC_PROJECT_ROOT, TASKS, TASKS_SOURCE
 from .scaffold_task import load_user_task_metadata
 
 GYM_ID_PATTERN = re.compile(r"""id\s*=\s*["']([^"']+)["']""")

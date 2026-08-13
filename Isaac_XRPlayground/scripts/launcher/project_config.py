@@ -119,6 +119,14 @@ DEFAULT_CONFIG: dict[str, Any] = {
     "num_envs_train_visual": 32,
     "num_envs_play": 16,
     "num_envs_demo": 16,
+    "device": "cuda:0",
+    "device_train": "cuda:0",
+    "device_play": "cuda:0",
+    "device_demo": "cuda:0",
+    "physics_sync": "fabric",
+    "physics_sync_train": "fabric",
+    "physics_sync_play": "fabric",
+    "physics_sync_demo": "fabric",
     "headless_train": True,
     "train_visual_mode": "ask",  # ask | headless | visual
     "max_iterations": 500,
@@ -134,3 +142,14 @@ DEFAULT_CONFIG: dict[str, Any] = {
 }
 
 CHECKPOINT_SUFFIXES = {".pt", ".pth", ".ckpt", ".agent"}
+
+
+def physics_sync_from_config(config: dict[str, Any], action: str) -> str:
+    key = f"physics_sync_{action}"
+    value = str(config.get(key, config.get("physics_sync", "fabric"))).lower()
+    return "usd" if value == "usd" else "fabric"
+
+
+def device_from_config(config: dict[str, Any], action: str) -> str:
+    key = f"device_{action}"
+    return str(config.get(key, config.get("device", "cuda:0")))

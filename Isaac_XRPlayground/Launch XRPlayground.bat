@@ -16,4 +16,9 @@ if not exist "%PYTHON%" (
 )
 
 "%PYTHON%" scripts\xr_launcher.py
+if errorlevel 1 (
+    echo.
+    echo  [ERROR] Launcher exited with an error. See message above.
+    pause
+)
 exit /b %ERRORLEVEL%
