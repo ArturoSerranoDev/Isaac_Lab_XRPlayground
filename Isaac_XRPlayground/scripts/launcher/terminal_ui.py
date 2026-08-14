@@ -220,6 +220,7 @@ def print_main_menu() -> None:
     print("  [3] Demo — random actions (task + run config)")
     print("  [4] Demo — zero actions   (task + run config)")
     print("  [B] XR Bridge → Unity     (Mirror Isaac / Await throw)")
+    print("  [E] Export ONNX → Unity   (RSL-RL checkpoint → policy.onnx)")
     print(Style.paint("\n  Project shortcuts", Style.BLUE, Style.BOLD))
     print("  [5] Open shared assets folder")
     print("  [6] Open active task source code")

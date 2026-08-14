@@ -73,7 +73,9 @@ TASKS: dict[str, dict[str, Any]] = {
         "task_id": "Template-Xrplayground-Ball-Catch-Direct-v0",
         "algorithms": ["PPO"],
         "default_algorithm": "PPO",
+        "rl_library": "rsl_rl",
         "log_dir": "xrplayground_ball_catch_direct",
+        "unity_policy_folder": "BallCatch",
         "source_dir": "ball_catch",
         "description": "Kinova Jaco2 with 3-finger gripper learns to intercept tossed balls. Stepping stone toward XR player throws.",
         "bridge_port": 9090,
@@ -86,7 +88,9 @@ TASKS: dict[str, dict[str, Any]] = {
         "task_id": "Template-Xrplayground-Conveyor-Color-Direct-v0",
         "algorithms": ["PPO"],
         "default_algorithm": "PPO",
+        "rl_library": "rsl_rl",
         "log_dir": "xrplayground_conveyor_color_direct",
+        "unity_policy_folder": "Conveyor",
         "source_dir": "conveyor_color",
         "description": "UR10e picks red/green/blue cubes from a conveyor into a bin. State-based color ID (vision later). XR spawn + mirror bridge.",
         "bridge_port": 9091,
@@ -185,6 +189,7 @@ DEFAULT_CONFIG: dict[str, Any] = {
     "real_time_bridge": False,
     "bridge_mode": "mirror",  # mirror | await_throw
     "bridge_action_mode": "zero",  # zero | random | policy (fallback without ckpt)
+    "export_onnx_on_train": True,
     "bridge_host": "127.0.0.1",
     "bridge_port": 9090,
     "num_envs_bridge": 1,

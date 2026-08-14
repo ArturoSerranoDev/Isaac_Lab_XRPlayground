@@ -38,5 +38,26 @@ namespace XRPlayground.ROS
                 return Quaternion.identity;
             return new Quaternion(a[0], a[1], a[2], a[3]);
         }
+
+        /// <summary>
+        /// Same mapping as <c>RobotLinkPoseFollower</c> / <c>KinovaLinkPoseFollower</c>:
+        /// Isaac env-local Z-up body → Unity world via envAnchor.
+        /// </summary>
+        public static void ApplyIsaacBody(Transform link, Transform envAnchor, Vector3 posIsaac, Quaternion quatIsaacXyzw)
+        {
+            if (link == null || envAnchor == null)
+                return;
+            Vector3 pLocal = IsaacPosToUnity(posIsaac);
+            Quaternion qLocal = IsaacQuatToUnity(quatIsaacXyzw);
+            link.SetPositionAndRotation(envAnchor.TransformPoint(pLocal), envAnchor.rotation * qLocal);
+        }
+
+        public static void UnityWorldToIsaacLocal(Transform envAnchor, Vector3 worldPos, Quaternion worldRot, out Vector3 posIsaac, out Quaternion quatIsaacXyzw)
+        {
+            Vector3 unityLocal = envAnchor.InverseTransformPoint(worldPos);
+            Quaternion unityLocalRot = Quaternion.Inverse(envAnchor.rotation) * worldRot;
+            posIsaac = UnityPosToIsaac(unityLocal);
+            quatIsaacXyzw = UnityQuatToIsaac(unityLocalRot);
+        }
     }
 }

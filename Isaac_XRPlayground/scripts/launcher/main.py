@@ -23,6 +23,7 @@ from .project_config import (
     PROFILES,
     SHARED_ASSETS_ROOT,
     TASKS_SOURCE,
+    UNITY_PROJECT_ROOT,
 )
 from .scaffold_task import scaffold_training_task
 from .run_config import (
@@ -269,12 +270,44 @@ class XRLauncher:
                     return runs[idx - 1].get("checkpoint")
             print("  Invalid choice.")
 
+    def rl_library(self, task: dict[str, Any] | None = None) -> str:
+        task = task or self.get_task()
+        return str(task.get("rl_library", "skrl")).lower()
+
     def build_train_command(
         self,
         task: dict[str, Any],
         run: RunConfig,
         checkpoint: str = "",
+        export_onnx: bool = False,
     ) -> list[str]:
+        library = self.rl_library(task)
+        if library == "rsl_rl":
+            command = self.base_cmd() + [
+                "scripts/rsl_rl/train.py",
+                f"--task={task['task_id']}",
+                f"--num_envs={run.num_envs}",
+                f"--seed={run.seed}",
+                f"--max_iterations={run.max_iterations}",
+            ]
+            if export_onnx:
+                command.append("--export_onnx")
+            if run.headless:
+                command.append("--headless")
+            else:
+                command.extend(["--viz", "kit"])
+            if checkpoint:
+                command.append("--resume")
+                command.append(f"--checkpoint={Path(checkpoint).name}")
+                # Prefer loading from the run folder that contains the checkpoint
+                run_folder = Path(checkpoint).parent
+                if run_folder.name == "checkpoints":
+                    run_folder = run_folder.parent
+                command.append(f"--load_run={run_folder.name}")
+            if run.record_video:
+                command.append("--video")
+            return append_sim_flags(command, run)
+
         algo = self.get_algorithm(task)
         command = self.base_cmd() + [
             "scripts/skrl/train.py",
@@ -415,7 +448,15 @@ class XRLauncher:
             if picked:
                 checkpoint = picked
 
-        command = self.build_train_command(task, run, checkpoint=checkpoint)
+        export_onnx = False
+        if self.rl_library(task) == "rsl_rl":
+            export_onnx = prompt_yes_no(
+                "  Export ONNX to Unity after train/stop (--export_onnx)?",
+                default=bool(self.config.get("export_onnx_on_train", True)),
+            )
+            self.config["export_onnx_on_train"] = export_onnx
+
+        command = self.build_train_command(task, run, checkpoint=checkpoint, export_onnx=export_onnx)
         self.execute(command, "train", task_key=task_key)
 
     def action_play(self) -> None:
@@ -686,9 +727,46 @@ class XRLauncher:
         open_path(TASKS_SOURCE / task["source_dir"])
         pause("\nOpened task source folder.")
 
+    def action_export_onnx(self) -> None:
+        task_key = self.select_task("Export ONNX for Unity", self.config.get("task_key"))
+        if not task_key:
+            return
+        self.config["task_key"] = task_key
+        task = self.get_task(task_key)
+        if self.rl_library(task) != "rsl_rl":
+            print(Style.paint("\n  ONNX export requires an RSL-RL task (ball_catch / conveyor_color).", Style.RED))
+            pause()
+            return
+
+        checkpoint = self.select_checkpoint(task)
+        if not checkpoint:
+            print(Style.paint("\n  No checkpoint selected.", Style.RED))
+            pause()
+            return
+
+        command = self.base_cmd() + [
+            "scripts/rsl_rl/export_onnx.py",
+            f"--task={task['task_id']}",
+            f"--checkpoint={checkpoint}",
+            "--num_envs=1",
+            "--headless",
+        ]
+        self.execute(command, "export_onnx", task_key=task_key)
+        folder = task.get("unity_policy_folder") or ""
+        if folder:
+            dest = UNITY_PROJECT_ROOT / "Assets" / "_Project" / "Features" / "Policies" / folder
+            print(Style.paint(f"\n  Unity policy folder: {dest}", Style.CYAN))
+            print("  Assign policy.onnx to the Offline Policy component Model Asset field.")
+        pause()
+
     def action_open_logs(self) -> None:
         task = self.get_task()
-        open_path(ISAAC_PROJECT_ROOT / "logs" / "skrl" / task["log_dir"])
+        log_dir = task["log_dir"]
+        library = self.rl_library(task)
+        preferred = ISAAC_PROJECT_ROOT / "logs" / library / log_dir
+        fallback = ISAAC_PROJECT_ROOT / "logs" / ("skrl" if library == "rsl_rl" else "rsl_rl") / log_dir
+        target = preferred if preferred.is_dir() else fallback if fallback.is_dir() else ISAAC_PROJECT_ROOT / "logs"
+        open_path(target)
         pause("\nOpened training logs.")
 
     def action_open_monorepo(self) -> None:
@@ -834,6 +912,8 @@ class XRLauncher:
                 self.action_demo("zero")
             elif choice in {"b", "bridge", "xr"}:
                 self.action_bridge()
+            elif choice in {"e", "export", "onnx"}:
+                self.action_export_onnx()
             elif choice == "5":
                 self.action_open_assets()
             elif choice == "6":

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using XRPlayground.Policies;
 
 namespace XRPlayground.ROS
 {
@@ -10,7 +11,7 @@ namespace XRPlayground.ROS
     }
 
     /// <summary>
-    /// World-space UI for Conveyor Color bridge (port 9091).
+    /// World-space UI for Conveyor Color bridge (port 9091) + offline ONNX start.
     /// </summary>
     public sealed class ConveyorBridgePanel : MonoBehaviour
     {
@@ -18,6 +19,7 @@ namespace XRPlayground.ROS
         public ConveyorSpawnPublisher spawnPublisher;
         public ConveyorObjectFollower objectFollower;
         public RobotLinkPoseFollower robotFollower;
+        public ConveyorOfflinePolicyController offlinePolicy;
 
         public Text statusText;
         public Text modeText;
@@ -28,7 +30,9 @@ namespace XRPlayground.ROS
         public Button spawnRedButton;
         public Button spawnGreenButton;
         public Button spawnBlueButton;
+        public Button startPolicyButton;
         public Text connectButtonLabel;
+        public Text startPolicyButtonLabel;
 
         public ConveyorBridgeUiMode mode = ConveyorBridgeUiMode.MirrorIsaac;
 
@@ -65,11 +69,42 @@ namespace XRPlayground.ROS
             if (awaitSpawnButton != null)
                 awaitSpawnButton.onClick.AddListener(() => SetMode(ConveyorBridgeUiMode.AwaitSpawn));
             if (spawnRedButton != null)
-                spawnRedButton.onClick.AddListener(() => spawnPublisher?.SpawnRed());
+                spawnRedButton.onClick.AddListener(() =>
+                {
+                    if (offlinePolicy != null && offlinePolicy.running)
+                        offlinePolicy.SpawnColor(0);
+                    else
+                        spawnPublisher?.SpawnRed();
+                });
             if (spawnGreenButton != null)
-                spawnGreenButton.onClick.AddListener(() => spawnPublisher?.SpawnGreen());
+                spawnGreenButton.onClick.AddListener(() =>
+                {
+                    if (offlinePolicy != null && offlinePolicy.running)
+                        offlinePolicy.SpawnColor(1);
+                    else
+                        spawnPublisher?.SpawnGreen();
+                });
             if (spawnBlueButton != null)
-                spawnBlueButton.onClick.AddListener(() => spawnPublisher?.SpawnBlue());
+                spawnBlueButton.onClick.AddListener(() =>
+                {
+                    if (offlinePolicy != null && offlinePolicy.running)
+                        offlinePolicy.SpawnColor(2);
+                    else
+                        spawnPublisher?.SpawnBlue();
+                });
+            if (startPolicyButton != null)
+                startPolicyButton.onClick.AddListener(ToggleOfflinePolicy);
+        }
+
+        public void ToggleOfflinePolicy()
+        {
+            if (offlinePolicy == null)
+            {
+                Debug.LogWarning("ConveyorBridgePanel: assign offlinePolicy (ConveyorOfflinePolicyController).", this);
+                return;
+            }
+            offlinePolicy.TogglePolicy();
+            RefreshUi();
         }
 
         public void ToggleConnect()
@@ -101,12 +136,13 @@ namespace XRPlayground.ROS
         void ApplyModeLocal()
         {
             bool awaitSpawn = mode == ConveyorBridgeUiMode.AwaitSpawn;
+            bool offline = offlinePolicy != null && offlinePolicy.running;
             if (spawnPublisher != null)
-                spawnPublisher.publishingEnabled = awaitSpawn;
+                spawnPublisher.publishingEnabled = awaitSpawn && !offline;
             if (objectFollower != null)
-                objectFollower.followingEnabled = true;
+                objectFollower.followingEnabled = !offline;
             if (robotFollower != null)
-                robotFollower.followingEnabled = true;
+                robotFollower.followingEnabled = !offline;
         }
 
         void SendModeCommand()
@@ -165,7 +201,12 @@ namespace XRPlayground.ROS
             }
             if (connectButtonLabel != null)
                 connectButtonLabel.text = (client != null && client.IsConnected) ? "Disconnect" : "Connect bridge";
-            bool showSpawn = mode == ConveyorBridgeUiMode.AwaitSpawn;
+            if (startPolicyButtonLabel != null)
+            {
+                bool on = offlinePolicy != null && offlinePolicy.running;
+                startPolicyButtonLabel.text = on ? "Stop Offline Policy" : "Start Offline Policy";
+            }
+            bool showSpawn = mode == ConveyorBridgeUiMode.AwaitSpawn || (offlinePolicy != null && offlinePolicy.running);
             if (spawnRedButton != null)
                 spawnRedButton.gameObject.SetActive(showSpawn);
             if (spawnGreenButton != null)
@@ -180,11 +221,14 @@ namespace XRPlayground.ROS
             if (statusText == null)
                 return;
             bool connected = client != null && client.IsConnected;
-            string tip = mode == ConveyorBridgeUiMode.AwaitSpawn
-                ? "Spawn R/G/B onto the belt. Isaac picks the target color."
-                : "Robot + cubes mirror Isaac (auto-spawn).";
+            bool offline = offlinePolicy != null && offlinePolicy.running;
+            string tip = offline
+                ? $"Offline ONNX: {offlinePolicy.StatusLine}"
+                : mode == ConveyorBridgeUiMode.AwaitSpawn
+                    ? "Spawn R/G/B onto the belt. Isaac picks the target color."
+                    : "Robot + cubes mirror Isaac (auto-spawn).";
             statusText.text =
-                (connected ? "Bridge: CONNECTED :9091" : "Bridge: disconnected") +
+                (offline ? "Mode: OFFLINE ONNX (no Isaac)" : connected ? "Bridge: CONNECTED :9091" : "Bridge: disconnected") +
                 $"\nPhase: {_phase}  Policy: {(_policyLoaded ? "loaded" : "none")}" +
                 $"\n{tip}";
         }

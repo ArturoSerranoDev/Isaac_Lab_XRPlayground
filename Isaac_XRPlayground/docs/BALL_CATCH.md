@@ -26,9 +26,11 @@ Goal: train a manipulator to catch thrown balls in Isaac Lab, then reuse the pol
 ### Launcher
 
 1. **Profiles → `catch`** (128 headless envs, 8 visual, 2000 iters)
-2. **Train → Ball Catch (Kinova Jaco2)**
+2. **Train → Ball Catch (Kinova Jaco2)** with **Export ONNX = Y** (RSL-RL)
 3. Start with **8 visual envs**, Fabric + `cuda:0`
-4. **Play** with `--real-time` once checkpoints exist
+4. **[E] Export ONNX** anytime from a checkpoint; Unity: assign `Policies/BallCatch/policy.onnx` → **Start Offline Policy**
+
+See [`ONNX_UNITY.md`](ONNX_UNITY.md).
 
 ### Smoke test (CLI)
 

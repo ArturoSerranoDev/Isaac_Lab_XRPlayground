@@ -8,13 +8,15 @@ UR10e + Robotiq 2F-85 sorts **target-colored** cubes (red / green / blue) from a
 
 Gym id: `Template-Xrplayground-Conveyor-Color-Direct-v0`
 
+**New runs use RSL-RL** (ONNX-export friendly). Launcher train asks to export ONNX after finish/Ctrl+C.
+
 ```bat
 cd Isaac_XRPlayground
 conda activate env_isaaclab
-python -m scripts.launcher   REM [1] Train → Conveyor Color Detection
+python -m scripts.launcher   REM [1] Train → Conveyor Color Detection (export ONNX = Y)
 ```
 
-Or profile preset **Conveyor color** in the launcher `[P]` menu.
+Or profile preset **Conveyor color** in the launcher `[P]` menu. See also [`ONNX_UNITY.md`](ONNX_UNITY.md).
 
 **MVP observations are state-based** (color ID one-hot + poses), not RGB camera. Vision can be added later.
 
@@ -70,13 +72,17 @@ Use `--checkpoint=...` for a trained policy. For XR with a headset, prefer `--no
    - World UI + bridge on **port 9091**
 4. Optional: **XRPlayground → Audit UR10e Hierarchy**
 5. Play → Connect → Mirror (or Await spawn + Spawn R/G/B)
+6. **Offline ONNX (no Isaac):** assign `Policies/Conveyor/policy.onnx` to `OnnxPolicyRunner`, then **Start Offline Policy** on the world UI
 
 ## Files
 
 | Area | Path |
 |------|------|
 | Env | `source/.../tasks/direct/conveyor_color/` |
+| RSL-RL cfg | `.../agents/rsl_rl_ppo_cfg.py` |
+| Train / export | `scripts/rsl_rl/train.py`, `export_onnx.py` |
 | Bridge | `source/.../bridge/conveyor_color_bridge.py`, `names_ur10e.py` |
 | Runner | `scripts/bridge/run_xr_bridge_conveyor.py` |
+| Unity offline | `Unity_XRPlayground/.../Policies/` |
 | Unity setup | `Assets/.../Editor/ConveyorColorSceneSetup.cs` |
 | Link audit | `Assets/.../UR10e/Editor/Ur10eHierarchyAudit.cs` |

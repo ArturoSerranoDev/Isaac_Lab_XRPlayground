@@ -73,6 +73,8 @@ def discover_tasks() -> dict[str, dict[str, Any]]:
         default_algorithm = manual.get("default_algorithm") or algorithms[0]
         task_id = manual.get("task_id") or (match.group(1) if match else key)
 
+        has_rsl = (folder / "agents" / "rsl_rl_ppo_cfg.py").is_file()
+        rl_library = manual.get("rl_library") or ("rsl_rl" if has_rsl else "skrl")
         discovered[key] = {
             "label": manual.get("label", key.replace("_", " ").title()),
             "subtitle": manual.get("subtitle", "XRPlayground task"),
@@ -80,13 +82,18 @@ def discover_tasks() -> dict[str, dict[str, Any]]:
             "task_id": task_id,
             "algorithms": algorithms,
             "default_algorithm": default_algorithm,
+            "rl_library": rl_library,
             "log_dir": manual.get("log_dir", _infer_log_dir(folder)),
+            "unity_policy_folder": manual.get("unity_policy_folder", ""),
             "source_dir": folder.name,
             "description": manual.get(
                 "description",
                 f"Training environment registered as {task_id}.",
             ),
         }
+        for bridge_key in ("bridge_port", "bridge_script"):
+            if bridge_key in manual:
+                discovered[key][bridge_key] = manual[bridge_key]
 
     # Keep manually registered tasks even if folder naming differs
     for key, manual in TASKS.items():
@@ -104,8 +111,7 @@ def find_latest_checkpoint(log_dir_name: str) -> str | None:
     return None
 
 
-def list_training_runs(log_dir_name: str) -> list[dict[str, Any]]:
-    logs_root = ISAAC_PROJECT_ROOT / "logs" / "skrl" / log_dir_name
+def _collect_runs_under(logs_root: Path, backend: str) -> list[dict[str, Any]]:
     if not logs_root.is_dir():
         return []
 
@@ -113,25 +119,41 @@ def list_training_runs(log_dir_name: str) -> list[dict[str, Any]]:
     for run_dir in logs_root.iterdir():
         if not run_dir.is_dir():
             continue
-        ckpt_dir = run_dir / "checkpoints"
         checkpoint = None
         latest_mtime = run_dir.stat().st_mtime
-        if ckpt_dir.is_dir():
-            ckpts: list[tuple[float, Path]] = []
-            for ckpt in ckpt_dir.rglob("*"):
-                if ckpt.is_file() and ckpt.suffix in CHECKPOINT_SUFFIXES:
-                    ckpts.append((ckpt.stat().st_mtime, ckpt))
-            if ckpts:
-                latest_mtime, best = sorted(ckpts, key=lambda item: item[0])[-1]
-                checkpoint = str(best)
+        ckpts: list[tuple[float, Path]] = []
+        # skrl: checkpoints/; rsl_rl: model_*.pt in run dir (and optional nested)
+        search_roots = [run_dir]
+        ckpt_subdir = run_dir / "checkpoints"
+        if ckpt_subdir.is_dir():
+            search_roots.append(ckpt_subdir)
+        for root in search_roots:
+            for ckpt in root.rglob("*"):
+                if not ckpt.is_file() or ckpt.suffix not in CHECKPOINT_SUFFIXES:
+                    continue
+                # Prefer RSL-RL model_*.pt over exporter side artifacts
+                name = ckpt.name.lower()
+                if name in {"policy.pt", "policy.onnx"}:
+                    continue
+                ckpts.append((ckpt.stat().st_mtime, ckpt))
+        if ckpts:
+            latest_mtime, best = sorted(ckpts, key=lambda item: item[0])[-1]
+            checkpoint = str(best)
         runs.append(
             {
-                "name": run_dir.name,
+                "name": f"{run_dir.name} [{backend}]",
                 "folder": str(run_dir),
                 "checkpoint": checkpoint,
                 "mtime": latest_mtime,
+                "backend": backend,
             }
         )
+    return runs
 
+
+def list_training_runs(log_dir_name: str) -> list[dict[str, Any]]:
+    """List runs under logs/rsl_rl and logs/skrl for the experiment folder name."""
+    runs = _collect_runs_under(ISAAC_PROJECT_ROOT / "logs" / "rsl_rl" / log_dir_name, "rsl_rl")
+    runs.extend(_collect_runs_under(ISAAC_PROJECT_ROOT / "logs" / "skrl" / log_dir_name, "skrl"))
     runs.sort(key=lambda item: item["mtime"], reverse=True)
     return runs

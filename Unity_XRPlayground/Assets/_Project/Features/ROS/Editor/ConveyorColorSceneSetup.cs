@@ -9,6 +9,7 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
 using XRPlayground.Robots;
 using XRPlayground.Robots.Editor;
 using XRPlayground.ROS;
+using XRPlayground.Policies;
 
 namespace XRPlayground.ROS.Editor
 {
@@ -125,18 +126,34 @@ namespace XRPlayground.ROS.Editor
             spawnPub.envAnchor = station.transform;
             spawnPub.publishingEnabled = false;
 
+            var offline = station.GetComponent<ConveyorOfflinePolicyController>()
+                ?? Undo.AddComponent<ConveyorOfflinePolicyController>(station);
+            var runner = station.GetComponent<OnnxPolicyRunner>() ?? Undo.AddComponent<OnnxPolicyRunner>(station);
+            runner.expectedObsDim = ConveyorOfflinePolicyController.ObsDim;
+            runner.expectedActionDim = ConveyorOfflinePolicyController.ActionDim;
+            var joints = station.GetComponent<OfflineJointDriver>() ?? Undo.AddComponent<OfflineJointDriver>(station);
+            offline.policyRunner = runner;
+            offline.jointDriver = joints;
+            offline.envAnchor = station.transform;
+            offline.linkMap = robot.GetComponent<RobotLinkMap>();
+            offline.cubeSlots = slots;
+            offline.binAnchor = station.transform.Find("SortTable");
+            offline.AutoBindLinks();
+
             EnsureEventSystem();
             var panel = EnsureWorldUi(station.transform.position);
             panel.client = client;
             panel.spawnPublisher = spawnPub;
             panel.objectFollower = objFollower;
             panel.robotFollower = robot.GetComponent<RobotLinkPoseFollower>();
+            panel.offlinePolicy = offline;
             panel.mode = ConveyorBridgeUiMode.MirrorIsaac;
 
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
             Debug.Log(
-                "XRPlayground: Conveyor Color Station B ready (UR10e + Robotiq, bridge :9091). " +
-                "Run 'Audit UR10e Hierarchy' to verify Isaac link names.");
+                "XRPlayground: Conveyor Color Station B ready (UR10e + Robotiq, bridge :9091, offline ONNX). " +
+                "Assign Assets/_Project/Features/Policies/Conveyor/policy.onnx to OnnxPolicyRunner.modelAsset, " +
+                "then Play → Start Offline Policy.");
         }
 
         [MenuItem("XRPlayground/Fix Conveyor Robot Mirror")]
@@ -175,6 +192,9 @@ namespace XRPlayground.ROS.Editor
             {
                 panel.client = client;
                 panel.robotFollower = robot.GetComponent<RobotLinkPoseFollower>();
+                var offline = station.GetComponent<ConveyorOfflinePolicyController>();
+                if (offline != null)
+                    panel.offlinePolicy = offline;
             }
 
             var map = robot.GetComponent<RobotLinkMap>();
@@ -355,7 +375,10 @@ namespace XRPlayground.ROS.Editor
             {
                 var p = existing.GetComponent<ConveyorBridgePanel>();
                 if (p != null)
+                {
+                    EnsureStartPolicyButton(existing.transform, p);
                     return p;
+                }
             }
 
             var root = new GameObject(PanelName);
@@ -371,7 +394,7 @@ namespace XRPlayground.ROS.Editor
             canvasGo.AddComponent<GraphicRaycaster>();
             canvasGo.AddComponent<TrackedDeviceGraphicRaycaster>();
             var rt = canvasGo.GetComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(860f, 640f);
+            rt.sizeDelta = new Vector2(860f, 720f);
             canvasGo.transform.localScale = Vector3.one * 0.0012f;
 
             var bg = CreateUiObject("Background", canvasGo.transform);
@@ -407,6 +430,9 @@ namespace XRPlayground.ROS.Editor
             var blueBtn = CreateButton(canvasGo.transform, "SpawnBlue", "Spawn BLUE", new Color(0.2f, 0.35f, 0.75f));
             SetRect(blueBtn.GetComponent<RectTransform>(), 560, -480, 240, 56);
 
+            var policyBtn = CreateButton(canvasGo.transform, "StartPolicy", "Start Offline Policy", new Color(0.45f, 0.20f, 0.55f));
+            SetRect(policyBtn.GetComponent<RectTransform>(), 40, -560, 760, 56);
+
             var panel = root.AddComponent<ConveyorBridgePanel>();
             panel.statusText = status;
             panel.modeText = mode;
@@ -417,8 +443,24 @@ namespace XRPlayground.ROS.Editor
             panel.spawnRedButton = redBtn;
             panel.spawnGreenButton = greenBtn;
             panel.spawnBlueButton = blueBtn;
+            panel.startPolicyButton = policyBtn;
             panel.connectButtonLabel = connectBtn.GetComponentInChildren<Text>();
+            panel.startPolicyButtonLabel = policyBtn.GetComponentInChildren<Text>();
             return panel;
+        }
+
+        static void EnsureStartPolicyButton(Transform panelRoot, ConveyorBridgePanel panel)
+        {
+            if (panel.startPolicyButton != null)
+                return;
+            var canvas = panelRoot.Find("Canvas");
+            if (canvas == null)
+                return;
+            var policyBtn = CreateButton(canvas, "StartPolicy", "Start Offline Policy", new Color(0.45f, 0.20f, 0.55f));
+            SetRect(policyBtn.GetComponent<RectTransform>(), 40, -560, 760, 56);
+            panel.startPolicyButton = policyBtn;
+            panel.startPolicyButtonLabel = policyBtn.GetComponentInChildren<Text>();
+            Undo.RegisterCreatedObjectUndo(policyBtn.gameObject, "Start Policy Button");
         }
 
         static GameObject CreateUiObject(string name, Transform parent)

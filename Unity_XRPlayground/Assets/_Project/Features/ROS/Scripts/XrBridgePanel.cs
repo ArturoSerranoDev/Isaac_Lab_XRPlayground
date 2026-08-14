@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using XRPlayground.Policies;
 
 namespace XRPlayground.ROS
 {
@@ -18,6 +19,7 @@ namespace XRPlayground.ROS
         public BallStatePublisher ballPublisher;
         public BallPoseFollower ballFollower;
         public KinovaLinkPoseFollower robotFollower;
+        public BallCatchOfflinePolicyController offlinePolicy;
 
         [Header("UI (classic uGUI)")]
         public Text statusText;
@@ -25,7 +27,9 @@ namespace XRPlayground.ROS
         public Button connectButton;
         public Button mirrorButton;
         public Button awaitThrowButton;
+        public Button startPolicyButton;
         public Text connectButtonLabel;
+        public Text startPolicyButtonLabel;
 
         public XrBridgeUiMode mode = XrBridgeUiMode.MirrorIsaac;
 
@@ -63,6 +67,19 @@ namespace XRPlayground.ROS
                 mirrorButton.onClick.AddListener(() => SetMode(XrBridgeUiMode.MirrorIsaac));
             if (awaitThrowButton != null)
                 awaitThrowButton.onClick.AddListener(() => SetMode(XrBridgeUiMode.AwaitPlayerThrow));
+            if (startPolicyButton != null)
+                startPolicyButton.onClick.AddListener(ToggleOfflinePolicy);
+        }
+
+        public void ToggleOfflinePolicy()
+        {
+            if (offlinePolicy == null)
+            {
+                Debug.LogWarning("XrBridgePanel: assign offlinePolicy (BallCatchOfflinePolicyController).", this);
+                return;
+            }
+            offlinePolicy.TogglePolicy();
+            RefreshUi();
         }
 
         public void ToggleConnect()
@@ -95,9 +112,10 @@ namespace XRPlayground.ROS
 
         void ApplyModeLocal()
         {
+            bool offline = offlinePolicy != null && offlinePolicy.running;
             bool awaitThrow = mode == XrBridgeUiMode.AwaitPlayerThrow;
             bool catching = awaitThrow && _isaacPhase == "catching";
-            bool playerOwnsBall = awaitThrow && !catching;
+            bool playerOwnsBall = awaitThrow && !catching && !offline;
 
             if (ballPublisher != null)
             {
@@ -108,12 +126,13 @@ namespace XRPlayground.ROS
             if (ballFollower != null)
             {
                 // Mirror: always follow Isaac. Await throw: follow Isaac only during catch.
-                ballFollower.followingEnabled = !playerOwnsBall;
-                ballFollower.SetKinematic(!playerOwnsBall);
+                // Offline ONNX: Unity owns the ball.
+                ballFollower.followingEnabled = !offline && !playerOwnsBall;
+                ballFollower.SetKinematic(!offline && !playerOwnsBall);
             }
 
             if (robotFollower != null)
-                robotFollower.enabled = true;
+                robotFollower.enabled = !offline;
         }
 
         /// <summary>
@@ -215,6 +234,11 @@ namespace XRPlayground.ROS
             }
             if (connectButtonLabel != null)
                 connectButtonLabel.text = (client != null && client.IsConnected) ? "Disconnect" : "Connect bridge";
+            if (startPolicyButtonLabel != null)
+            {
+                bool on = offlinePolicy != null && offlinePolicy.running;
+                startPolicyButtonLabel.text = on ? "Stop Offline Policy" : "Start Offline Policy";
+            }
             RefreshStatusLine();
         }
 
@@ -223,11 +247,14 @@ namespace XRPlayground.ROS
             if (statusText == null)
                 return;
             bool connected = client != null && client.IsConnected;
-            string tip = mode == XrBridgeUiMode.AwaitPlayerThrow
-                ? "Grab & throw the ball. It replicates to Isaac; after release Isaac catches."
-                : "Robot + ball mirror Isaac Sim.";
+            bool offline = offlinePolicy != null && offlinePolicy.running;
+            string tip = offline
+                ? $"Offline ONNX: {offlinePolicy.StatusLine}"
+                : mode == XrBridgeUiMode.AwaitPlayerThrow
+                    ? "Grab & throw the ball. It replicates to Isaac; after release Isaac catches."
+                    : "Robot + ball mirror Isaac Sim.";
             statusText.text =
-                (connected ? "Bridge: CONNECTED" : "Bridge: disconnected") +
+                (offline ? "Mode: OFFLINE ONNX (no Isaac)" : connected ? "Bridge: CONNECTED" : "Bridge: disconnected") +
                 $"\nIsaac phase: {_isaacPhase}" +
                 $"\nPolicy: {(_policyLoaded ? "loaded" : "none")}" +
                 $"\n{tip}";

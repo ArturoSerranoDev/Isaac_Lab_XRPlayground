@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit.UI;
 using XRPlayground.Robots;
 using XRPlayground.ROS;
+using XRPlayground.Policies;
 
 namespace XRPlayground.ROS.Editor
 {
@@ -71,16 +72,46 @@ namespace XRPlayground.ROS.Editor
             followerBall.rootOffset = robot != null ? robot.transform.position : Vector3.zero;
             followerBall.followingEnabled = true;
 
-            EnsureEventSystem();
-            var panel = EnsureWorldUi(robot != null ? robot.transform.position : Vector3.zero);
-            panel.client = client;
-            panel.ballPublisher = pub;
-            panel.ballFollower = followerBall;
-            panel.robotFollower = follower;
-            panel.mode = XrBridgeUiMode.MirrorIsaac;
+            if (robot != null)
+            {
+                var offline = robot.GetComponent<BallCatchOfflinePolicyController>()
+                    ?? Undo.AddComponent<BallCatchOfflinePolicyController>(robot);
+                var runner = robot.GetComponent<OnnxPolicyRunner>() ?? Undo.AddComponent<OnnxPolicyRunner>(robot);
+                runner.expectedObsDim = BallCatchOfflinePolicyController.ObsDim;
+                runner.expectedActionDim = BallCatchOfflinePolicyController.ActionDim;
+                var joints = robot.GetComponent<OfflineJointDriver>() ?? Undo.AddComponent<OfflineJointDriver>(robot);
+                offline.policyRunner = runner;
+                offline.jointDriver = joints;
+                offline.envAnchor = robot.transform;
+                offline.linkMap = robot.GetComponent<KinovaLinkMap>();
+                offline.ball = ball.transform;
+                offline.ballBody = ball.GetComponent<Rigidbody>();
+                offline.AutoBindLinks();
+
+                EnsureEventSystem();
+                var panel = EnsureWorldUi(robot.transform.position);
+                panel.client = client;
+                panel.ballPublisher = pub;
+                panel.ballFollower = followerBall;
+                panel.robotFollower = follower;
+                panel.offlinePolicy = offline;
+                panel.mode = XrBridgeUiMode.MirrorIsaac;
+            }
+            else
+            {
+                EnsureEventSystem();
+                var panel = EnsureWorldUi(Vector3.zero);
+                panel.client = client;
+                panel.ballPublisher = pub;
+                panel.ballFollower = followerBall;
+                panel.robotFollower = follower;
+                panel.mode = XrBridgeUiMode.MirrorIsaac;
+            }
 
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
-            Debug.Log("XRPlayground: XR Bridge + classic world-space UI ready near the robot.");
+            Debug.Log(
+                "XRPlayground: XR Bridge + offline ONNX ready. " +
+                "Assign Assets/_Project/Features/Policies/BallCatch/policy.onnx to OnnxPolicyRunner.modelAsset.");
         }
 
         static void EnsureEventSystem()
@@ -100,7 +131,10 @@ namespace XRPlayground.ROS.Editor
             {
                 var p = existing.GetComponent<XrBridgePanel>();
                 if (p != null)
+                {
+                    EnsureStartPolicyButton(existing.transform, p);
                     return p;
+                }
             }
 
             var root = new GameObject(PanelName);
@@ -118,7 +152,7 @@ namespace XRPlayground.ROS.Editor
             canvasGo.AddComponent<TrackedDeviceGraphicRaycaster>();
 
             var rt = canvasGo.GetComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(800f, 520f);
+            rt.sizeDelta = new Vector2(800f, 600f);
             canvasGo.transform.localScale = Vector3.one * 0.0012f;
 
             // Background panel
@@ -146,14 +180,33 @@ namespace XRPlayground.ROS.Editor
             var awaitBtn = CreateButton(canvasGo.transform, "AwaitThrowButton", "Await player throw", new Color(0.55f, 0.35f, 0.15f));
             SetRect(awaitBtn.GetComponent<RectTransform>(), 400, -410, 360, 70);
 
+            var policyBtn = CreateButton(canvasGo.transform, "StartPolicy", "Start Offline Policy", new Color(0.45f, 0.20f, 0.55f));
+            SetRect(policyBtn.GetComponent<RectTransform>(), 40, -500, 720, 60);
+
             var panel = root.AddComponent<XrBridgePanel>();
             panel.statusText = status;
             panel.modeText = mode;
             panel.connectButton = connectBtn;
             panel.mirrorButton = mirrorBtn;
             panel.awaitThrowButton = awaitBtn;
+            panel.startPolicyButton = policyBtn;
             panel.connectButtonLabel = connectBtn.GetComponentInChildren<Text>();
+            panel.startPolicyButtonLabel = policyBtn.GetComponentInChildren<Text>();
             return panel;
+        }
+
+        static void EnsureStartPolicyButton(Transform panelRoot, XrBridgePanel panel)
+        {
+            if (panel.startPolicyButton != null)
+                return;
+            var canvas = panelRoot.Find("Canvas");
+            if (canvas == null)
+                return;
+            var policyBtn = CreateButton(canvas, "StartPolicy", "Start Offline Policy", new Color(0.45f, 0.20f, 0.55f));
+            SetRect(policyBtn.GetComponent<RectTransform>(), 40, -500, 720, 60);
+            panel.startPolicyButton = policyBtn;
+            panel.startPolicyButtonLabel = policyBtn.GetComponentInChildren<Text>();
+            Undo.RegisterCreatedObjectUndo(policyBtn.gameObject, "Start Policy Button");
         }
 
         static GameObject EnsureBall(Transform robot)

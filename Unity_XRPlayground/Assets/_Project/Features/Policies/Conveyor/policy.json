@@ -1,0 +1,10 @@
+{
+  "task_id": "Template-Xrplayground-Conveyor-Color-Direct-v0",
+  "obs_dim": 66,
+  "action_dim": 7,
+  "action_scale": 4.0,
+  "dt": 0.0166667,
+  "frame": "isaac_env",
+  "runtime": "unity_inference_engine",
+  "notes": "Placeholder sidecar. Replace by training with --export_onnx or launcher [E] Export ONNX."
+}
