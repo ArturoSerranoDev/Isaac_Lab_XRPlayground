@@ -23,13 +23,13 @@ from isaaclab_assets.robots.kinova import KINOVA_JACO2_N7S300_CFG
 class BallCatchEnvCfg(DirectRLEnvCfg):
     # env — 7 arm joints + 1 shared gripper command
     decimation = 2
-    episode_length_s = 3.5
+    episode_length_s = 5.0
     action_space = 8
     observation_space = 28
     state_space = 0
 
-    # Delta joint commands; keep moderate so continuous joints (esp. base) don't wind up.
-    action_scale = 5.0
+    # Delta joint commands — high enough to face a gentle toss in time (PhysX vel limit still caps).
+    action_scale = 7.0
     dof_velocity_scale = 0.1
     # PhysX revolute drive targets must stay in [-2π, 2π]
     physx_drive_angle_limit = 6.283185307179586
@@ -126,14 +126,14 @@ class BallCatchEnvCfg(DirectRLEnvCfg):
                     ".*_joint_[3-4]": 140.0,
                     ".*_joint_[5-7]": 80.0,
                 },
-                velocity_limit_sim=3.5,
+                velocity_limit_sim=5.0,
                 stiffness={
-                    ".*_joint_[1-4]": 280.0,
-                    ".*_joint_[5-7]": 120.0,
+                    ".*_joint_[1-4]": 320.0,
+                    ".*_joint_[5-7]": 160.0,
                 },
                 damping={
-                    ".*_joint_[1-4]": 12.0,
-                    ".*_joint_[5-7]": 6.0,
+                    ".*_joint_[1-4]": 14.0,
+                    ".*_joint_[5-7]": 8.0,
                 },
             ),
             "gripper": ImplicitActuatorCfg(
@@ -164,56 +164,58 @@ class BallCatchEnvCfg(DirectRLEnvCfg):
         init_state=RigidObjectCfg.InitialStateCfg(pos=(0.85, 0.0, 0.70), rot=(0.0, 0.0, 0.0, 1.0)),
     )
 
-    # Easy throws first; lerp toward hard ranges over curriculum_steps
-    curriculum_steps = 12000
-    throw_pos_x_easy = (0.62, 0.88)
-    throw_pos_x_hard = (0.70, 1.10)
-    throw_pos_y_easy = (-0.16, 0.16)
-    throw_pos_y_hard = (-0.38, 0.38)
-    throw_pos_z_easy = (0.58, 0.78)
-    throw_pos_z_hard = (0.52, 0.85)
-    throw_speed_easy = (0.55, 1.05)
-    throw_speed_hard = (1.10, 2.00)
-    aim_pos_x_easy = (0.28, 0.42)
-    aim_pos_x_hard = (0.18, 0.52)
-    aim_pos_y_easy = (-0.10, 0.10)
-    aim_pos_y_hard = (-0.28, 0.28)
-    aim_pos_z_easy = (0.48, 0.62)
-    aim_pos_z_hard = (0.40, 0.72)
-    throw_ang_vel = (-2.0, 2.0)
+    # Human-like underhand / soft toss: release farther out, catch window above release,
+    # ballistic velocity for a gentle upward arc (see _launch_ball). Curriculum widens spread.
+    curriculum_steps = 24000
+    throw_pos_x_easy = (0.88, 1.05)
+    throw_pos_x_hard = (0.82, 1.12)
+    throw_pos_y_easy = (-0.14, 0.14)
+    throw_pos_y_hard = (-0.28, 0.28)
+    throw_pos_z_easy = (0.46, 0.54)
+    throw_pos_z_hard = (0.42, 0.58)
+    aim_pos_x_easy = (0.42, 0.48)
+    aim_pos_x_hard = (0.38, 0.52)
+    aim_pos_y_easy = (-0.08, 0.08)
+    aim_pos_y_hard = (-0.18, 0.18)
+    aim_pos_z_easy = (0.60, 0.70)
+    aim_pos_z_hard = (0.55, 0.74)
+    throw_flight_s_easy = (0.95, 1.20)
+    throw_flight_s_hard = (0.88, 1.10)
+    # Kept for older docs / Unity offline sampler; ballistic launch no longer uses speed ranges
+    throw_speed_easy = (0.70, 1.10)
+    throw_speed_hard = (0.90, 1.40)
+    throw_ang_vel = (-1.0, 1.0)
 
     # reward / success — ball must sit BETWEEN palm and fingertips, not on top of them
-    dist_reward_scale = 6.0
-    approach_reward_scale = 8.0
-    catch_reward_scale = 55.0
-    grasp_reward_scale = 12.0
-    hold_still_reward_scale = 3.0
-    hold_action_penalty_scale = 0.08
-    body_contact_penalty = 8.0
-    # Balancing on dorsal housing OR on the closed fingertip platform (penalty, not instant death)
-    cup_balance_penalty = 22.0
-    drop_penalty = 5.0
-    action_penalty_scale = 0.006
-    gripper_near_dist = 0.10
-    # Grasp aperture in EE frame: along = EE→tip_center axis, radial = orthogonal
-    grasp_along_min = 0.022
-    grasp_along_max = 0.100
-    grasp_radial_max = 0.044
-    # How far past the fingertip plane still counts as "on top of the fingers"
-    grasp_beyond_tips_margin = 0.010
-    success_tip_dist = 0.050
-    success_ee_dist = 0.095
-    success_finger_dist = 0.050
-    success_dist_threshold = 0.050
-    success_speed_threshold = 0.85
-    # Wrap around the ball; do not require a fully clenched fingertip bowl
-    success_close_min = 0.58
-    grasp_align_min = 0.74
-    cup_align_max = 0.38
+    dist_reward_scale = 5.0
+    approach_reward_scale = 14.0
+    catch_reward_scale = 60.0
+    grasp_reward_scale = 14.0
+    hold_still_reward_scale = 2.0
+    hold_action_penalty_scale = 0.06
+    body_contact_penalty = 6.0
+    cup_balance_penalty = 18.0
+    misalign_penalty = 2.5
+    flee_penalty = 10.0
+    drop_penalty = 4.0
+    action_penalty_scale = 0.002
+    gripper_near_dist = 0.12
+    grasp_along_min = 0.020
+    grasp_along_max = 0.105
+    grasp_radial_max = 0.048
+    grasp_beyond_tips_margin = 0.012
+    success_tip_dist = 0.065
+    success_ee_dist = 0.10
+    success_finger_dist = 0.065
+    success_dist_threshold = 0.065
+    success_speed_threshold = 0.90
+    success_close_min = 0.45
+    grasp_align_min = 0.58
+    cup_align_max = 0.40
     cup_height_margin = 0.022
-    grasp_hold_steps = 10
+    grasp_hold_steps = 4
     terminate_on_catch = False
     body_contact_radius = 0.10
     body_fail_steps = 12
-    cup_fail_steps = 12
+    cup_fail_steps = 10
     fall_height_threshold = 0.06

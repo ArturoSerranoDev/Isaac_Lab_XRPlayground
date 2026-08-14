@@ -20,7 +20,7 @@ class BallCatchPPORunnerCfg(RslRlOnPolicyRunnerCfg):
         hidden_dims=[256, 128, 64],
         activation="elu",
         obs_normalization=True,
-        distribution_cfg=RslRlMLPModelCfg.GaussianDistributionCfg(init_std=1.0),
+        distribution_cfg=RslRlMLPModelCfg.GaussianDistributionCfg(init_std=0.8),
     )
     critic = RslRlMLPModelCfg(
         hidden_dims=[256, 128, 64],
@@ -35,9 +35,9 @@ class BallCatchPPORunnerCfg(RslRlOnPolicyRunnerCfg):
         num_learning_epochs=8,
         num_mini_batches=8,
         learning_rate=3.0e-4,
-        schedule="adaptive",
+        schedule="fixed",
         gamma=0.99,
         lam=0.95,
-        desired_kl=0.015,
+        desired_kl=0.012,
         max_grad_norm=1.0,
     )

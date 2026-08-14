@@ -272,14 +272,15 @@ class BallCatchEnv(DirectRLEnv):
         dist = dist_tips
         arm_dist = self._ball_to_arm_dist(ball_pos_w)
 
-        # Cup / housing / fingertip platform — independent of how closed the fingers are,
-        # except tip_platform which requires a settled, semi-closed bowl.
-        cup_balance = (near_ee | near_tips) & (
-            (grasp_align < self.cfg.cup_align_max)
-            | (ball_along < self.cfg.grasp_along_min)
-            | ((dist_palm + 0.008) < dist_tips)
-            | tip_platform
+        # Settled cheat only — do NOT mark every misaligned approach as cup (that made the arm flee).
+        dorsal_cup = (
+            near_ee
+            & (grasp_align < self.cfg.cup_align_max * 0.55)
+            & (ball_speed < self.cfg.success_speed_threshold)
+            & (closing > 0.35)
         )
+        cup_balance = tip_platform | dorsal_cup | ((dist_palm + 0.008) < dist_tips) & near_tips & (ball_speed < 0.6)
+        misaligned_near = near_tips & (grasp_align < self.cfg.cup_align_max) & (~tip_platform)
 
         in_grasp = (
             (ball_along > self.cfg.grasp_along_min)
@@ -293,11 +294,19 @@ class BallCatchEnv(DirectRLEnv):
             & (ball_pos_w[:, 2] > self.cfg.fall_height_threshold + 0.05)
             & (~cup_balance)
         )
+        # Softer wrap — counts toward catch while geometry catches up
+        soft_grasp = (
+            (dist_tips < self.cfg.success_tip_dist * 1.6)
+            & (closing > 0.28)
+            & (ball_speed < 1.4)
+            & (~tip_platform)
+        )
+        effective_grasp = in_grasp | soft_grasp
         # Ball resting on forearm/links, not inside the gripper volume
-        on_body = (arm_dist < self.cfg.body_contact_radius) & (dist_ee > self.cfg.gripper_near_dist) & (~in_grasp)
+        on_body = (arm_dist < self.cfg.body_contact_radius) & (dist_ee > self.cfg.gripper_near_dist) & (~effective_grasp)
 
         self._grasp_hold_count = torch.where(
-            in_grasp, self._grasp_hold_count + 1, torch.zeros_like(self._grasp_hold_count)
+            effective_grasp, self._grasp_hold_count + 1, torch.zeros_like(self._grasp_hold_count)
         )
         self._body_contact_count = torch.where(
             on_body, self._body_contact_count + 1, torch.zeros_like(self._body_contact_count)
@@ -317,8 +326,10 @@ class BallCatchEnv(DirectRLEnv):
         self._step_dist_tips = dist_tips
         self._step_closing = closing
         self._step_in_grasp = in_grasp
+        self._step_soft_grasp = soft_grasp
         self._step_on_body = on_body
         self._step_cup_balance = cup_balance
+        self._step_misaligned_near = misaligned_near
         self._step_grasp_align = grasp_align
         self._step_beyond_tips = beyond_tips
         self._step_tip_platform = tip_platform
@@ -338,8 +349,10 @@ class BallCatchEnv(DirectRLEnv):
             dist_tips = self._step_dist_tips
             closing = self._step_closing
             in_grasp = self._step_in_grasp
+            soft_grasp = self._step_soft_grasp
             on_body = self._step_on_body
             cup_balance = self._step_cup_balance
+            misaligned_near = self._step_misaligned_near
             grasp_align = self._step_grasp_align
             beyond_tips = self._step_beyond_tips
             tip_platform = self._step_tip_platform
@@ -349,7 +362,9 @@ class BallCatchEnv(DirectRLEnv):
             dist, closing, in_grasp, on_body = self._update_grasp_and_body_flags()
             dist_ee = self._step_dist_ee
             dist_tips = self._step_dist_tips
+            soft_grasp = self._step_soft_grasp
             cup_balance = self._step_cup_balance
+            misaligned_near = self._step_misaligned_near
             grasp_align = self._step_grasp_align
             beyond_tips = self._step_beyond_tips
             tip_platform = self._step_tip_platform
@@ -374,8 +389,10 @@ class BallCatchEnv(DirectRLEnv):
             closing,
             grasp_align,
             in_grasp.float(),
+            soft_grasp.float(),
             on_body.float(),
             cup_balance.float(),
+            misaligned_near.float(),
             beyond_tips.float(),
             tip_platform.float(),
             ball_along,
@@ -391,6 +408,8 @@ class BallCatchEnv(DirectRLEnv):
             self.cfg.hold_action_penalty_scale,
             self.cfg.body_contact_penalty,
             self.cfg.cup_balance_penalty,
+            self.cfg.misalign_penalty,
+            self.cfg.flee_penalty,
             self.cfg.drop_penalty,
             self.cfg.action_penalty_scale,
             self.cfg.success_tip_dist,
@@ -428,6 +447,8 @@ class BallCatchEnv(DirectRLEnv):
             log["Metrics/body_fail_rate"] = self._body_fail[env_ids].float().mean().item()
             log["Metrics/drop_rate"] = self._dropped[env_ids].float().mean().item()
             log["Metrics/cup_hold"] = self._cup_balance_count[env_ids].float().mean().item()
+            if hasattr(self, "_step_soft_grasp"):
+                log["Metrics/soft_grasp"] = self._step_soft_grasp[env_ids].float().mean().item()
             if hasattr(self, "_step_tip_platform"):
                 log["Metrics/tip_platform"] = self._step_tip_platform[env_ids].float().mean().item()
 
@@ -465,7 +486,12 @@ class BallCatchEnv(DirectRLEnv):
         )
 
     def _launch_ball(self, env_ids: torch.Tensor) -> None:
-        """Sample throws: easy at first, then lerp toward wider XR-like ranges."""
+        """Sample gentle human-like parabolic tosses into the catch window.
+
+        Release farther out at chest/waist height, aim at a higher catch point near
+        the gripper workspace, and solve for ballistic velocity under gravity so the
+        ball arcs upward then falls into the aim — not a straight downward lob.
+        """
         n = len(env_ids)
         origins = self.scene.env_origins[env_ids]
         alpha = self._curriculum_alpha()
@@ -492,14 +518,24 @@ class BallCatchEnv(DirectRLEnv):
         aim[:, 2] = sample_uniform(
             *self._mix_range(self.cfg.aim_pos_z_easy, self.cfg.aim_pos_z_hard, alpha), (n,), device=self.device
         )
+        # Keep catch slightly above release so the toss opens upward (soft lob, not a spike).
+        aim[:, 2] = torch.maximum(aim[:, 2], release[:, 2] + 0.06)
 
-        direction = aim - release
-        direction = direction / (torch.linalg.norm(direction, dim=-1, keepdim=True).clamp(min=1e-6))
-
-        speed = sample_uniform(
-            *self._mix_range(self.cfg.throw_speed_easy, self.cfg.throw_speed_hard, alpha), (n,), device=self.device
-        )
-        lin_vel = direction * speed.unsqueeze(-1)
+        flight_s = sample_uniform(
+            *self._mix_range(self.cfg.throw_flight_s_easy, self.cfg.throw_flight_s_hard, alpha),
+            (n,),
+            device=self.device,
+        ).clamp(min=0.55)
+        # v = (aim - release - 0.5 g t^2) / t   with g = (0, 0, -9.81)
+        gravity_z = -9.81
+        delta = aim - release
+        lin_vel = delta / flight_s.unsqueeze(-1)
+        lin_vel[:, 2] = lin_vel[:, 2] - 0.5 * gravity_z * flight_s
+        # Soft-toss clamp — ballistic solve can spike vz on long flights
+        speed = torch.linalg.norm(lin_vel, dim=-1).clamp(min=1e-6)
+        max_speed = 3.0
+        scale = torch.clamp(max_speed / speed, max=1.0)
+        lin_vel = lin_vel * scale.unsqueeze(-1)
 
         pos = release + origins
         quat = torch.tensor([0.0, 0.0, 0.0, 1.0], device=self.device).repeat(n, 1)
@@ -524,8 +560,10 @@ def compute_rewards(
     closing: torch.Tensor,
     grasp_align: torch.Tensor,
     in_grasp: torch.Tensor,
+    soft_grasp: torch.Tensor,
     on_body: torch.Tensor,
     cup_balance: torch.Tensor,
+    misaligned_near: torch.Tensor,
     beyond_tips: torch.Tensor,
     tip_platform: torch.Tensor,
     ball_along: torch.Tensor,
@@ -541,6 +579,8 @@ def compute_rewards(
     hold_action_penalty_scale: float,
     body_contact_penalty: float,
     cup_balance_penalty: float,
+    misalign_penalty: float,
+    flee_penalty: float,
     drop_penalty: float,
     action_penalty_scale: float,
     success_tip_dist: float,
@@ -550,59 +590,67 @@ def compute_rewards(
     cup_align_max: float,
     actions: torch.Tensor,
 ):
-    # Prefer tip-cluster approach. Gate EE proximity by grasp-axis alignment so
-    # top-down / dorsal approaches are not rewarded.
-    align_gate = torch.clamp((grasp_align - cup_align_max) / max(grasp_align_min - cup_align_max, 1e-3), 0.0, 1.0)
-    near = (dist_tips < gripper_near_dist * 1.8).float()
-    tip_rew = near * torch.exp(-dist_reward_scale * dist_tips)
-    # Soft EE shaping only when already roughly aligned with the finger aperture
-    ee_rew = near * align_gate * 0.35 * torch.exp(-dist_reward_scale * dist_ee)
-    approach_rew = approach_reward_scale * near * align_gate * torch.clamp(prev_dist_tips - dist_tips, -0.03, 0.06)
+    ball_live = (ball_speed > 0.08).float()
+    approach_delta = prev_dist_tips - dist_tips
+
+    # Always-on intercept shaping — do not gate on "near" or strict alignment.
+    dist_shaping = 4.0 * torch.exp(-3.5 * dist_tips)
+    approach_rew = approach_reward_scale * torch.clamp(approach_delta, -0.02, 0.12)
+    flee_pen = flee_penalty * torch.clamp(-approach_delta - 0.001, 0.0, 0.10) * ball_live
+
+    # Softer alignment gate for proximity (strict gate kept for in_grasp success).
+    soft_align = torch.clamp((grasp_align - 0.12) / max(grasp_align_min - 0.12, 1e-3), 0.0, 1.0)
+    strict_align = torch.clamp((grasp_align - cup_align_max) / max(grasp_align_min - cup_align_max, 1e-3), 0.0, 1.0)
+    near = (dist_tips < gripper_near_dist * 2.5).float()
+    tip_rew = near * (0.35 + 0.65 * soft_align) * torch.exp(-dist_reward_scale * dist_tips)
+    ee_rew = near * soft_align * 0.4 * torch.exp(-dist_reward_scale * dist_ee)
 
     closing_clamped = torch.clamp(closing, 0.0, 1.0)
-    near_close = (dist_tips < gripper_near_dist).float()
-    # Pay close-reward during a front approach so intercept+close can be learned.
-    # Do not pay once the ball has settled on a closed fingertip bowl.
-    close_gate = align_gate * (1.0 - tip_platform) * (1.0 - episode_caught)
-    approach_close = 5.0 * closing_clamped * near_close * close_gate
+    near_close = (dist_tips < gripper_near_dist * 1.25).float()
+    close_gate = soft_align * (1.0 - tip_platform) * (1.0 - episode_caught)
+    approach_close = 6.0 * closing_clamped * near_close * close_gate
     inside = (1.0 - beyond_tips) * (1.0 - cup_balance)
-    wrap_close = 4.0 * closing_clamped * near_close * inside * close_gate
+    wrap_close = 5.0 * closing_clamped * near_close * inside * strict_align * close_gate
     close_rew = approach_close + wrap_close
-    grasp_rew = grasp_reward_scale * in_grasp
-    # Peak slightly palm-side of the fingertip cluster so the ball sits in the wrap, not on the tips.
+
+    grasp_rew = grasp_reward_scale * in_grasp + 0.65 * grasp_reward_scale * soft_grasp * (1.0 - in_grasp)
+    proximity_close = 9.0 * torch.exp(-4.5 * dist_tips) * closing_clamped * ball_live
     finger_frac = ball_along / torch.clamp(ee_to_tips_len, min=1e-6)
-    mid_aperture = torch.clamp(1.0 - torch.abs(finger_frac - 0.42) / 0.28, 0.0, 1.0)
+    mid_aperture = torch.clamp(1.0 - torch.abs(finger_frac - 0.42) / 0.30, 0.0, 1.0)
     center_bonus = (
-        8.0 * in_grasp * torch.exp(-18.0 * dist_tips)
-        + 6.0 * near * align_gate * inside * mid_aperture * (1.0 - episode_caught)
+        10.0 * in_grasp * torch.exp(-16.0 * dist_tips)
+        + 8.0 * near * soft_align * inside * mid_aperture * (1.0 - episode_caught)
     )
     success_bonus = catch_reward_scale * just_caught
 
-    holding = torch.clamp(in_grasp + episode_caught, 0.0, 1.0)
+    holding = torch.clamp(in_grasp + episode_caught + soft_grasp * 0.35, 0.0, 1.0)
     hold_still_rew = hold_still_reward_scale * holding * torch.exp(-1.5 * arm_speed)
 
     body_pen = body_contact_penalty * on_body
     cup_pen = cup_balance_penalty * cup_balance
-    platform_pen = 0.85 * cup_balance_penalty * tip_platform
+    platform_pen = 0.9 * cup_balance_penalty * tip_platform
+    misalign_pen = misalign_penalty * misaligned_near
     drop_pen = drop_penalty * dropped
-    alive_pen = 0.02 * (1.0 - holding)
     action_penalty = action_penalty_scale * torch.sum(actions * actions, dim=-1)
     hold_action_pen = hold_action_penalty_scale * holding * torch.sum(actions * actions, dim=-1)
 
     return (
-        tip_rew
+        dist_shaping
+        + tip_rew
         + ee_rew
         + approach_rew
         + close_rew
         + grasp_rew
+        + proximity_close
         + center_bonus
         + success_bonus
         + hold_still_rew
         - body_pen
         - cup_pen
         - platform_pen
+        - misalign_pen
+        - flee_pen
         - drop_pen
-        - alive_pen
         - action_penalty
         - hold_action_pen
     )

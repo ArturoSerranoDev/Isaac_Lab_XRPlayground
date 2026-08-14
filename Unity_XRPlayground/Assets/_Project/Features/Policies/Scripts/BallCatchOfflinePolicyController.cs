@@ -29,15 +29,23 @@ namespace XRPlayground.Policies
         public Transform tip3;
 
         [Header("Training-matched params")]
-        public float actionScale = 5f;
+        public float actionScale = 7f;
         public float dofVelocityScale = 0.1f;
         public float controlDt = 1f / 60f;
         public float gripperOpen = 0.04f;
         public float gripperClose = 1.10f;
-        public Vector3 throwPosIsaacMin = new Vector3(0.35f, -0.15f, 0.55f);
-        public Vector3 throwPosIsaacMax = new Vector3(0.55f, 0.15f, 0.85f);
-        public Vector3 throwVelIsaacMin = new Vector3(-0.8f, -0.2f, -1.2f);
-        public Vector3 throwVelIsaacMax = new Vector3(-0.2f, 0.2f, -0.4f);
+        [Tooltip("Isaac Z-up release box (farther / lower — soft underhand toss).")]
+        public Vector3 throwPosIsaacMin = new Vector3(0.82f, -0.18f, 0.44f);
+        public Vector3 throwPosIsaacMax = new Vector3(1.02f, 0.18f, 0.56f);
+        [Tooltip("Isaac Z-up catch window (closer / higher than release).")]
+        public Vector3 aimPosIsaacMin = new Vector3(0.40f, -0.10f, 0.58f);
+        public Vector3 aimPosIsaacMax = new Vector3(0.50f, 0.10f, 0.72f);
+        public float throwFlightSecondsMin = 0.88f;
+        public float throwFlightSecondsMax = 1.15f;
+        [System.Obsolete("Ballistic launch uses aim + flight time; kept for serialized scenes.")]
+        public Vector3 throwVelIsaacMin = new Vector3(-0.6f, -0.15f, 0.8f);
+        [System.Obsolete("Ballistic launch uses aim + flight time; kept for serialized scenes.")]
+        public Vector3 throwVelIsaacMax = new Vector3(-0.3f, 0.15f, 1.6f);
 
         static readonly string[] ArmLinkNames =
         {
@@ -196,16 +204,25 @@ namespace XRPlayground.Policies
             _gripVel = 0f;
             _prevGrip = _gripPos;
 
-            Vector3 posI = new Vector3(
+            Vector3 releaseI = new Vector3(
                 Random.Range(throwPosIsaacMin.x, throwPosIsaacMax.x),
                 Random.Range(throwPosIsaacMin.y, throwPosIsaacMax.y),
                 Random.Range(throwPosIsaacMin.z, throwPosIsaacMax.z));
-            Vector3 velI = new Vector3(
-                Random.Range(throwVelIsaacMin.x, throwVelIsaacMax.x),
-                Random.Range(throwVelIsaacMin.y, throwVelIsaacMax.y),
-                Random.Range(throwVelIsaacMin.z, throwVelIsaacMax.z));
+            Vector3 aimI = new Vector3(
+                Random.Range(aimPosIsaacMin.x, aimPosIsaacMax.x),
+                Random.Range(aimPosIsaacMin.y, aimPosIsaacMax.y),
+                Random.Range(aimPosIsaacMin.z, aimPosIsaacMax.z));
+            aimI.z = Mathf.Max(aimI.z, releaseI.z + 0.06f);
+            float flight = Mathf.Max(0.55f, Random.Range(throwFlightSecondsMin, throwFlightSecondsMax));
+            // Isaac Z-up ballistic: v = (aim - release - 0.5 g t^2) / t, g=(0,0,-9.81)
+            Vector3 delta = aimI - releaseI;
+            Vector3 velI = delta / flight;
+            velI.z = velI.z - 0.5f * (-9.81f) * flight;
+            float speed = velI.magnitude;
+            if (speed > 3.0f)
+                velI *= 3.0f / speed;
 
-            Vector3 posU = envAnchor.TransformPoint(XrFrameConverter.IsaacPosToUnity(posI));
+            Vector3 posU = envAnchor.TransformPoint(XrFrameConverter.IsaacPosToUnity(releaseI));
             Vector3 velU = envAnchor.TransformDirection(XrFrameConverter.IsaacPosToUnity(velI));
 
             ball.position = posU;
