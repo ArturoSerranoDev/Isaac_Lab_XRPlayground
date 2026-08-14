@@ -55,7 +55,7 @@ Launcher **[B] XR Bridge** → pick **Conveyor Color Detection** → Mirror or A
 python scripts\bridge\run_xr_bridge_conveyor.py --num_envs=1 --mode=mirror --port=9091 --viz kit
 ```
 
-Use `--checkpoint=...` for policy. `--no-real-time` if Kit feels slow.
+Use `--checkpoint=...` for a trained policy. For XR with a headset, prefer `--no-real-time` (default in launcher now): Kit viewport + Unity VR on the same GPU already exceeds wall-clock step time, so `--real-time` only adds sleep and makes Isaac feel slower.
 
 ### Unity
 

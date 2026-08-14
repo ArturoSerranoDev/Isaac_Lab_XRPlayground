@@ -182,7 +182,7 @@ DEFAULT_CONFIG: dict[str, Any] = {
     "record_video": False,
     "real_time_play": False,
     "real_time_demo": False,
-    "real_time_bridge": True,
+    "real_time_bridge": False,
     "bridge_mode": "mirror",  # mirror | await_throw
     "bridge_action_mode": "zero",  # zero | random | policy (fallback without ckpt)
     "bridge_host": "127.0.0.1",

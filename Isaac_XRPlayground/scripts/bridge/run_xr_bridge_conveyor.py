@@ -39,8 +39,8 @@ parser.add_argument("--task", type=str, default="Template-Xrplayground-Conveyor-
 parser.add_argument(
     "--real-time",
     action=argparse.BooleanOptionalAction,
-    default=True,
-    help="Cap to wall-clock step_dt. Use --no-real-time for max speed.",
+    default=False,
+    help="Cap to wall-clock step_dt. Off by default (better with Unity VR + Kit on one GPU).",
 )
 parser.add_argument("--host", type=str, default="127.0.0.1")
 parser.add_argument("--port", type=int, default=9091)
@@ -92,6 +92,7 @@ class SessionState:
 
 
 def _try_load_policy(env, args_cli):
+    """Load skrl policy for inference. On any failure, fall back to zero/random actions."""
     ckpt = args_cli.checkpoint
     if not ckpt and args_cli.action_mode != "policy":
         return env, None, None, None
@@ -107,40 +108,54 @@ def _try_load_policy(env, args_cli):
         print(f"[XR Conveyor Bridge] skrl unavailable ({exc}).")
         return env, None, None, None
 
-    env_cfg2, experiment_cfg = resolve_task_config(args_cli.task, args_cli.agent)
-    _ = env_cfg2
-    if not ckpt:
-        log_root = os.path.abspath(
-            os.path.join("logs", "skrl", experiment_cfg["agent"]["experiment"]["directory"])
-        )
-        try:
-            ckpt = get_checkpoint_path(log_root, run_dir=".*_ppo_torch", other_dirs=["checkpoints"])
-        except Exception as exc:  # noqa: BLE001
-            print(f"[XR Conveyor Bridge] No checkpoint ({exc}).")
+    try:
+        env_cfg2, experiment_cfg = resolve_task_config(args_cli.task, args_cli.agent)
+        _ = env_cfg2
+        if not ckpt:
+            log_root = os.path.abspath(
+                os.path.join("logs", "skrl", experiment_cfg["agent"]["experiment"]["directory"])
+            )
+            try:
+                ckpt = get_checkpoint_path(log_root, run_dir=".*_ppo_torch", other_dirs=["checkpoints"])
+            except Exception as exc:  # noqa: BLE001
+                print(f"[XR Conveyor Bridge] No checkpoint ({exc}).")
+                return env, None, None, None
+        ckpt = os.path.abspath(ckpt)
+        if not os.path.isfile(ckpt):
+            print(f"[XR Conveyor Bridge] Checkpoint missing: {ckpt}")
             return env, None, None, None
-    ckpt = os.path.abspath(ckpt)
-    if not os.path.isfile(ckpt):
-        print(f"[XR Conveyor Bridge] Checkpoint missing: {ckpt}")
-        return env, None, None, None
 
-    experiment_cfg["seed"] = args_cli.seed
-    experiment_cfg["trainer"]["close_environment_at_exit"] = False
-    experiment_cfg["agent"]["experiment"]["write_interval"] = 0
-    experiment_cfg["agent"]["experiment"]["checkpoint_interval"] = 0
-    wrapped = SkrlVecEnvWrapper(env, ml_framework=args_cli.ml_framework)
-    runner = Runner(wrapped, experiment_cfg)
-    print(f"[XR Conveyor Bridge] Loading policy: {ckpt}")
-    runner.agent.load(ckpt)
-    runner.agent.enable_training_mode(False, apply_to_models=True)
-    obs, _ = wrapped.reset()
-    states = wrapped.state()
-    return wrapped, runner, obs, states
+        experiment_cfg["seed"] = args_cli.seed
+        experiment_cfg["trainer"]["close_environment_at_exit"] = False
+        experiment_cfg["agent"]["experiment"]["write_interval"] = 0
+        experiment_cfg["agent"]["experiment"]["checkpoint_interval"] = 0
+        # Mirror watch mode is more stable without a mismatched/old checkpoint.
+        wrapped = SkrlVecEnvWrapper(env, ml_framework=args_cli.ml_framework)
+        runner = Runner(wrapped, experiment_cfg)
+        print(f"[XR Conveyor Bridge] Loading policy: {ckpt}")
+        runner.agent.load(ckpt)
+        runner.agent.enable_training_mode(False, apply_to_models=True)
+        obs, _ = wrapped.reset()
+        states = wrapped.state()
+        # Smoke-test one act so shape/checkpoint mismatches fail here, not mid-loop.
+        with torch.inference_mode():
+            _ = runner.agent.act(obs, states, timestep=0, timesteps=0)
+        return wrapped, runner, obs, states
+    except Exception as exc:  # noqa: BLE001
+        print(f"[XR Conveyor Bridge] Policy load failed ({exc}). Falling back to zero actions.")
+        return env, None, None, None
 
 
 def _fallback_actions(base_env, action_mode: str) -> torch.Tensor:
+    shape = getattr(base_env.action_space, "shape", None)
+    if shape is None:
+        shape = (base_env.num_envs, int(base_env.cfg.action_space))
+    elif len(shape) == 1:
+        # Unbatched Box → add env dim for DirectRLEnv.step
+        shape = (base_env.num_envs, int(shape[0]))
     if action_mode == "random":
-        return 2.0 * torch.rand(base_env.action_space.shape, device=base_env.device) - 1.0
-    return torch.zeros(base_env.action_space.shape, device=base_env.device)
+        return 2.0 * torch.rand(shape, device=base_env.device) - 1.0
+    return torch.zeros(shape, device=base_env.device)
 
 
 def main():
@@ -213,36 +228,49 @@ def main():
                         print(f"[XR Conveyor Bridge] Unity spawn → slot={slot} color={data.get('color')}")
 
                 t0 = time.perf_counter()
-                if runner is not None:
-                    with torch.inference_mode():
-                        outputs = runner.agent.act(obs, states, timestep=0, timesteps=0)
-                        actions = outputs[-1].get("mean_actions", outputs[0])
-                        obs, _, terminated, truncated, _ = step_env.step(actions)
-                        states = step_env.state()
-                    done = bool(terminated.any() or truncated.any()) if hasattr(terminated, "any") else False
-                    if done:
-                        obs, _ = step_env.reset()
-                        states = step_env.state()
-                        if session.mode == MODE_AWAIT_SPAWN:
-                            session.phase = "waiting"
-                            adapter.set_auto_spawn(False)
-                else:
-                    actions = _fallback_actions(
-                        base_env, args_cli.action_mode if args_cli.action_mode != "policy" else "zero"
-                    )
-                    _, _, term, trunc, _ = gym_env.step(actions)
-                    done = bool(term.any() if hasattr(term, "any") else term) or bool(
-                        trunc.any() if hasattr(trunc, "any") else trunc
-                    )
-                    if done:
+                try:
+                    if runner is not None:
+                        with torch.inference_mode():
+                            outputs = runner.agent.act(obs, states, timestep=0, timesteps=0)
+                            actions = outputs[-1].get("mean_actions", outputs[0])
+                            obs, _, terminated, truncated, _ = step_env.step(actions)
+                            states = step_env.state()
+                        done = bool(terminated.any() or truncated.any()) if hasattr(terminated, "any") else False
+                        if done:
+                            obs, _ = step_env.reset()
+                            states = step_env.state()
+                            if session.mode == MODE_AWAIT_SPAWN:
+                                session.phase = "waiting"
+                                adapter.set_auto_spawn(False)
+                    else:
+                        actions = _fallback_actions(
+                            base_env, args_cli.action_mode if args_cli.action_mode != "policy" else "zero"
+                        )
+                        _, _, term, trunc, _ = gym_env.step(actions)
+                        done = bool(term.any() if hasattr(term, "any") else term) or bool(
+                            trunc.any() if hasattr(trunc, "any") else trunc
+                        )
+                        if done:
+                            gym_env.reset()
+                            if session.mode == MODE_AWAIT_SPAWN:
+                                session.phase = "waiting"
+                except Exception as exc:  # noqa: BLE001
+                    print(f"[XR Conveyor Bridge] step failed ({exc}); disabling policy, using zero actions.")
+                    runner = None
+                    session.policy_loaded = False
+                    step_env = gym_env
+                    try:
                         gym_env.reset()
-                        if session.mode == MODE_AWAIT_SPAWN:
-                            session.phase = "waiting"
+                    except Exception as reset_exc:  # noqa: BLE001
+                        print(f"[XR Conveyor Bridge] reset after step failure: {reset_exc}")
 
                 now = time.perf_counter()
                 if now - last_publish >= publish_period:
-                    server.broadcast(adapter.build_robot_state_envelope(stamp_s=now))
-                    server.broadcast(adapter.build_objects_state_envelope(stamp_s=now))
+                    try:
+                        server.broadcast(adapter.build_robot_state_envelope(stamp_s=now))
+                        server.broadcast(adapter.build_objects_state_envelope(stamp_s=now))
+                    except Exception as exc:  # noqa: BLE001
+                        print(f"[XR Conveyor Bridge] publish failed: {exc}")
                     last_publish = now
                     if args_cli.log_robot:
                         print(f"[XR Conveyor Bridge] {session.mode}/{session.phase}")

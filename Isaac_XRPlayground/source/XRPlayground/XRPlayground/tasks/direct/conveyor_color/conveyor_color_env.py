@@ -302,6 +302,15 @@ class ConveyorColorEnv(DirectRLEnv):
             origins = _as_tensor(self.scene.env_origins)[env_ids]
             local = pos_w - origins
 
+            # Skip cubes already off the belt (trash / sort table) — avoids re-driving them
+            # every frame after deposit (PhysX write spam can hard-crash Kit).
+            on_belt = local[:, 1] <= float(self.cfg.belt_y_max)
+            if not torch.any(on_belt):
+                continue
+            env_ids = env_ids[on_belt]
+            local = local[on_belt]
+            origins = origins[on_belt]
+
             # Advance along belt
             local[:, 1] += self.cfg.belt_speed * self.dt
 

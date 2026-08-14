@@ -43,28 +43,44 @@ class ConveyorColorBridgeAdapter:
 
     def _resolve_indices(self) -> None:
         robot = self.env.robot
+        body_names = list(robot.body_names)
         missing_links: list[str] = []
+        # Match against the live body list — find_bodies() raises if a name is absent.
         for name in UR10E_LINK_NAMES:
-            ids, names = robot.find_bodies([name])
+            if name not in body_names:
+                missing_links.append(name)
+                continue
+            try:
+                ids, _ = robot.find_bodies([name])
+            except ValueError:
+                missing_links.append(name)
+                continue
             if len(ids) == 1:
                 self._link_ids[name] = int(ids[0])
             else:
                 missing_links.append(name)
-        # Also pick up any robotiq / tool links present under alternate USD names
-        for pattern in (".*robotiq.*", ".*finger.*", ".*knuckle.*", ".*tool0.*", ".*flange.*"):
-            ids, names = robot.find_bodies([pattern])
-            for i, n in enumerate(names):
-                self._link_ids.setdefault(str(n), int(ids[i]))
 
-        ids, _ = robot.find_bodies([EE_BODY_NAME])
-        if len(ids) >= 1:
-            self._ee_id = int(ids[0])
-            self._link_ids.setdefault(EE_BODY_NAME, self._ee_id)
-        elif hasattr(self.env, "_ee_body_idx"):
+        if EE_BODY_NAME in body_names:
+            try:
+                ids, _ = robot.find_bodies([EE_BODY_NAME])
+                if len(ids) >= 1:
+                    self._ee_id = int(ids[0])
+                    self._link_ids.setdefault(EE_BODY_NAME, self._ee_id)
+            except ValueError:
+                pass
+        if self._ee_id is None and hasattr(self.env, "_ee_body_idx"):
             self._ee_id = int(self.env._ee_body_idx)
 
+        joint_names = list(robot.joint_names)
         for name in UR10E_JOINT_NAMES:
-            jids, _ = robot.find_joints([name], preserve_order=True)
+            if name not in joint_names:
+                print(f"[XR Conveyor Bridge] Warning: joint not found: {name}")
+                continue
+            try:
+                jids, _ = robot.find_joints([name], preserve_order=True)
+            except ValueError:
+                print(f"[XR Conveyor Bridge] Warning: joint not found: {name}")
+                continue
             if len(jids) == 1:
                 self._joint_pairs.append((name, int(jids[0])))
             else:
@@ -88,22 +104,28 @@ class ConveyorColorBridgeAdapter:
         names: list[str] = []
         positions: list[float] = []
         for name, jid in self._joint_pairs:
+            if jid < 0 or jid >= joint_pos.shape[0]:
+                continue
             names.append(name)
             positions.append(float(joint_pos[jid].item()))
 
         data = robot.data
-        if hasattr(data, "body_link_pos_w"):
-            body_pos = _as_tensor(data.body_link_pos_w)[i]
-            body_quat = _as_tensor(data.body_link_quat_w)[i]
-        else:
+        # Prefer body_pos_w (same index space as find_bodies); fall back to body_link_*.
+        if hasattr(data, "body_pos_w"):
             body_pos = _as_tensor(data.body_pos_w)[i]
             body_quat = _as_tensor(data.body_quat_w)[i]
+        else:
+            body_pos = _as_tensor(data.body_link_pos_w)[i]
+            body_quat = _as_tensor(data.body_link_quat_w)[i]
 
+        n_bodies = int(body_pos.shape[0])
         links = []
         for name, bid in self._link_ids.items():
+            if bid < 0 or bid >= n_bodies:
+                continue
             links.append({"name": name, **_pose_dict(body_pos[bid] - origin, body_quat[bid])})
 
-        if self._ee_id is not None:
+        if self._ee_id is not None and 0 <= self._ee_id < n_bodies:
             ee = _pose_dict(body_pos[self._ee_id] - origin, body_quat[self._ee_id])
         elif links:
             ee = {k: links[-1][k] for k in ("position", "orientation_xyzw")}

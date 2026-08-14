@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -112,14 +113,7 @@ namespace XRPlayground.ROS.Editor
             var hb = bridgeGo.GetComponent<RosHeartbeatPublisher>() ?? Undo.AddComponent<RosHeartbeatPublisher>(bridgeGo);
             hb.client = client;
 
-            // Env origin = station (Isaac env frame). Robot is offset within that frame.
-            var map = robot.GetComponent<RobotLinkMap>() ?? Undo.AddComponent<RobotLinkMap>(robot);
-            map.Rebuild();
-            var robotFollower = robot.GetComponent<RobotLinkPoseFollower>() ?? Undo.AddComponent<RobotLinkPoseFollower>(robot);
-            robotFollower.client = client;
-            robotFollower.linkMap = map;
-            robotFollower.envAnchor = station.transform;
-            robotFollower.robotStateTopic = RosTopics.ConveyorRobotState;
+            WireRobotFollower(robot, station.transform, client);
 
             var objFollower = station.GetComponent<ConveyorObjectFollower>() ?? Undo.AddComponent<ConveyorObjectFollower>(station);
             objFollower.client = client;
@@ -136,13 +130,92 @@ namespace XRPlayground.ROS.Editor
             panel.client = client;
             panel.spawnPublisher = spawnPub;
             panel.objectFollower = objFollower;
-            panel.robotFollower = robotFollower;
+            panel.robotFollower = robot.GetComponent<RobotLinkPoseFollower>();
             panel.mode = ConveyorBridgeUiMode.MirrorIsaac;
 
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
             Debug.Log(
                 "XRPlayground: Conveyor Color Station B ready (UR10e + Robotiq, bridge :9091). " +
                 "Run 'Audit UR10e Hierarchy' to verify Isaac link names.");
+        }
+
+        [MenuItem("XRPlayground/Fix Conveyor Robot Mirror")]
+        public static void FixConveyorRobotMirror()
+        {
+            var station = GameObject.Find(StationName);
+            var robot = GameObject.Find(RobotName);
+            var bridgeGo = GameObject.Find(BridgeName);
+            if (station == null || robot == null || bridgeGo == null)
+            {
+                Debug.LogError(
+                    "XRPlayground: Need Station_B_Conveyor + UR10e_Robotiq + XR Bridge Conveyor. " +
+                    "Run 'Setup Conveyor Color Station' first.");
+                return;
+            }
+
+            if (PrefabUtility.IsPartOfPrefabInstance(robot))
+            {
+                PrefabUtility.UnpackPrefabInstance(
+                    robot, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+                Debug.Log("XRPlayground: Unpacked UR10e prefab instance (allows streamed poses).");
+            }
+
+            var client = bridgeGo.GetComponent<RosTcpClient>();
+            if (client == null)
+            {
+                Debug.LogError("XRPlayground: RosTcpClient missing on XR Bridge Conveyor.");
+                return;
+            }
+
+            client.port = 9091;
+            WireRobotFollower(robot, station.transform, client);
+
+            var panel = Object.FindFirstObjectByType<ConveyorBridgePanel>();
+            if (panel != null)
+            {
+                panel.client = client;
+                panel.robotFollower = robot.GetComponent<RobotLinkPoseFollower>();
+            }
+
+            var map = robot.GetComponent<RobotLinkMap>();
+            string sample = "?";
+            if (map != null && map.TryGet("shoulder_link", out var sh) && sh != null)
+                sample = GetPath(sh, robot.transform);
+
+            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+            Debug.Log(
+                "XRPlayground: Conveyor robot mirror rewired (prefer subtree ur10e, envAnchor=Station_B). " +
+                $"shoulder_link → {sample}. Play → Connect → check Applied N/N links.");
+        }
+
+        static string GetPath(Transform t, Transform root)
+        {
+            var parts = new List<string>();
+            while (t != null)
+            {
+                parts.Add(t.name);
+                if (t == root)
+                    break;
+                t = t.parent;
+            }
+            parts.Reverse();
+            return string.Join("/", parts);
+        }
+
+        static void WireRobotFollower(GameObject robot, Transform station, RosTcpClient client)
+        {
+            var map = robot.GetComponent<RobotLinkMap>() ?? Undo.AddComponent<RobotLinkMap>(robot);
+            map.preferredSubtree = "ur10e";
+            map.Rebuild();
+            var robotFollower = robot.GetComponent<RobotLinkPoseFollower>() ?? Undo.AddComponent<RobotLinkPoseFollower>(robot);
+            robotFollower.client = client;
+            robotFollower.linkMap = map;
+            robotFollower.envAnchor = station;
+            robotFollower.robotStateTopic = RosTopics.ConveyorRobotState;
+            robotFollower.followingEnabled = true;
+            robotFollower.logFirstApply = true;
+            robotFollower.calibrateVisualFrames = false;
+            robotFollower.CaptureUnityBindPose();
         }
 
         static Transform FindRobotStations()
@@ -199,12 +272,18 @@ namespace XRPlayground.ROS.Editor
             var robot = (GameObject)PrefabUtility.InstantiatePrefab(usd);
             robot.name = RobotName;
             Undo.RegisterCreatedObjectUndo(robot, RobotName);
+            // Unpack so link transforms are free (USD prefab drivers can freeze streamed poses).
+            if (PrefabUtility.IsPartOfPrefabInstance(robot))
+            {
+                PrefabUtility.UnpackPrefabInstance(
+                    robot, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+            }
             robot.transform.SetParent(parent, false);
             robot.transform.localPosition = XrFrameConverter.IsaacPosToUnity(RobotIsaacPos);
             robot.transform.localRotation = Quaternion.identity;
             robot.transform.localScale = Vector3.one;
             int meshes = robot.GetComponentsInChildren<MeshFilter>(true).Length;
-            Debug.Log($"XRPlayground: Instantiated UR10e from '{usedPath}' (MeshFilters={meshes}).");
+            Debug.Log($"XRPlayground: Instantiated UR10e from '{usedPath}' (MeshFilters={meshes}, unpacked).");
             return robot;
         }
 

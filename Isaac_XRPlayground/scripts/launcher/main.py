@@ -575,9 +575,10 @@ class XRLauncher:
 
         needs_policy_hint = mode in {"await_throw", "await_spawn"}
         checkpoint = ""
+        # Mirror = watch Isaac; policy is optional and a common Kit crash source if mismatched.
         want_policy = needs_policy_hint or prompt_yes_no(
             "  Load a trained checkpoint for this bridge session?",
-            default=bool(self.config.get("checkpoint")) or mode == "mirror",
+            default=False if mode == "mirror" else bool(self.config.get("checkpoint")),
         )
         if want_policy:
             picked = self.select_checkpoint(task)
@@ -611,18 +612,27 @@ class XRLauncher:
         self.config["bridge_action_mode"] = action_mode
 
         self.config["real_time_bridge"] = prompt_yes_no(
-            "  Real-time (wall-clock) stepping?",
-            bool(self.config.get("real_time_bridge", True)),
+            "  Real-time stepping? (NO recommended with Unity VR — Kit+headset share the GPU)",
+            bool(self.config.get("real_time_bridge", False)),
         )
         self.config["bridge_host"] = prompt_text(
             "  Bridge host",
             str(self.config.get("bridge_host", "127.0.0.1")),
         )
-        self.config["bridge_port"] = prompt_int(
-            "  Bridge port",
-            int(self.config.get("bridge_port", bridge_port_default)),
-            minimum=1,
-        )
+        # Keep Ball Catch (:9090) and Conveyor (:9091) ports from colliding in saved config.
+        port_key = "bridge_port_conveyor" if is_conveyor else "bridge_port_ball"
+        saved_port = self.config.get(port_key, self.config.get("bridge_port", bridge_port_default))
+        try:
+            saved_port = int(saved_port)
+        except (TypeError, ValueError):
+            saved_port = bridge_port_default
+        if is_conveyor and saved_port == 9090:
+            saved_port = bridge_port_default
+        elif is_ball and saved_port == 9091:
+            saved_port = bridge_port_default
+        port = prompt_int("  Bridge port", saved_port, minimum=1)
+        self.config[port_key] = port
+        self.config["bridge_port"] = port
         self.config["num_envs_bridge"] = 1
         self.save_config()
 

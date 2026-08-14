@@ -16,9 +16,10 @@ UR10E_ARM_LINK_NAMES: list[str] = [
     "wrist_3_link",
 ]
 
-# Robotiq 2F-85 links commonly present on the Nucleus ur10e Gripper=Robotiq_2f_85 variant.
+# Robotiq 2F-85 bodies on Isaac Lab UR10e Gripper=Robotiq_2f_85 (from find_bodies dump).
+# Note: gripper base is "base_link_0", not "robotiq_base_link".
 UR10E_GRIPPER_LINK_NAMES: list[str] = [
-    "robotiq_base_link",
+    "base_link_0",
     "left_outer_knuckle",
     "left_outer_finger",
     "left_inner_finger",

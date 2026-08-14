@@ -24,7 +24,7 @@ namespace XRPlayground.Robots.Editor
             "wrist_1_link",
             "wrist_2_link",
             "wrist_3_link",
-            "robotiq_base_link",
+            "base_link_0",
             "left_outer_knuckle",
             "left_outer_finger",
             "left_inner_finger",
@@ -82,8 +82,23 @@ namespace XRPlayground.Robots.Editor
             var map = root.GetComponent<RobotLinkMap>();
             if (map != null)
             {
+                map.preferredSubtree = "ur10e";
                 map.Rebuild();
-                sb.AppendLine($"  RobotLinkMap mapped transforms: {map.Map.Count}");
+                sb.AppendLine($"  RobotLinkMap mapped transforms: {map.Map.Count} (prefer '{map.preferredSubtree}')");
+                if (map.TryGet("shoulder_link", out var sh) && sh != null)
+                {
+                    var parts = new List<string>();
+                    Transform cur = sh;
+                    while (cur != null)
+                    {
+                        parts.Add(cur.name);
+                        if (cur == root.transform)
+                            break;
+                        cur = cur.parent;
+                    }
+                    parts.Reverse();
+                    sb.AppendLine("  shoulder_link path: " + string.Join("/", parts));
+                }
             }
 
             if (missing.Count == 0)
