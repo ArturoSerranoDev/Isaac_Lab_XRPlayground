@@ -32,8 +32,8 @@ namespace XRPlayground.Policies
         public float actionScale = 5f;
         public float dofVelocityScale = 0.1f;
         public float controlDt = 1f / 60f;
-        public float gripperOpen = 0.2f;
-        public float gripperClose = 1.2f;
+        public float gripperOpen = 0.04f;
+        public float gripperClose = 1.10f;
         public Vector3 throwPosIsaacMin = new Vector3(0.35f, -0.15f, 0.55f);
         public Vector3 throwPosIsaacMax = new Vector3(0.55f, 0.15f, 0.85f);
         public Vector3 throwVelIsaacMin = new Vector3(-0.8f, -0.2f, -1.2f);

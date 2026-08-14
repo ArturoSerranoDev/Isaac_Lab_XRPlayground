@@ -71,8 +71,8 @@ class BallCatchEnvCfg(DirectRLEnvCfg):
         "j2n7s300_link_7",
     ]
     ee_body_name = "j2n7s300_end_effector"
-    gripper_open_pos = 0.2
-    gripper_close_target = 1.2
+    gripper_open_pos = 0.04
+    gripper_close_target = 1.10
 
     # simulation
     sim: SimulationCfg = SimulationCfg(
@@ -114,8 +114,8 @@ class BallCatchEnvCfg(DirectRLEnvCfg):
                 "j2n7s300_joint_5": 1.40,
                 "j2n7s300_joint_6": 0.35,
                 "j2n7s300_joint_7": 0.0,
-                "j2n7s300_joint_finger_[1-3]": 0.2,
-                "j2n7s300_joint_finger_tip_[1-3]": 0.2,
+                "j2n7s300_joint_finger_[1-3]": 0.04,
+                "j2n7s300_joint_finger_tip_[1-3]": 0.04,
             },
         ),
         actuators={
@@ -182,39 +182,38 @@ class BallCatchEnvCfg(DirectRLEnvCfg):
     aim_pos_z_hard = (0.40, 0.72)
     throw_ang_vel = (-2.0, 2.0)
 
-    # reward / success — ball must sit between fingers along the EE→tip grasp axis
+    # reward / success — ball must sit BETWEEN palm and fingertips, not on top of them
     dist_reward_scale = 6.0
     approach_reward_scale = 8.0
-    catch_reward_scale = 50.0
-    grasp_reward_scale = 10.0
-    # Reward staying still while gripping (joint-speed + action quiet)
+    catch_reward_scale = 55.0
+    grasp_reward_scale = 12.0
     hold_still_reward_scale = 3.0
     hold_action_penalty_scale = 0.08
     body_contact_penalty = 8.0
-    # Balancing the ball on the dorsal/outer gripper surface ("cupping")
+    # Balancing on dorsal housing OR on the closed fingertip platform (penalty, not instant death)
     cup_balance_penalty = 22.0
     drop_penalty = 5.0
     action_penalty_scale = 0.006
     gripper_near_dist = 0.10
     # Grasp aperture in EE frame: along = EE→tip_center axis, radial = orthogonal
-    grasp_along_min = 0.018
-    grasp_along_max = 0.110
-    grasp_radial_max = 0.048
-    # Tip cluster + finger close + alignment (cos of EE→ball vs EE→tips)
-    success_tip_dist = 0.052
-    success_ee_dist = 0.095  # soft near-EE gate only; aperture checks are primary
-    success_finger_dist = 0.052  # legacy alias → tip_center
-    success_dist_threshold = 0.052
+    grasp_along_min = 0.022
+    grasp_along_max = 0.100
+    grasp_radial_max = 0.044
+    # How far past the fingertip plane still counts as "on top of the fingers"
+    grasp_beyond_tips_margin = 0.010
+    success_tip_dist = 0.050
+    success_ee_dist = 0.095
+    success_finger_dist = 0.050
+    success_dist_threshold = 0.050
     success_speed_threshold = 0.85
-    success_close_min = 0.68
-    grasp_align_min = 0.72
-    # Cup: near EE but poorly aligned with grasp axis, or sitting on housing
-    cup_align_max = 0.35
-    cup_height_margin = 0.022  # legacy world-Z margin (kept as secondary cue)
+    # Wrap around the ball; do not require a fully clenched fingertip bowl
+    success_close_min = 0.58
+    grasp_align_min = 0.74
+    cup_align_max = 0.38
+    cup_height_margin = 0.022
     grasp_hold_steps = 10
-    # After a confirmed catch, freeze and hold until episode timeout (do not end early).
     terminate_on_catch = False
     body_contact_radius = 0.10
     body_fail_steps = 12
-    cup_fail_steps = 8
+    cup_fail_steps = 12
     fall_height_threshold = 0.06

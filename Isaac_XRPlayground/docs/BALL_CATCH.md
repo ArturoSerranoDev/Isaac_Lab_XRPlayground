@@ -15,13 +15,12 @@ Goal: train a manipulator to catch thrown balls in Isaac Lab, then reuse the pol
 ## Current task (Phase 1)
 
 - **Gym ID:** `Template-Xrplayground-Ball-Catch-Direct-v0`
-- **Robot:** Kinova Jaco2 7-DoF + 3-finger gripper (instanceable USD; open 0.2, close 1.2)
+- **Robot:** Kinova Jaco2 7-DoF + 3-finger gripper (instanceable USD; open 0.04, wrap-close 1.10)
 - **Ball:** ~8.25 cm diameter sphere (radius 0.04125), ~80 g, spawned with a randomized toss toward the arm
 - **Actions:** 8-D joint position deltas (7 arm + 1 shared gripper command)
-- **Observations:** arm/gripper state, ball pose/velocity, gripper→ball vector
-- **Success:** ball in the finger aperture along the EE→tip_center grasp axis (along/radial bounds + tip proximity + finger close + alignment); cupping on the dorsal gripper fails the episode
 - **Observations:** arm/gripper state, ball pose/velocity, vectors EE→ball and tip_center→ball (28-D)
-- **Checkpoints:** train from scratch after grasp/obs/reward changes — old policies will not match (cupping was previously rewardable)
+- **Success:** ball **between palm and fingertips** along the EE→tip grasp axis. Closing is rewarded during an aligned approach, with extra wrap reward once the ball is inside. A settled fingertip-platform hold is penalized and does not count as a catch.
+- **Checkpoints:** train from scratch after this grasp tweak — do not resume the 04-13-27 run.
 
 ### Launcher
 
