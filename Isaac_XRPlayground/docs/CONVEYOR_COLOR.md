@@ -22,8 +22,9 @@ Or profile preset **Conveyor color** in the launcher `[P]` menu.
 
 - UR10e + Robotiq 2F-85 (same asset Unity mirrors)
 - Kinematic belt along +Y; cubes spawn randomly **on** the belt and are driven along +Y
-- **SortTable** (green) beside the robot — success drop for target color
-- **TrashPlatform** (red-brown) at belt end — reject zone for non-target (auto-deposit when cubes leave the belt)
+- **SortTable** (green) beside **TrashPlatform** at the belt end — success drop for target color
+- **TrashPlatform** (red-brown) at belt end — reject zone for non-target
+- Robot base offset (−X/−Y) for arm clearance vs belt and end tables
 - Pool of 4 reusable cubes; spawn every `spawn_interval_s`
 - Target color sampled per episode
 - Success: drop target cube on the sort table

@@ -32,12 +32,14 @@ namespace XRPlayground.ROS.Editor
         // Isaac Z-up (x,y,z) → Unity Y-up (x,z,y). Matches conveyor_color_env_cfg.
         static readonly Vector3 BeltIsaacCenter = new Vector3(0.55f, 0f, 0.40f);
         static readonly Vector3 BeltIsaacSize = new Vector3(0.30f, 1.40f, 0.04f);
-        // Side sort table: CORRECT / target color (beside robot)
-        static readonly Vector3 SortTableIsaacCenter = new Vector3(-0.40f, 0.15f, 0.405f);
+        // Sort table beside trash at belt end (correct / target color)
+        static readonly Vector3 SortTableIsaacCenter = new Vector3(0.20f, 0.78f, 0.405f);
         static readonly Vector3 SortTableIsaacSize = new Vector3(0.36f, 0.36f, 0.03f);
-        // End trash: REJECT / non-target (end of conveyor)
+        // Trash at end of conveyor (reject / non-target)
         static readonly Vector3 TrashIsaacCenter = new Vector3(0.55f, 0.78f, 0.405f);
         static readonly Vector3 TrashIsaacSize = new Vector3(0.34f, 0.28f, 0.03f);
+        // Robot base offset for arm clearance vs belt + tables
+        static readonly Vector3 RobotIsaacPos = new Vector3(-0.22f, -0.10f, 0f);
 
         [MenuItem("XRPlayground/Setup Conveyor Color Station")]
         public static void Setup()
@@ -110,23 +112,23 @@ namespace XRPlayground.ROS.Editor
             var hb = bridgeGo.GetComponent<RosHeartbeatPublisher>() ?? Undo.AddComponent<RosHeartbeatPublisher>(bridgeGo);
             hb.client = client;
 
-            // Same pattern as Kinova: env origin = robot base (Isaac env origin).
+            // Env origin = station (Isaac env frame). Robot is offset within that frame.
             var map = robot.GetComponent<RobotLinkMap>() ?? Undo.AddComponent<RobotLinkMap>(robot);
             map.Rebuild();
             var robotFollower = robot.GetComponent<RobotLinkPoseFollower>() ?? Undo.AddComponent<RobotLinkPoseFollower>(robot);
             robotFollower.client = client;
             robotFollower.linkMap = map;
-            robotFollower.envAnchor = robot.transform;
+            robotFollower.envAnchor = station.transform;
             robotFollower.robotStateTopic = RosTopics.ConveyorRobotState;
 
             var objFollower = station.GetComponent<ConveyorObjectFollower>() ?? Undo.AddComponent<ConveyorObjectFollower>(station);
             objFollower.client = client;
-            objFollower.envAnchor = robot.transform;
+            objFollower.envAnchor = station.transform;
             objFollower.objectSlots = slots;
 
             var spawnPub = station.GetComponent<ConveyorSpawnPublisher>() ?? Undo.AddComponent<ConveyorSpawnPublisher>(station);
             spawnPub.client = client;
-            spawnPub.envAnchor = robot.transform;
+            spawnPub.envAnchor = station.transform;
             spawnPub.publishingEnabled = false;
 
             EnsureEventSystem();
@@ -198,7 +200,7 @@ namespace XRPlayground.ROS.Editor
             robot.name = RobotName;
             Undo.RegisterCreatedObjectUndo(robot, RobotName);
             robot.transform.SetParent(parent, false);
-            robot.transform.localPosition = Vector3.zero;
+            robot.transform.localPosition = XrFrameConverter.IsaacPosToUnity(RobotIsaacPos);
             robot.transform.localRotation = Quaternion.identity;
             robot.transform.localScale = Vector3.one;
             int meshes = robot.GetComponentsInChildren<MeshFilter>(true).Length;

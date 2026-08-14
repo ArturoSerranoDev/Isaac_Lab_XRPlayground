@@ -198,13 +198,12 @@ namespace XRPlayground.VR.Editor
             soEvents.ApplyModifiedProperties();
 
             hand.AddComponent<XRHandRootPoseDriver>();
+            hand.AddComponent<XRHandJointSphereVisual>();
 
-            var palm = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            palm.name = "Palm Visual";
-            palm.transform.SetParent(hand.transform, false);
-            palm.transform.localScale = Vector3.one * 0.04f;
-            Object.DestroyImmediate(palm.GetComponent<Collider>());
-            Undo.RegisterCreatedObjectUndo(palm, "Create Palm Visual");
+            // Remove legacy single-palm visual if present from older setups
+            var legacyPalm = hand.transform.Find("Palm Visual");
+            if (legacyPalm != null)
+                Undo.DestroyObjectImmediate(legacyPalm.gameObject);
 
             var interactorGo = new GameObject("Near-Far Interactor");
             Undo.RegisterCreatedObjectUndo(interactorGo, "Create Near-Far Interactor");

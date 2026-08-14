@@ -94,9 +94,9 @@ class ConveyorColorEnvCfg(DirectRLEnvCfg):
     spawn_y_min = -0.60
     spawn_y_max = -0.40
 
-    # Side sort table (CORRECT / target color) — beside the robot, belt height − a bit
-    # belt top z = 0.42
-    sort_table_pos = (-0.40, 0.15, 0.405)
+    # Sort table (CORRECT) — immediately beside trash at belt end (−X)
+    # trash at x=0.55 size 0.34 → edge ~0.38; sort half 0.18 → center ~0.20
+    sort_table_pos = (0.20, 0.78, 0.405)
     sort_table_size = (0.36, 0.36, 0.03)
     # Alias used by obs / approach shaping (success target)
     bin_pos = sort_table_pos
@@ -111,6 +111,9 @@ class ConveyorColorEnvCfg(DirectRLEnvCfg):
     trash_success_xy = 0.16
     trash_success_z_max = 0.48
     trash_success_z_min = 0.38
+
+    # Robot base offset (−X / −Y) so the arm clears belt + end tables
+    robot_pos = (-0.22, -0.10, 0.0)
 
     gripper_open = 0.0
     gripper_close = 0.785  # ~45 deg for 2F-85 drive
@@ -149,7 +152,7 @@ class ConveyorColorEnvCfg(DirectRLEnvCfg):
     robot_cfg: ArticulationCfg = UR10e_ROBOTIQ_2F_85_CFG.replace(
         prim_path="/World/envs/env_.*/Robot",
         init_state=UR10e_ROBOTIQ_2F_85_CFG.init_state.replace(
-            pos=(0.0, 0.0, 0.0),
+            pos=robot_pos,
             rot=(0.0, 0.0, 0.0, 1.0),
         ),
     )

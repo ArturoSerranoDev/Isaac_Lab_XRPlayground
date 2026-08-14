@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Hands;
 
@@ -5,7 +6,7 @@ namespace XRPlayground.VR
 {
     /// <summary>
     /// Drives this transform from <see cref="XRHandTrackingEvents"/> root pose.
-    /// Place on each hand root that also owns interactors.
+    /// Hand roots must live under XR Origin → Camera Offset; poses are tracking-local.
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(XRHandTrackingEvents))]
@@ -48,7 +49,9 @@ namespace XRPlayground.VR
 
         void OnPoseUpdated(Pose rootPose)
         {
-            transform.SetPositionAndRotation(rootPose.position, rootPose.rotation);
+            // Tracking-space pose: assign as local under Camera Offset (Unity XR Hands docs).
+            transform.localPosition = rootPose.position;
+            transform.localRotation = rootPose.rotation;
         }
 
         void OnTrackingAcquired()
