@@ -38,8 +38,8 @@ namespace XRPlayground.Policies
         public float gripperOpen = 0.994f;
         public float gripperClose = 0.20f;
         public float controlDt = 1f / 60f;
-        public Vector3 bucketPosIsaac = new Vector3(0.45f, -0.18f, 0.44f);
-        public float liftHeight = 0.46f;
+        public Vector3 bucketPosIsaac = new Vector3(0.22f, 0f, 0.54f);
+        public float liftHeight = 0.52f;
         public float graspDist = 0.12f;
 
         static readonly string[] ArmJointNames =

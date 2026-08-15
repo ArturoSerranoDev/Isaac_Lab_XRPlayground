@@ -4,7 +4,8 @@ using UnityEngine;
 namespace XRPlayground.Robots
 {
     /// <summary>
-    /// Link-name cache for Agibot A2D (Isaac Lab body names). Prefer articulated subtree over visuals/.
+    /// Link-name cache for Agibot A2D. Names match A2D_physics.usd / Isaac Lab body_names.
+    /// Prefer articulated subtree over visuals/.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class AgibotLinkMap : MonoBehaviour
@@ -13,16 +14,20 @@ namespace XRPlayground.Robots
         public string[] expectedLinks =
         {
             "base_link",
-            "body_link",
-            "head_link",
-            "right_arm_link1",
-            "right_arm_link2",
-            "right_arm_link3",
-            "right_arm_link4",
-            "right_arm_link5",
-            "right_arm_link6",
-            "right_arm_link7",
-            "right_gripper_base",
+            "link_up_down_body",
+            "link_pitch_body",
+            "link_arm",
+            "link_yaw_head",
+            "link_pitch_head",
+            "base_link_r",
+            "Link1_r",
+            "Link2_r",
+            "Link3_r",
+            "Link4_r",
+            "Link5_r",
+            "Link6_r",
+            "Link7_r",
+            "right_base_link",
             "right_gripper_center",
             "right_Left_Pad_Link",
             "right_Right_Pad_Link",
@@ -58,6 +63,19 @@ namespace XRPlayground.Robots
 
             foreach (var kv in candidates)
                 _map[kv.Key] = PickBest(kv.Value, searchRoot);
+
+            int missing = 0;
+            foreach (var name in expectedLinks)
+            {
+                if (!_map.ContainsKey(name))
+                {
+                    missing++;
+                    Debug.LogWarning($"AgibotLinkMap: missing link '{name}' under {name}", this);
+                }
+            }
+
+            if (missing == 0)
+                Debug.Log($"AgibotLinkMap: bound {expectedLinks.Length} expected links.", this);
         }
 
         public bool TryGet(string name, out Transform t) => _map.TryGetValue(name, out t);

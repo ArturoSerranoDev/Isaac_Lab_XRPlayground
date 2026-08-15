@@ -13,7 +13,7 @@ namespace XRPlayground.Policies
         [Tooltip("Assign the imported policy.onnx (Inference Engine ModelAsset).")]
         public ModelAsset modelAsset;
 
-        [Tooltip("Must match training observation size (Conveyor=66, BallCatch=28).")]
+        [Tooltip("Must match training observation size (Conveyor=66, BallCatch=30, PickPlace=30).")]
         public int expectedObsDim = 66;
 
         [Tooltip("Must match training action size (Conveyor=7, BallCatch=8).")]

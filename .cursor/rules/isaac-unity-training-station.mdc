@@ -1,0 +1,32 @@
+---
+description: Isaac Lab + Unity training station standards (robot, maps, poses, ROS, ONNX)
+alwaysApply: true
+---
+
+# Isaac ↔ Unity training stations
+
+When adding or changing a DirectRL task, Unity station, ROS bridge, or offline ONNX policy, treat it as **one package**. Do not ship Isaac-only or Unity-only work.
+
+## Done means all five exist
+
+1. **Robot USD** in Isaac *and* Unity (`Assets/_Project/Features/Robots/...`), same default joint pose documented
+2. **Name table** — one shared list of link/joint names (Isaac bridge `names_*.py` + Unity `*LinkMap`); bind asserts (e.g. N/N links)
+3. **Pose table** — robot/props/spawns in Isaac frame + Unity via `XrFrameConverter` only
+4. **Obs/action contract** — dims, `action_scale`, `dt` in `policy.json` match env + Unity controller
+5. **Both modes verified** — ROS mirror tracks links; offline ONNX moves like Isaac play from the **default pose**
+
+Copy `Isaac_XRPlayground/docs/templates/TASK_STATION.md` into `docs/<TASK>.md` and fill it before calling the task done.
+
+## Hard rules (learned the hard way)
+
+- Link names come from the **real USD prims**, not placeholders
+- Offline FK: capture rest **once** at Isaac default pose; **never** re-capture on every Start Policy
+- Obs/action/layout/curriculum changes → update Unity controller + sidecar in the **same** change
+- Do not invent a second frame transform; use `XrFrameConverter`
+- Smoke order: bind maps → ROS mirror → offline ONNX at default pose → then long train/export
+
+## Reference stations
+
+- BallCatch (Kinova): `docs/BALL_CATCH.md`, `KinovaLinkMap`, `BallCatchOfflinePolicyController`
+- Conveyor (UR10e): `docs/CONVEYOR_COLOR.md`, `RobotLinkMap`, `ConveyorOfflinePolicyController`
+- PickPlace (Agibot): `docs/PICK_PLACE_TABLE.md`, `AgibotLinkMap`, `PickPlaceOfflinePolicyController`

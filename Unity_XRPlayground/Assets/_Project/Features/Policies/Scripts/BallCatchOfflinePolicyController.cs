@@ -30,6 +30,8 @@ namespace XRPlayground.Policies
 
         [Header("Training-matched params")]
         public float actionScale = 5.0f;
+        [Tooltip("Matches Isaac robot_dof_speed_scales on gripper joints.")]
+        public float gripperSpeedScale = 1.2f;
         [Tooltip("Ball gravity scale (matches Isaac buoyancy so the ball floats into the cup).")]
         public float ballGravityScale = 0.50f;
         public float dofVelocityScale = 0.1f;
@@ -100,6 +102,30 @@ namespace XRPlayground.Policies
         [ContextMenu("Auto-Bind Links")]
         public void AutoBindLinks()
         {
+            BindLinks(forceJointBind: false);
+        }
+
+        [ContextMenu("Rebuild Kinova FK Bind (arm must be at Isaac default pose)")]
+        public void RebuildKinovaBind()
+        {
+            BindLinks(forceJointBind: true);
+            // Snap commanded + visual rest to Isaac defaults after a forced recapture.
+            ResetArmStateToIsaacDefault();
+            SyncArmVisuals();
+            if (jointDriver != null)
+            {
+                var rest = new float[8];
+                for (int i = 0; i < 7; i++)
+                    rest[i] = _armPos[i];
+                rest[7] = _gripPos;
+                jointDriver.RecaptureRest(rest);
+                SyncArmVisuals();
+            }
+            Debug.Log("BallCatchOfflinePolicyController: rebuilt Kinova FK rest at Isaac default pose.", this);
+        }
+
+        void BindLinks(bool forceJointBind)
+        {
             if (linkMap != null)
             {
                 linkMap.Rebuild();
@@ -116,8 +142,28 @@ namespace XRPlayground.Policies
             if (jointDriver != null)
             {
                 jointDriver.envAnchor = envAnchor != null ? envAnchor : transform;
-                jointDriver.BindKinova(linkMap, jointDriver.envAnchor);
+                // Do not re-capture rest every StartPolicy — that freezes FK at a mid-motion pose.
+                jointDriver.BindKinova(linkMap, jointDriver.envAnchor, force: forceJointBind);
             }
+        }
+
+        void ResetArmStateToIsaacDefault()
+        {
+            _armPos[0] = 0f;
+            _armPos[1] = 2.35f;
+            _armPos[2] = 0.25f;
+            _armPos[3] = 1.65f;
+            _armPos[4] = 1.40f;
+            _armPos[5] = 0.35f;
+            _armPos[6] = 0f;
+            for (int i = 0; i < 7; i++)
+            {
+                _armVel[i] = 0f;
+                _prevArm[i] = _armPos[i];
+            }
+            _gripPos = gripperOpen;
+            _gripVel = 0f;
+            _prevGrip = _gripPos;
         }
 
         public void StartPolicy()
@@ -144,11 +190,13 @@ namespace XRPlayground.Policies
             }
 
             PauseBridgeFollowers(true);
-            AutoBindLinks();
+            BindLinks(forceJointBind: false);
+            if (jointDriver != null && !jointDriver.IsBound)
+                BindLinks(forceJointBind: true);
             ResetEpisodeAndThrow();
             running = true;
             StatusLine = "running";
-            Debug.Log("BallCatchOfflinePolicyController: started (Unity-only ONNX).", this);
+            Debug.Log("BallCatchOfflinePolicyController: started (Unity-only ONNX, 30-D obs).", this);
         }
 
         public void StopPolicy()
@@ -204,21 +252,10 @@ namespace XRPlayground.Policies
 
         void ResetEpisodeAndThrow()
         {
-            _armPos[0] = 0f;
-            _armPos[1] = 2.35f;
-            _armPos[2] = 0.25f;
-            _armPos[3] = 1.65f;
-            _armPos[4] = 1.40f;
-            _armPos[5] = 0.35f;
-            _armPos[6] = 0f;
-            for (int i = 0; i < 7; i++)
-            {
-                _armVel[i] = 0f;
-                _prevArm[i] = _armPos[i];
-            }
-            _gripPos = gripperOpen;
-            _gripVel = 0f;
-            _prevGrip = _gripPos;
+            ResetArmStateToIsaacDefault();
+            // Pose the visual arm first so tip/EE aim uses the Isaac default cup, not a stale mesh.
+            SyncArmVisuals();
+            jointDriver?.Flush();
 
             Vector3 tipI = Vector3.zero;
             int tipCount = 0;
@@ -261,8 +298,6 @@ namespace XRPlayground.Policies
                 ballBody.linearVelocity = velU;
                 ballBody.angularVelocity = Vector3.zero;
             }
-
-            SyncArmVisuals();
         }
 
         void ApplyActions(float dt)
@@ -275,7 +310,7 @@ namespace XRPlayground.Policies
                 _armVel[i] = (_armPos[i] - _prevArm[i]) / Mathf.Max(dt, 1e-5f);
             }
             _prevGrip = _gripPos;
-            _gripPos += _actions[7] * actionScale * dt;
+            _gripPos += _actions[7] * actionScale * gripperSpeedScale * dt;
             _gripPos = Mathf.Clamp(_gripPos, gripperOpen, gripperClose);
             _gripVel = (_gripPos - _prevGrip) / Mathf.Max(dt, 1e-5f);
         }
@@ -362,12 +397,11 @@ namespace XRPlayground.Policies
         {
             if (jointDriver == null)
                 return;
-            var angles = new float[10];
+            // 8 absolute joint targets (7 arm + shared gripper) — matches BindKinova joint indices.
+            var angles = new float[8];
             for (int i = 0; i < 7; i++)
                 angles[i] = _armPos[i];
             angles[7] = _gripPos;
-            angles[8] = _gripPos;
-            angles[9] = _gripPos;
             jointDriver.ApplyAnglesRadians(angles);
         }
 

@@ -44,6 +44,9 @@ namespace XRPlayground.Policies
         float[] _pending;
         bool _dirty;
 
+        /// <summary>True after a successful Bind* (kinematic chain captured).</summary>
+        public bool IsBound => _nodes != null && _nodes.Length > 0;
+
         void LateUpdate()
         {
             if (!_dirty || _nodes == null)
@@ -52,8 +55,31 @@ namespace XRPlayground.Policies
             ApplyPending();
         }
 
+        /// <summary>Apply pending joint angles immediately (don't wait for LateUpdate).</summary>
+        public void Flush()
+        {
+            if (_nodes == null || _pending == null)
+                return;
+            _dirty = false;
+            ApplyPending();
+        }
+
         public void CaptureRestPose()
         {
+            CaptureIsaacRestFromUnity();
+        }
+
+        /// <summary>
+        /// Re-capture Unity link poses as the FK rest for the given joint angles.
+        /// Call only when the visible robot already matches <paramref name="jointAnglesRadians"/>.
+        /// </summary>
+        public void RecaptureRest(float[] jointAnglesRadians)
+        {
+            if (jointAnglesRadians != null && jointAnglesRadians.Length > 0)
+            {
+                _restJoints = new float[jointAnglesRadians.Length];
+                System.Array.Copy(jointAnglesRadians, _restJoints, jointAnglesRadians.Length);
+            }
             CaptureIsaacRestFromUnity();
         }
 
@@ -120,13 +146,21 @@ namespace XRPlayground.Policies
             CaptureIsaacRestFromUnity();
         }
 
-        public void BindKinova(KinovaLinkMap map, Transform anchor)
+        /// <param name="force">
+        /// When false and already bound, keep the existing chain/rest (do not re-capture).
+        /// Re-capturing while the arm is mid-motion desyncs FK vs absolute joint commands.
+        /// </param>
+        public void BindKinova(KinovaLinkMap map, Transform anchor, bool force = false)
         {
             envAnchor = anchor != null ? anchor : envAnchor;
             if (map != null)
                 map.Rebuild();
 
-            _restJoints = new[] { 0f, 2.35f, 0.25f, 1.65f, 1.40f, 0.35f, 0f, 0.2f };
+            if (IsBound && !force)
+                return;
+
+            // Must match Isaac BallCatch init_state AND the visible USD pose at capture time.
+            _restJoints = new[] { 0f, 2.35f, 0.25f, 1.65f, 1.40f, 0.35f, 0f, 0.04f };
 
             var z = Vector3.forward;
             var list = new List<Node>(16);
@@ -156,28 +190,32 @@ namespace XRPlayground.Policies
             if (map != null)
                 map.Rebuild();
 
-            // Isaac AGIBOT_A2D_CFG default right arm + open gripper
+            // Isaac AGIBOT_A2D_CFG default right arm + open gripper.
+            // Chain matches A2D_physics.usd PhysicsJoint body0/body1 (all arm revolutes axis Z).
             _restJoints = new[]
             {
                 1.0817f, -0.5907f, -0.3442f, 1.2819f, -0.6928f, -0.7f, 0f, 0.994f,
             };
 
             var z = Vector3.forward;
-            var list = new List<Node>(20);
+            var list = new List<Node>(24);
             Add(list, map, "base_link", -1, -1, 0f, z);
-            Add(list, map, "body_link", IndexOf(list, "base_link"), -1, 0f, z);
-            Add(list, map, "head_link", IndexOf(list, "body_link"), -1, 0f, z);
-            Add(list, map, "right_arm_link1", IndexOf(list, "body_link"), 0, 1f, z);
-            Add(list, map, "right_arm_link2", IndexOf(list, "right_arm_link1"), 1, 1f, z);
-            Add(list, map, "right_arm_link3", IndexOf(list, "right_arm_link2"), 2, 1f, z);
-            Add(list, map, "right_arm_link4", IndexOf(list, "right_arm_link3"), 3, 1f, z);
-            Add(list, map, "right_arm_link5", IndexOf(list, "right_arm_link4"), 4, 1f, z);
-            Add(list, map, "right_arm_link6", IndexOf(list, "right_arm_link5"), 5, 1f, z);
-            Add(list, map, "right_arm_link7", IndexOf(list, "right_arm_link6"), 6, 1f, z);
-            Add(list, map, "right_gripper_base", IndexOf(list, "right_arm_link7"), -1, 0f, z);
-            Add(list, map, "right_gripper_center", IndexOf(list, "right_gripper_base"), 7, 1f, z);
-            Add(list, map, "right_Left_Pad_Link", IndexOf(list, "right_gripper_center"), 7, 1f, z);
-            Add(list, map, "right_Right_Pad_Link", IndexOf(list, "right_gripper_center"), 7, -1f, z);
+            Add(list, map, "link_up_down_body", IndexOf(list, "base_link"), -1, 0f, z);
+            Add(list, map, "link_pitch_body", IndexOf(list, "link_up_down_body"), -1, 0f, z);
+            Add(list, map, "link_arm", IndexOf(list, "link_pitch_body"), -1, 0f, z);
+            Add(list, map, "base_link_r", IndexOf(list, "link_arm"), -1, 0f, z);
+            Add(list, map, "Link1_r", IndexOf(list, "base_link_r"), 0, 1f, z);
+            Add(list, map, "Link2_r", IndexOf(list, "Link1_r"), 1, 1f, z);
+            Add(list, map, "Link3_r", IndexOf(list, "Link2_r"), 2, 1f, z);
+            Add(list, map, "Link4_r", IndexOf(list, "Link3_r"), 3, 1f, z);
+            Add(list, map, "Link5_r", IndexOf(list, "Link4_r"), 4, 1f, z);
+            Add(list, map, "Link6_r", IndexOf(list, "Link5_r"), 5, 1f, z);
+            Add(list, map, "Link7_r", IndexOf(list, "Link6_r"), 6, 1f, z);
+            Add(list, map, "right_base_link", IndexOf(list, "Link7_r"), -1, 0f, z);
+            Add(list, map, "right_gripper_center", IndexOf(list, "right_base_link"), -1, 0f, z);
+            // Simplified pad visual (full gripper mechanism is multi-joint); pads track hand driver.
+            Add(list, map, "right_Left_Pad_Link", IndexOf(list, "right_base_link"), 7, 1f, z);
+            Add(list, map, "right_Right_Pad_Link", IndexOf(list, "right_base_link"), 7, -1f, z);
             _nodes = list.ToArray();
             FillLegacyJoints();
             CaptureIsaacRestFromUnity();

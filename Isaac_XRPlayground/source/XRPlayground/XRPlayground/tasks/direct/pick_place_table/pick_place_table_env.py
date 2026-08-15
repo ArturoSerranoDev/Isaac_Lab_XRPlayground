@@ -103,7 +103,7 @@ class PickPlaceTableEnv(DirectRLEnv):
         )
         bucket_cfg = sim_utils.CuboidCfg(
             size=self.cfg.bucket_size,
-            visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(0.35, 0.35, 0.40)),
+            visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(0.85, 0.45, 0.12)),
             collision_props=sim_utils.CollisionPropertiesCfg(),
             rigid_props=sim_utils.RigidBodyPropertiesCfg(kinematic_enabled=True, disable_gravity=True),
         )

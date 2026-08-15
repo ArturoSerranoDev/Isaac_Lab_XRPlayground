@@ -23,16 +23,20 @@ namespace XRPlayground.ROS.Editor
         const string BridgeName = "XR Bridge PickPlace";
         const string PanelName = "PickPlace Bridge World UI";
         const string UsdPath = "Assets/_Project/Features/Robots/AgibotA2D/USD/A2D_physics.usd";
+        const string UsdImporterGraphPath =
+            "Packages/com.unity.importer.usd/Unity.Importer.USD.Editor/ImportGraph/usdImporter.asset";
         const string PolicyOnnxPath = "Assets/_Project/Features/Policies/PickPlace/policy.onnx";
 
         // Left of Kinova BallCatch (-3,-2) and Conveyor (+3,-2).
         static readonly Vector3 StationLocalPos = new Vector3(-6f, 0f, -2f);
 
+        // Agibot A2D faces +X: robot on -X, table/basket centered ahead (matches Isaac cfg).
         static readonly Vector3 TableIsaacCenter = new Vector3(0.45f, 0f, 0.38f);
         static readonly Vector3 TableIsaacSize = new Vector3(0.75f, 0.60f, 0.04f);
-        static readonly Vector3 BucketIsaacCenter = new Vector3(0.45f, -0.18f, 0.38f);
-        static readonly Vector3 BucketIsaacSize = new Vector3(0.14f, 0.14f, 0.10f);
-        static readonly Vector3 RobotIsaacPos = new Vector3(0f, -0.78f, 0f);
+        static readonly Vector3 BucketIsaacCenter = new Vector3(0.22f, 0f, 0.46f);
+        static readonly Vector3 BucketIsaacSize = new Vector3(0.16f, 0.16f, 0.12f);
+        static readonly Vector3 RobotIsaacPos = new Vector3(-0.78f, 0f, 0f);
+        static readonly Vector3 PieceIsaacSpawn = new Vector3(0.55f, 0f, 0.44f);
 
         [MenuItem("XRPlayground/Setup Pick Place Table Station")]
         public static void Setup()
@@ -65,11 +69,11 @@ namespace XRPlayground.ROS.Editor
                 new Vector3(TableIsaacSize.x, TableIsaacSize.z, TableIsaacSize.y), new Color(0.55f, 0.42f, 0.30f),
                 keepCollider: true);
             CreateCube(station.transform, "Bucket", XrFrameConverter.IsaacPosToUnity(BucketIsaacCenter),
-                new Vector3(BucketIsaacSize.x, BucketIsaacSize.z, BucketIsaacSize.y), new Color(0.35f, 0.35f, 0.40f),
+                new Vector3(BucketIsaacSize.x, BucketIsaacSize.z, BucketIsaacSize.y), new Color(0.85f, 0.45f, 0.12f),
                 keepCollider: true);
 
             var piece = CreateCube(station.transform, "Piece_0",
-                XrFrameConverter.IsaacPosToUnity(new Vector3(0.45f, 0f, 0.44f)),
+                XrFrameConverter.IsaacPosToUnity(PieceIsaacSpawn),
                 Vector3.one * 0.04f, new Color(0.9f, 0.15f, 0.12f), keepCollider: true);
             var rb = piece.AddComponent<Rigidbody>();
             rb.isKinematic = true;
@@ -113,8 +117,14 @@ namespace XRPlayground.ROS.Editor
             offline.linkMap = robot.GetComponent<AgibotLinkMap>();
             offline.piece = piece.transform;
             offline.pieceBody = rb;
+            offline.bucketPosIsaac = new Vector3(0.22f, 0f, 0.54f);
+            offline.spawnPosIsaacMin = new Vector3(0.40f, -0.22f, 0.44f);
+            offline.spawnPosIsaacMax = new Vector3(0.70f, 0.22f, 0.44f);
+            offline.liftHeight = 0.52f;
             offline.AutoBindLinks();
             il.eeLink = offline.eeLink;
+            il.bucketPosIsaac = offline.bucketPosIsaac;
+            il.liftHeight = offline.liftHeight;
 
             EnsureEventSystem();
             var panel = EnsureWorldUi(station.transform.position);
@@ -144,7 +154,7 @@ namespace XRPlayground.ROS.Editor
         static void WireRobotFollower(GameObject robot, Transform station, RosTcpClient client)
         {
             var map = robot.GetComponent<AgibotLinkMap>() ?? Undo.AddComponent<AgibotLinkMap>(robot);
-            map.preferredSubtree = "A2D";
+            map.preferredSubtree = "";
             map.Rebuild();
             var follower = robot.GetComponent<AgibotLinkPoseFollower>() ?? Undo.AddComponent<AgibotLinkPoseFollower>(robot);
             follower.client = client;
@@ -185,6 +195,7 @@ namespace XRPlayground.ROS.Editor
 
         static GameObject PlaceRobot(Transform parent)
         {
+            EnsureAgibotUsdImported(UsdPath);
             var usd = AssetDatabase.LoadAssetAtPath<GameObject>(UsdPath);
             GameObject robot;
             if (usd != null)
@@ -193,7 +204,10 @@ namespace XRPlayground.ROS.Editor
                 robot.name = RobotName;
                 Undo.RegisterCreatedObjectUndo(robot, RobotName);
                 if (PrefabUtility.IsPartOfPrefabInstance(robot))
-                    PrefabUtility.UnpackPrefabInstance(robot, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+                {
+                    PrefabUtility.UnpackPrefabInstance(
+                        robot, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
+                }
             }
             else
             {
@@ -207,14 +221,52 @@ namespace XRPlayground.ROS.Editor
             robot.transform.SetParent(parent, false);
             robot.transform.localPosition = XrFrameConverter.IsaacPosToUnity(RobotIsaacPos);
             robot.transform.localRotation = Quaternion.identity;
+            robot.transform.localScale = Vector3.one;
             var map = robot.GetComponent<AgibotLinkMap>() ?? robot.AddComponent<AgibotLinkMap>();
-            map.preferredSubtree = "A2D";
+            // Unity USD import promotes the A2D default prim to the robot root (no nested "A2D" child).
+            map.preferredSubtree = usd != null ? "" : "A2D";
             map.Rebuild();
+            int meshes = robot.GetComponentsInChildren<MeshFilter>(true).Length;
+            Debug.Log($"XRPlayground: Instantiated Agibot A2D (MeshFilters={meshes}, unpacked).");
             return robot;
         }
 
+        static void EnsureAgibotUsdImported(string usdPath)
+        {
+            var importer = AssetImporter.GetAtPath(usdPath) as UnityEditor.Importer.USD.UsdModularImporter;
+            if (importer == null)
+                return;
+
+            var graph = AssetDatabase.LoadAssetAtPath<UnityEngine.Importer.ImporterGraph>(UsdImporterGraphPath);
+            var needsReimport = false;
+            if (!importer.isUsdRoot)
+            {
+                importer.isUsdRoot = true;
+                needsReimport = true;
+            }
+
+            if (graph != null && importer.Graph.asset == null)
+            {
+                importer.Graph = graph;
+                needsReimport = true;
+            }
+
+            if (!needsReimport && AssetDatabase.LoadAssetAtPath<GameObject>(usdPath) != null)
+                return;
+
+            if (needsReimport)
+            {
+                EditorUtility.SetDirty(importer);
+                importer.SaveAndReimport();
+            }
+            else if (AssetDatabase.LoadAssetAtPath<GameObject>(usdPath) == null)
+            {
+                AssetDatabase.ImportAsset(usdPath, ImportAssetOptions.ForceUpdate);
+            }
+        }
+
         /// <summary>
-        /// Minimal named link tree so AgibotLinkMap + OfflineJointDriver work without Nucleus USD.
+        /// Minimal named link tree matching A2D_physics.usd body names (fallback without USD).
         /// </summary>
         static GameObject BuildPlaceholderRobot()
         {
@@ -224,15 +276,23 @@ namespace XRPlayground.ROS.Editor
 
             var baseLink = CreateLink(a2d.transform, "base_link", Vector3.zero, new Vector3(0.25f, 0.12f, 0.18f),
                 new Color(0.45f, 0.48f, 0.52f));
-            var body = CreateLink(baseLink.transform, "body_link", new Vector3(0f, 0.35f, 0f),
-                new Vector3(0.22f, 0.45f, 0.16f), new Color(0.55f, 0.58f, 0.62f));
-            CreateLink(body.transform, "head_link", new Vector3(0f, 0.32f, 0.02f),
+            var lift = CreateLink(baseLink.transform, "link_up_down_body", new Vector3(0f, 0.20f, 0f),
+                new Vector3(0.20f, 0.20f, 0.14f), new Color(0.50f, 0.53f, 0.57f));
+            var pitch = CreateLink(lift.transform, "link_pitch_body", new Vector3(0f, 0.18f, 0f),
+                new Vector3(0.22f, 0.28f, 0.16f), new Color(0.55f, 0.58f, 0.62f));
+            var armMount = CreateLink(pitch.transform, "link_arm", new Vector3(0.08f, 0.10f, 0f),
+                new Vector3(0.10f, 0.10f, 0.10f), new Color(0.45f, 0.48f, 0.52f));
+            CreateLink(pitch.transform, "link_yaw_head", new Vector3(0f, 0.28f, 0.02f),
+                new Vector3(0.10f, 0.08f, 0.10f), new Color(0.60f, 0.63f, 0.67f));
+            CreateLink(pitch.transform, "link_pitch_head", new Vector3(0f, 0.36f, 0.02f),
                 new Vector3(0.14f, 0.14f, 0.14f), new Color(0.65f, 0.68f, 0.72f));
 
-            Transform parent = body.transform;
+            var baseR = CreateLink(armMount.transform, "base_link_r", new Vector3(0.12f, 0.05f, 0f),
+                new Vector3(0.08f, 0.08f, 0.08f), new Color(0.30f, 0.50f, 0.70f));
+            Transform parent = baseR.transform;
             Vector3[] offsets =
             {
-                new Vector3(0.12f, 0.15f, 0f),
+                new Vector3(0.10f, 0.05f, 0f),
                 new Vector3(0f, 0f, 0.12f),
                 new Vector3(0f, 0f, 0.14f),
                 new Vector3(0f, 0f, 0.12f),
@@ -242,18 +302,18 @@ namespace XRPlayground.ROS.Editor
             };
             for (int i = 0; i < 7; i++)
             {
-                var link = CreateLink(parent, $"right_arm_link{i + 1}", offsets[i],
+                var link = CreateLink(parent, $"Link{i + 1}_r", offsets[i],
                     new Vector3(0.06f, 0.06f, 0.10f), new Color(0.25f, 0.55f, 0.75f));
                 parent = link.transform;
             }
 
-            var gripBase = CreateLink(parent, "right_gripper_base", new Vector3(0f, 0f, 0.04f),
+            var gripBase = CreateLink(parent, "right_base_link", new Vector3(0f, 0f, 0.04f),
                 new Vector3(0.05f, 0.04f, 0.05f), new Color(0.3f, 0.3f, 0.35f));
-            var center = CreateLink(gripBase.transform, "right_gripper_center", new Vector3(0f, 0f, 0.03f),
+            CreateLink(gripBase.transform, "right_gripper_center", new Vector3(0f, 0f, 0.03f),
                 new Vector3(0.03f, 0.03f, 0.03f), new Color(0.9f, 0.75f, 0.2f));
-            CreateLink(center.transform, "right_Left_Pad_Link", new Vector3(-0.03f, 0f, 0.02f),
+            CreateLink(gripBase.transform, "right_Left_Pad_Link", new Vector3(-0.03f, 0f, 0.02f),
                 new Vector3(0.015f, 0.04f, 0.04f), new Color(0.2f, 0.2f, 0.22f));
-            CreateLink(center.transform, "right_Right_Pad_Link", new Vector3(0.03f, 0f, 0.02f),
+            CreateLink(gripBase.transform, "right_Right_Pad_Link", new Vector3(0.03f, 0f, 0.02f),
                 new Vector3(0.015f, 0.04f, 0.04f), new Color(0.2f, 0.2f, 0.22f));
 
             return root;

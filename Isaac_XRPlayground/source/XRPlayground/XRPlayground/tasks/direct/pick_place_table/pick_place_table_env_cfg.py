@@ -104,7 +104,7 @@ class PickPlaceTableEnvCfg(DirectRLEnvCfg):
 
     scene: InteractiveSceneCfg = InteractiveSceneCfg(num_envs=64, env_spacing=4.0, replicate_physics=True)
 
-    # Wall-mounted pose: robot behind table along -Y, facing +Y
+    # Wall-mounted: Agibot A2D faces +X (Isaac Lab place_* tasks). Robot on -X, table ahead.
     robot_cfg: ArticulationCfg = AGIBOT_A2D_CFG.replace(
         prim_path="/World/envs/env_.*/Robot",
         spawn=AGIBOT_A2D_CFG.spawn.replace(
@@ -119,7 +119,7 @@ class PickPlaceTableEnvCfg(DirectRLEnvCfg):
             ),
         ),
         init_state=ArticulationCfg.InitialStateCfg(
-            pos=(0.0, -0.78, 0.0),
+            pos=(-0.78, 0.0, 0.0),
             rot=(0.0, 0.0, 0.0, 1.0),
             joint_pos=AGIBOT_A2D_CFG.init_state.joint_pos,
         ),
@@ -134,23 +134,25 @@ class PickPlaceTableEnvCfg(DirectRLEnvCfg):
         },
     )
 
+    # Table centered on robot forward (+X), y=0. Depth 0.75 along X, width 0.60 along Y.
     table_pos = (0.45, 0.0, 0.38)
     table_size = (0.75, 0.60, 0.04)
-    # Front of table toward robot (-Y)
-    bucket_pos = (0.45, -0.18, 0.38)
-    bucket_size = (0.14, 0.14, 0.10)
-    bucket_xy_radius = 0.09
-    bucket_z_min = 0.395
-    bucket_z_max = 0.52
+    # Basket on near edge (toward robot), centered — sits on table surface
+    bucket_pos = (0.22, 0.0, 0.46)
+    bucket_size = (0.16, 0.16, 0.12)
+    bucket_xy_radius = 0.10
+    bucket_z_min = 0.40
+    bucket_z_max = 0.58
 
-    spawn_x_range = (0.30, 0.60)
+    # Pieces on far half of table (away from basket)
+    spawn_x_range = (0.40, 0.70)
     spawn_y_range = (-0.22, 0.22)
     cube_half_size = 0.02
 
     grasp_dist = 0.12
-    lift_height = 0.46
-    success_xy_radius = 0.10
-    success_z_max = 0.50
+    lift_height = 0.52
+    success_xy_radius = 0.11
+    success_z_max = 0.58
 
     dist_reward_scale = 4.0
     approach_reward_scale = 12.0

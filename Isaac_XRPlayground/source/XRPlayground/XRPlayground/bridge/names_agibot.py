@@ -1,30 +1,37 @@
 # Copyright (c) 2022-2026, The Isaac Lab Project Developers.
 # SPDX-License-Identifier: BSD-3-Clause
 
-"""Agibot A2D name tables and pick-place bridge topics."""
+"""Agibot A2D name tables and pick-place bridge topics.
+
+Body names match A2D_physics.usd prims (Isaac Lab articulation body_names).
+Joint names match PhysicsRevoluteJoint prims / AGIBOT_A2D_CFG.
+"""
 
 from __future__ import annotations
 
-# Bodies streamed to Unity (right arm + gripper + torso anchor).
-# Names match IsaacLab Agibot A2D USD / URDF (verify after USD import with Rebuild Link Map).
+# Bodies streamed to Unity (torso + right arm + gripper).
 AGIBOT_TORSO_LINK_NAMES: list[str] = [
     "base_link",
-    "body_link",
-    "head_link",
+    "link_up_down_body",
+    "link_pitch_body",
+    "link_arm",
+    "link_yaw_head",
+    "link_pitch_head",
 ]
 
 AGIBOT_RIGHT_ARM_LINK_NAMES: list[str] = [
-    "right_arm_link1",
-    "right_arm_link2",
-    "right_arm_link3",
-    "right_arm_link4",
-    "right_arm_link5",
-    "right_arm_link6",
-    "right_arm_link7",
+    "base_link_r",
+    "Link1_r",
+    "Link2_r",
+    "Link3_r",
+    "Link4_r",
+    "Link5_r",
+    "Link6_r",
+    "Link7_r",
 ]
 
 AGIBOT_RIGHT_GRIPPER_LINK_NAMES: list[str] = [
-    "right_gripper_base",
+    "right_base_link",
     "right_gripper_center",
     "right_Left_Pad_Link",
     "right_Right_Pad_Link",
