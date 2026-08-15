@@ -83,6 +83,7 @@ namespace XRPlayground.VR
 
         readonly Dictionary<XRHandJointID, Transform> m_JointSpheres = new Dictionary<XRHandJointID, Transform>();
         readonly List<LineRenderer> m_BoneLines = new List<LineRenderer>();
+        readonly List<IHandJointPoseModifier> m_PoseModifiers = new List<IHandJointPoseModifier>();
         Transform m_VisualRoot;
         Material m_JointMat;
         Material m_LineMat;
@@ -91,7 +92,15 @@ namespace XRPlayground.VR
         {
             if (m_HandTrackingEvents == null)
                 m_HandTrackingEvents = GetComponent<XRHandTrackingEvents>();
+            RefreshPoseModifiers();
             EnsureVisuals();
+        }
+
+        /// <summary>Re-collect <see cref="IHandJointPoseModifier"/> components on this hand.</summary>
+        public void RefreshPoseModifiers()
+        {
+            m_PoseModifiers.Clear();
+            GetComponents(m_PoseModifiers);
         }
 
         void OnEnable()
@@ -149,8 +158,16 @@ namespace XRPlayground.VR
                     // Joint + root poses share tracking space; convert to hand-root local.
                     var localPos = Quaternion.Inverse(root.rotation) * (pose.position - root.position);
                     var localRot = Quaternion.Inverse(root.rotation) * pose.rotation;
-                    t.localPosition = localPos;
-                    t.localRotation = localRot;
+                    var localPose = new Pose(localPos, localRot);
+                    for (int m = 0; m < m_PoseModifiers.Count; m++)
+                    {
+                        if (m_PoseModifiers[m] != null &&
+                            m_PoseModifiers[m].TryModifyJointLocalPose(id, in localPose, out var modified))
+                            localPose = modified;
+                    }
+
+                    t.localPosition = localPose.position;
+                    t.localRotation = localPose.rotation;
                     t.gameObject.SetActive(true);
                 }
                 else

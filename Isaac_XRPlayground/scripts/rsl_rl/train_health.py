@@ -69,6 +69,8 @@ def summarize_run(run_dir: Path) -> dict:
         "Train/mean_reward",
         "Train/mean_episode_length",
         "Metrics/catch_rate",
+        "Metrics/place_rate",
+        "Metrics/grasp_rate",
         "Metrics/drop_rate",
         "Metrics/cup_hold",
         "Metrics/tip_platform",
@@ -85,13 +87,17 @@ def summarize_run(run_dir: Path) -> dict:
     catch_max = _max_scalar(ea, "Metrics/catch_rate")
     if catch_max is not None:
         out["metric_catch_rate_max"] = catch_max
+    place_max = _max_scalar(ea, "Metrics/place_rate")
+    if place_max is not None:
+        out["metric_place_rate_max"] = place_max
 
     iteration = out.get("train_mean_reward", {}).get("step", 0)
     out["iteration"] = iteration
 
-    # Health gates (ball catch)
     catch_last = out.get("metric_catch_rate", {}).get("value", 0.0)
     catch_max = out.get("metric_catch_rate_max", 0.0)
+    place_last = out.get("metric_place_rate", {}).get("value", 0.0)
+    place_max = out.get("metric_place_rate_max", 0.0)
     reward_last = out.get("train_mean_reward", {}).get("value", 0.0)
     std_last = out.get("policy_mean_std", {}).get("value", 99.0)
     lr_last = out.get("loss_learning_rate", {}).get("value", 0.0)
@@ -104,9 +110,9 @@ def summarize_run(run_dir: Path) -> dict:
     elif out.get("alive_seconds_ago", 9999) > 600 and iteration < 50:
         status = "stalled"
         reasons.append("events stale >10min early in run")
-    if iteration >= 400 and catch_max < 0.01:
+    if iteration >= 400 and catch_max < 0.01 and place_max < 0.01:
         status = "unhealthy"
-        reasons.append("catch_rate still 0 after 400 iters")
+        reasons.append("success rate still 0 after 400 iters")
     if std_last > 3.5:
         status = "unhealthy"
         reasons.append(f"policy std exploded ({std_last:.2f})")
@@ -116,9 +122,15 @@ def summarize_run(run_dir: Path) -> dict:
     if catch_max >= 0.05:
         status = "learning_catch"
         reasons.append(f"catch_rate peaked at {catch_max:.3f}")
+    if place_max >= 0.05:
+        status = "learning_place"
+        reasons.append(f"place_rate peaked at {place_max:.3f}")
     if catch_last >= 0.08 and iteration >= 800:
         status = "ready"
         reasons.append(f"catch_rate {catch_last:.3f} at iter {iteration}")
+    if place_last >= 0.12 and iteration >= 800:
+        status = "ready"
+        reasons.append(f"place_rate {place_last:.3f} at iter {iteration}")
 
     out["status"] = status
     out["reasons"] = reasons

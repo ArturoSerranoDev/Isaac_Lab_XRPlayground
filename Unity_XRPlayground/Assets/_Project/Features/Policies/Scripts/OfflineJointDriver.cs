@@ -150,6 +150,54 @@ namespace XRPlayground.Policies
             CaptureIsaacRestFromUnity();
         }
 
+        public void BindAgibotA2D(AgibotLinkMap map, Transform anchor)
+        {
+            envAnchor = anchor != null ? anchor : envAnchor;
+            if (map != null)
+                map.Rebuild();
+
+            // Isaac AGIBOT_A2D_CFG default right arm + open gripper
+            _restJoints = new[]
+            {
+                1.0817f, -0.5907f, -0.3442f, 1.2819f, -0.6928f, -0.7f, 0f, 0.994f,
+            };
+
+            var z = Vector3.forward;
+            var list = new List<Node>(20);
+            Add(list, map, "base_link", -1, -1, 0f, z);
+            Add(list, map, "body_link", IndexOf(list, "base_link"), -1, 0f, z);
+            Add(list, map, "head_link", IndexOf(list, "body_link"), -1, 0f, z);
+            Add(list, map, "right_arm_link1", IndexOf(list, "body_link"), 0, 1f, z);
+            Add(list, map, "right_arm_link2", IndexOf(list, "right_arm_link1"), 1, 1f, z);
+            Add(list, map, "right_arm_link3", IndexOf(list, "right_arm_link2"), 2, 1f, z);
+            Add(list, map, "right_arm_link4", IndexOf(list, "right_arm_link3"), 3, 1f, z);
+            Add(list, map, "right_arm_link5", IndexOf(list, "right_arm_link4"), 4, 1f, z);
+            Add(list, map, "right_arm_link6", IndexOf(list, "right_arm_link5"), 5, 1f, z);
+            Add(list, map, "right_arm_link7", IndexOf(list, "right_arm_link6"), 6, 1f, z);
+            Add(list, map, "right_gripper_base", IndexOf(list, "right_arm_link7"), -1, 0f, z);
+            Add(list, map, "right_gripper_center", IndexOf(list, "right_gripper_base"), 7, 1f, z);
+            Add(list, map, "right_Left_Pad_Link", IndexOf(list, "right_gripper_center"), 7, 1f, z);
+            Add(list, map, "right_Right_Pad_Link", IndexOf(list, "right_gripper_center"), 7, -1f, z);
+            _nodes = list.ToArray();
+            FillLegacyJoints();
+            CaptureIsaacRestFromUnity();
+        }
+
+        void Add(List<Node> list, AgibotLinkMap map, string name, int parent, int joint, float mimic, Vector3 axis)
+        {
+            Transform t = null;
+            map?.TryGet(name, out t);
+            list.Add(new Node
+            {
+                name = name,
+                parent = parent,
+                joint = joint,
+                mimic = mimic,
+                axisIsaac = axis,
+                link = t,
+            });
+        }
+
         void Add(List<Node> list, RobotLinkMap map, string name, int parent, int joint, float mimic, Vector3 axis)
         {
             Transform t = null;

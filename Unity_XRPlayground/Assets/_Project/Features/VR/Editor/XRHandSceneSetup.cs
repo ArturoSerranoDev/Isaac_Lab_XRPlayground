@@ -198,6 +198,8 @@ namespace XRPlayground.VR.Editor
             soEvents.ApplyModifiedProperties();
 
             hand.AddComponent<XRHandRootPoseDriver>();
+            hand.AddComponent<HandPalmAttachPoint>();
+            hand.AddComponent<HandFingerWrapDriver>();
             hand.AddComponent<XRHandJointSphereVisual>();
 
             // Remove legacy single-palm visual if present from older setups
@@ -205,20 +207,85 @@ namespace XRPlayground.VR.Editor
             if (legacyPalm != null)
                 Undo.DestroyObjectImmediate(legacyPalm.gameObject);
 
-            var interactorGo = new GameObject("Near-Far Interactor");
-            Undo.RegisterCreatedObjectUndo(interactorGo, "Create Near-Far Interactor");
+            // Direct (near) grab only — no ray / far casting.
+            var interactorGo = new GameObject("Direct Grab Interactor");
+            Undo.RegisterCreatedObjectUndo(interactorGo, "Create Direct Grab Interactor");
             interactorGo.transform.SetParent(hand.transform, false);
 
             var nf = interactorGo.AddComponent<NearFarInteractor>();
             interactorGo.AddComponent<InteractionAttachController>();
-            interactorGo.AddComponent<SphereInteractionCaster>();
-            interactorGo.AddComponent<CurveInteractionCaster>();
+            var nearCaster = interactorGo.AddComponent<SphereInteractionCaster>();
+            interactorGo.AddComponent<PalmAttractGrab>();
 
             var so = new SerializedObject(nf);
             so.FindProperty("m_Handedness").enumValueIndex = handedness == Handedness.Left ? 1 : 2;
+            so.FindProperty("m_EnableFarCasting").boolValue = false;
+            so.FindProperty("m_EnableNearCasting").boolValue = true;
+            so.FindProperty("m_NearInteractionCaster").objectReferenceValue = nearCaster;
             WireButton(so.FindProperty("m_SelectInput"), select, selectValue);
             WireButton(so.FindProperty("m_UIPressInput"), uiPress, null);
             so.ApplyModifiedProperties();
+
+            var soCaster = new SerializedObject(nearCaster);
+            var radiusProp = soCaster.FindProperty("m_CastRadius");
+            if (radiusProp != null)
+                radiusProp.floatValue = 0.08f;
+            soCaster.ApplyModifiedProperties();
+        }
+
+        [MenuItem("XRPlayground/Configure Direct Grab (No Ray)")]
+        public static void ConfigureDirectGrabOnly()
+        {
+            Undo.IncrementCurrentGroup();
+            Undo.SetCurrentGroupName("Configure Direct Grab");
+
+            int configured = 0;
+            foreach (var handEvents in Object.FindObjectsByType<XRHandTrackingEvents>(FindObjectsInactive.Include))
+            {
+                var hand = handEvents.gameObject;
+                if (hand.GetComponent<HandPalmAttachPoint>() == null)
+                    Undo.AddComponent<HandPalmAttachPoint>(hand);
+                if (hand.GetComponent<HandFingerWrapDriver>() == null)
+                    Undo.AddComponent<HandFingerWrapDriver>(hand);
+                var visual = hand.GetComponent<XRHandJointSphereVisual>();
+                if (visual != null)
+                    visual.RefreshPoseModifiers();
+
+                foreach (var nf in hand.GetComponentsInChildren<NearFarInteractor>(true))
+                {
+                    nf.enableFarCasting = false;
+                    nf.enableNearCasting = true;
+                    if (nf.gameObject.name == "Near-Far Interactor")
+                        nf.gameObject.name = "Direct Grab Interactor";
+
+                    var curve = nf.GetComponent<CurveInteractionCaster>();
+                    if (curve != null)
+                        Undo.DestroyObjectImmediate(curve);
+
+                    var sphere = nf.GetComponent<SphereInteractionCaster>();
+                    if (sphere == null)
+                        sphere = Undo.AddComponent<SphereInteractionCaster>(nf.gameObject);
+
+                    var so = new SerializedObject(nf);
+                    so.FindProperty("m_EnableFarCasting").boolValue = false;
+                    so.FindProperty("m_NearInteractionCaster").objectReferenceValue = sphere;
+                    so.ApplyModifiedProperties();
+
+                    var soCaster = new SerializedObject(sphere);
+                    var radiusProp = soCaster.FindProperty("m_CastRadius");
+                    if (radiusProp != null && radiusProp.floatValue < 0.05f)
+                        radiusProp.floatValue = 0.08f;
+                    soCaster.ApplyModifiedProperties();
+
+                    if (nf.GetComponent<PalmAttractGrab>() == null)
+                        Undo.AddComponent<PalmAttractGrab>(nf.gameObject);
+
+                    configured++;
+                }
+            }
+
+            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+            Debug.Log($"XRPlayground: Direct grab configured on {configured} interactor(s). Save the scene.");
         }
 
         static void EnsureGrabCube(Transform parent)

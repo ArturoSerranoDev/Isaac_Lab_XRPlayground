@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-"""RSL-RL PPO config for Ball Catch (ONNX-export friendly)."""
+"""RSL-RL PPO config for Agibot table pick-and-place."""
 
 from isaaclab.utils.configclass import configclass
 
@@ -11,11 +11,11 @@ from isaaclab_rl.rsl_rl import RslRlMLPModelCfg, RslRlOnPolicyRunnerCfg, RslRlPp
 
 
 @configclass
-class BallCatchPPORunnerCfg(RslRlOnPolicyRunnerCfg):
+class PickPlaceTablePPORunnerCfg(RslRlOnPolicyRunnerCfg):
     num_steps_per_env = 16
-    max_iterations = 1000
-    save_interval = 50
-    experiment_name = "xrplayground_ball_catch_direct"
+    max_iterations = 2500
+    save_interval = 100
+    experiment_name = "xrplayground_pick_place_table_direct"
     actor = RslRlMLPModelCfg(
         hidden_dims=[256, 128, 64],
         activation="elu",

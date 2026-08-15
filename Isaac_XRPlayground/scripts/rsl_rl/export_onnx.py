@@ -43,7 +43,7 @@ parser = argparse.ArgumentParser(description="Export RSL-RL policy to ONNX for U
 parser.add_argument("--task", type=str, required=True)
 parser.add_argument("--agent", type=str, default="rsl_rl_cfg_entry_point")
 parser.add_argument("--num_envs", type=int, default=1)
-parser.add_argument("--checkpoint", type=str, required=True, help="Path to RSL-RL checkpoint (.pt).")
+parser.add_argument("--ckpt", type=str, required=True, help="Path to RSL-RL checkpoint (.pt).")
 parser.add_argument(
     "--output_dir",
     type=str,
@@ -74,7 +74,7 @@ TASK_META = {
     },
     "Template-Xrplayground-Ball-Catch-Direct-v0": {
         "unity_folder": "BallCatch",
-        "obs_dim": 28,
+        "obs_dim": 30,
         "action_dim": 8,
         "action_scale": 5.0,
         "dt": 1.0 / 60.0,
@@ -115,14 +115,14 @@ def _copy_to_unity(onnx_path: str, json_path: str, unity_folder: str) -> Path | 
     dest.mkdir(parents=True, exist_ok=True)
     shutil.copy2(onnx_path, dest / "policy.onnx")
     shutil.copy2(json_path, dest / "policy.json")
-    print(f"[INFO] Copied ONNX → {dest}")
+    print(f"[INFO] Copied ONNX -> {dest}")
     return dest
 
 
 @hydra_task_config(args_cli.task, args_cli.agent)
 def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agent_cfg: RslRlBaseRunnerCfg):
     meta = TASK_META.get(args_cli.task, {"unity_folder": "Unknown", "obs_dim": -1, "action_dim": -1, "action_scale": 1.0, "dt": 0.0167})
-    ckpt = os.path.abspath(args_cli.checkpoint)
+    ckpt = os.path.abspath(args_cli.ckpt)
     if not os.path.isfile(ckpt):
         raise FileNotFoundError(ckpt)
 

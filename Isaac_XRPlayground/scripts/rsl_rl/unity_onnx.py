@@ -46,7 +46,7 @@ def export_policy_onnx_for_unity(runner, export_dir: str, filename: str = "polic
 
     size = os.path.getsize(save_path)
     print(
-        f"[INFO] Unity ONNX (TorchScript, opset {UNITY_ONNX_OPSET}) → {save_path} ({size} bytes)"
+        f"[INFO] Unity ONNX (TorchScript, opset {UNITY_ONNX_OPSET}) -> {save_path} ({size} bytes)"
     )
     if size < 50_000:
         print(

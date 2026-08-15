@@ -23,13 +23,13 @@ from isaaclab_assets.robots.kinova import KINOVA_JACO2_N7S300_CFG
 class BallCatchEnvCfg(DirectRLEnvCfg):
     # env — 7 arm joints + 1 shared gripper command
     decimation = 2
-    episode_length_s = 5.0
+    episode_length_s = 4.5
     action_space = 8
-    observation_space = 28
+    observation_space = 30  # + grasp_align, ball_radial
     state_space = 0
 
-    # Delta joint commands — high enough to face a gentle toss in time (PhysX vel limit still caps).
-    action_scale = 7.0
+    # Delta joint commands — match cup-hold baseline (stable, not wild).
+    action_scale = 5.0
     dof_velocity_scale = 0.1
     # PhysX revolute drive targets must stay in [-2π, 2π]
     physx_drive_angle_limit = 6.283185307179586
@@ -126,14 +126,14 @@ class BallCatchEnvCfg(DirectRLEnvCfg):
                     ".*_joint_[3-4]": 140.0,
                     ".*_joint_[5-7]": 80.0,
                 },
-                velocity_limit_sim=5.0,
+                velocity_limit_sim=3.5,
                 stiffness={
-                    ".*_joint_[1-4]": 320.0,
-                    ".*_joint_[5-7]": 160.0,
+                    ".*_joint_[1-4]": 280.0,
+                    ".*_joint_[5-7]": 120.0,
                 },
                 damping={
-                    ".*_joint_[1-4]": 14.0,
-                    ".*_joint_[5-7]": 8.0,
+                    ".*_joint_[1-4]": 12.0,
+                    ".*_joint_[5-7]": 6.0,
                 },
             ),
             "gripper": ImplicitActuatorCfg(
@@ -164,58 +164,89 @@ class BallCatchEnvCfg(DirectRLEnvCfg):
         init_state=RigidObjectCfg.InitialStateCfg(pos=(0.85, 0.0, 0.70), rot=(0.0, 0.0, 0.0, 1.0)),
     )
 
-    # Human-like underhand / soft toss: release farther out, catch window above release,
-    # ballistic velocity for a gentle upward arc (see _launch_ball). Curriculum widens spread.
-    curriculum_steps = 24000
-    throw_pos_x_easy = (0.88, 1.05)
-    throw_pos_x_hard = (0.82, 1.12)
-    throw_pos_y_easy = (-0.14, 0.14)
-    throw_pos_y_hard = (-0.28, 0.28)
-    throw_pos_z_easy = (0.46, 0.54)
-    throw_pos_z_hard = (0.42, 0.58)
-    aim_pos_x_easy = (0.42, 0.48)
-    aim_pos_x_hard = (0.38, 0.52)
+    # Player-style parabolic toss with curriculum: learnable → farther / more reaction time.
+    curriculum_steps = 28000  # ~full hard throws by ~iter 1000 (vectorized step counter)
+    throw_front_offset = (0.30, 0.50)       # hard (final)
+    throw_front_offset_easy = (0.16, 0.28)  # still off the palm, random
+    throw_side_offset = (-0.18, 0.18)
+    throw_side_offset_easy = (-0.10, 0.10)
+    throw_below_offset = (0.02, 0.10)
+    throw_height_boost = (0.12, 0.22)
+    throw_height_boost_easy = (0.08, 0.14)
+    throw_flight_time = (0.75, 1.05)        # hard
+    throw_flight_time_easy = (0.55, 0.75)
+    aim_jitter_xy = 0.05
+    aim_jitter_xy_easy = 0.03
+    aim_jitter_z = 0.04
+    aim_jitter_z_easy = 0.025
+    gravity_full = 9.81
+    ball_gravity_scale = 0.50
+    # Legacy fields
+    throw_pos_x_easy = (0.55, 0.85)
+    throw_pos_x_hard = (0.55, 0.85)
+    throw_pos_y_easy = (-0.20, 0.20)
+    throw_pos_y_hard = (-0.20, 0.20)
+    throw_pos_z_easy = (0.45, 0.70)
+    throw_pos_z_hard = (0.45, 0.70)
+    aim_pos_x_easy = (0.28, 0.36)
+    aim_pos_x_hard = (0.28, 0.36)
     aim_pos_y_easy = (-0.08, 0.08)
-    aim_pos_y_hard = (-0.18, 0.18)
-    aim_pos_z_easy = (0.60, 0.70)
-    aim_pos_z_hard = (0.55, 0.74)
-    throw_flight_s_easy = (0.95, 1.20)
-    throw_flight_s_hard = (0.88, 1.10)
-    # Kept for older docs / Unity offline sampler; ballistic launch no longer uses speed ranges
-    throw_speed_easy = (0.70, 1.10)
-    throw_speed_hard = (0.90, 1.40)
-    throw_ang_vel = (-1.0, 1.0)
+    aim_pos_y_hard = (-0.08, 0.08)
+    aim_pos_z_easy = (0.50, 0.58)
+    aim_pos_z_hard = (0.50, 0.58)
+    throw_speed_easy = (0.45, 0.75)
+    throw_speed_hard = (0.45, 0.75)
+    throw_ang_vel = (-1.5, 1.5)
 
-    # reward / success — ball must sit BETWEEN palm and fingertips, not on top of them
-    dist_reward_scale = 5.0
-    approach_reward_scale = 14.0
-    catch_reward_scale = 60.0
+    dist_reward_scale = 4.0
+    approach_reward_scale = 2.5
+    catch_reward_scale = 200.0
     grasp_reward_scale = 14.0
-    hold_still_reward_scale = 2.0
-    hold_action_penalty_scale = 0.06
+    hold_still_reward_scale = 4.0
+    hold_action_penalty_scale = 0.08
+    face_ball_reward_scale = 4.0
+    aperture_reward_scale = 10.0
+    side_miss_penalty = 8.0
+    wrap_reward_scale = 8.0
+    poke_penalty = 12.0
+    early_close_penalty = 2.5
+    # Keep assist latch through the full 1k run — soft_grasp alone never bootstrapped.
+    assist_catch_until_curriculum = 1.01
+    # Soft assist when facing + near; tip-spread gate is loose so open claws can still settle.
+    catch_assist_enabled = True
+    catch_assist_dist = 0.13
+    catch_assist_align_min = 0.25
+    catch_assist_close_min = 0.15
+    catch_assist_spring_kp = 38.0
+    catch_assist_spring_kd = 4.0
+    catch_assist_force_clip = 2.6
+    catch_assist_blend_dist = 0.085
+    catch_assist_blend_alpha = 0.24
+    catch_assist_tip_spread_max = 0.10
     body_contact_penalty = 6.0
-    cup_balance_penalty = 18.0
-    misalign_penalty = 2.5
-    flee_penalty = 10.0
-    drop_penalty = 4.0
-    action_penalty_scale = 0.002
-    gripper_near_dist = 0.12
-    grasp_along_min = 0.020
-    grasp_along_max = 0.105
-    grasp_radial_max = 0.048
+    cup_balance_penalty = 14.0
+    drop_penalty = 5.0
+    action_penalty_scale = 0.01
+    gripper_near_dist = 0.14
+    grasp_along_min = 0.018
+    grasp_along_max = 0.110
+    grasp_radial_max = 0.055
     grasp_beyond_tips_margin = 0.012
-    success_tip_dist = 0.065
-    success_ee_dist = 0.10
-    success_finger_dist = 0.065
-    success_dist_threshold = 0.065
-    success_speed_threshold = 0.90
-    success_close_min = 0.45
-    grasp_align_min = 0.58
-    cup_align_max = 0.40
+    success_tip_dist = 0.085
+    success_ee_dist = 0.12
+    success_finger_dist = 0.085
+    success_dist_threshold = 0.085
+    success_speed_threshold = 1.10
+    success_close_min = 0.20
+    grasp_align_min = 0.28
+    cup_align_max = 0.18
     cup_height_margin = 0.022
-    grasp_hold_steps = 4
+    # Open 3-finger claw tip-spread is ~0.09; wrap latch must tolerate that, poke is worse.
+    tip_spread_max = 0.095
+    poke_tip_spread = 0.120
+    grasp_hold_steps = 3
     terminate_on_catch = False
     body_contact_radius = 0.10
-    body_fail_steps = 12
-    cup_fail_steps = 10
+    body_fail_steps = 14
+    cup_fail_steps = 14
     fall_height_threshold = 0.06

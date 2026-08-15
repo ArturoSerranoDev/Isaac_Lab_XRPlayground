@@ -1,9 +1,11 @@
 {
   "task_id": "Template-Xrplayground-Ball-Catch-Direct-v0",
-  "obs_dim": 28,
+  "obs_dim": 30,
   "action_dim": 8,
   "action_scale": 5.0,
   "dt": 0.016666666666666666,
   "frame": "isaac_env",
-  "runtime": "unity_inference_engine"
+  "checkpoint": "C:\\PROYECTOS PERSONALES\\ISAAC_SIM\\Isaac_Lab_XRPlayground\\Isaac_XRPlayground\\logs\\rsl_rl\\xrplayground_ball_catch_direct\\2026-08-15_13-39-01\\model_750.pt",
+  "runtime": "unity_inference_engine",
+  "notes": "Obs must match Isaac DirectRL policy observation layout. Actions are mean (deterministic)."
 }

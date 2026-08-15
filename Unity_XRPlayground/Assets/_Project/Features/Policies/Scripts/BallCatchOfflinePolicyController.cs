@@ -5,12 +5,12 @@ using XRPlayground.Robots;
 namespace XRPlayground.Policies
 {
     /// <summary>
-    /// Unity-only Ball Catch loop: 28-D obs → ONNX → 8-D actions. Requires a ball Transform/Rigidbody.
+    /// Unity-only Ball Catch loop: 30-D obs → ONNX → 8-D actions. Requires a ball Transform/Rigidbody.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class BallCatchOfflinePolicyController : MonoBehaviour
     {
-        public const int ObsDim = 28;
+        public const int ObsDim = 30;
         public const int ActionDim = 8;
 
         [Header("Policy")]
@@ -29,18 +29,24 @@ namespace XRPlayground.Policies
         public Transform tip3;
 
         [Header("Training-matched params")]
-        public float actionScale = 7f;
+        public float actionScale = 5.0f;
+        [Tooltip("Ball gravity scale (matches Isaac buoyancy so the ball floats into the cup).")]
+        public float ballGravityScale = 0.50f;
         public float dofVelocityScale = 0.1f;
         public float controlDt = 1f / 60f;
         public float gripperOpen = 0.04f;
         public float gripperClose = 1.10f;
-        [Tooltip("Isaac Z-up release box (farther / lower — soft underhand toss).")]
-        public Vector3 throwPosIsaacMin = new Vector3(0.82f, -0.18f, 0.44f);
-        public Vector3 throwPosIsaacMax = new Vector3(1.02f, 0.18f, 0.56f);
-        [Tooltip("Isaac Z-up catch window (closer / higher than release).")]
-        public Vector3 aimPosIsaacMin = new Vector3(0.40f, -0.10f, 0.58f);
-        public Vector3 aimPosIsaacMax = new Vector3(0.50f, 0.10f, 0.72f);
+        [Tooltip("Isaac Z-up release box (easy lob into cup).")]
+        public Vector3 throwPosIsaacMin = new Vector3(0.40f, -0.10f, 0.55f);
+        public Vector3 throwPosIsaacMax = new Vector3(0.55f, 0.10f, 0.70f);
+        [Tooltip("Isaac Z-up aim window in cup workspace.")]
+        public Vector3 aimPosIsaacMin = new Vector3(0.28f, -0.08f, 0.50f);
+        public Vector3 aimPosIsaacMax = new Vector3(0.36f, 0.08f, 0.58f);
+        public float throwSpeedMin = 0.45f;
+        public float throwSpeedMax = 0.75f;
+        [System.Obsolete("Speed-based toss; kept for serialized scenes.")]
         public float throwFlightSecondsMin = 0.88f;
+        [System.Obsolete("Speed-based toss; kept for serialized scenes.")]
         public float throwFlightSecondsMax = 1.15f;
         [System.Obsolete("Ballistic launch uses aim + flight time; kept for serialized scenes.")]
         public Vector3 throwVelIsaacMin = new Vector3(-0.6f, -0.15f, 0.8f);
@@ -172,6 +178,16 @@ namespace XRPlayground.Policies
             }
         }
 
+        void FixedUpdate()
+        {
+            // Reduced gravity so the ball floats into the cup (matches Isaac buoyancy).
+            if (running && ballBody != null && !ballBody.isKinematic)
+            {
+                float lift = (1f - ballGravityScale) * -Physics.gravity.y * ballBody.mass;
+                ballBody.AddForce(Vector3.up * lift, ForceMode.Force);
+            }
+        }
+
         void Step(float dt)
         {
             BuildObs();
@@ -204,23 +220,36 @@ namespace XRPlayground.Policies
             _gripVel = 0f;
             _prevGrip = _gripPos;
 
-            Vector3 releaseI = new Vector3(
-                Random.Range(throwPosIsaacMin.x, throwPosIsaacMax.x),
-                Random.Range(throwPosIsaacMin.y, throwPosIsaacMax.y),
-                Random.Range(throwPosIsaacMin.z, throwPosIsaacMax.z));
-            Vector3 aimI = new Vector3(
-                Random.Range(aimPosIsaacMin.x, aimPosIsaacMax.x),
-                Random.Range(aimPosIsaacMin.y, aimPosIsaacMax.y),
-                Random.Range(aimPosIsaacMin.z, aimPosIsaacMax.z));
-            aimI.z = Mathf.Max(aimI.z, releaseI.z + 0.06f);
-            float flight = Mathf.Max(0.55f, Random.Range(throwFlightSecondsMin, throwFlightSecondsMax));
-            // Isaac Z-up ballistic: v = (aim - release - 0.5 g t^2) / t, g=(0,0,-9.81)
-            Vector3 delta = aimI - releaseI;
-            Vector3 velI = delta / flight;
-            velI.z = velI.z - 0.5f * (-9.81f) * flight;
-            float speed = velI.magnitude;
-            if (speed > 3.0f)
-                velI *= 3.0f / speed;
+            Vector3 tipI = Vector3.zero;
+            int tipCount = 0;
+            if (tip1 != null) { tipI += XrFrameConverter.UnityPosToIsaac(envAnchor.InverseTransformPoint(tip1.position)); tipCount++; }
+            if (tip2 != null) { tipI += XrFrameConverter.UnityPosToIsaac(envAnchor.InverseTransformPoint(tip2.position)); tipCount++; }
+            if (tip3 != null) { tipI += XrFrameConverter.UnityPosToIsaac(envAnchor.InverseTransformPoint(tip3.position)); tipCount++; }
+            if (tipCount > 0) tipI /= tipCount;
+            Vector3 eeI = eeLink != null
+                ? XrFrameConverter.UnityPosToIsaac(envAnchor.InverseTransformPoint(eeLink.position))
+                : tipI;
+            Vector3 cupAim = 0.55f * tipI + 0.45f * eeI;
+
+            // Player-style parabolic lob: farther spawn, random, clear arc, reaction time.
+            Vector3 releaseI = cupAim + new Vector3(
+                Random.Range(0.30f, 0.50f),
+                Random.Range(-0.18f, 0.18f),
+                -Random.Range(0.02f, 0.10f));
+            Vector3 targetI = cupAim + new Vector3(
+                Random.Range(-0.05f, 0.05f),
+                Random.Range(-0.05f, 0.05f),
+                Random.Range(-0.04f, 0.04f));
+            Vector3 midI = 0.5f * (releaseI + targetI);
+            midI.z += Random.Range(0.12f, 0.22f);
+
+            float flightT = Random.Range(0.75f, 1.05f);
+            Vector3 dI = targetI - releaseI;
+            float gEff = 9.81f * ballGravityScale;
+            Vector3 gI = new Vector3(0f, 0f, -gEff);
+            Vector3 velI = dI / flightT - 0.5f * gI * flightT;
+            float linearZ = releaseI.z + dI.z * 0.5f;
+            velI.z += 2f * (midI.z - linearZ) / flightT;
 
             Vector3 posU = envAnchor.TransformPoint(XrFrameConverter.IsaacPosToUnity(releaseI));
             Vector3 velU = envAnchor.TransformDirection(XrFrameConverter.IsaacPosToUnity(velI));
@@ -282,7 +311,18 @@ namespace XRPlayground.Policies
             _obs[o++] = toBallFingers.x;
             _obs[o++] = toBallFingers.y;
             _obs[o++] = toBallFingers.z;
-            // 7+7+1+1+3+3+3+3 = 28
+
+            // Grasp geometry (matches Isaac): align + radial off-axis error.
+            Vector3 graspAxis = tip - ee;
+            float axisLen = Mathf.Max(graspAxis.magnitude, 1e-6f);
+            graspAxis /= axisLen;
+            float distEe = Mathf.Max(toBall.magnitude, 1e-6f);
+            float graspAlign = Vector3.Dot(toBall / distEe, graspAxis);
+            float ballAlong = Vector3.Dot(toBall, graspAxis);
+            float ballRadial = (toBall - graspAxis * ballAlong).magnitude;
+            _obs[o++] = graspAlign;
+            _obs[o++] = ballRadial;
+            // 7+7+1+1+3+3+3+3+1+1 = 30
         }
 
         Vector3 BallIsaacLocal()

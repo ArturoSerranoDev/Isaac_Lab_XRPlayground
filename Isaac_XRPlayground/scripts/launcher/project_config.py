@@ -96,6 +96,21 @@ TASKS: dict[str, dict[str, Any]] = {
         "bridge_port": 9091,
         "bridge_script": "scripts/bridge/run_xr_bridge_conveyor.py",
     },
+    "pick_place_table": {
+        "label": "Table Pick & Place (Agibot A2D)",
+        "subtitle": "Wall-mounted humanoid · pick pieces → bucket",
+        "tier": "Intermediate",
+        "task_id": "Template-Xrplayground-Pick-Place-Table-Direct-v0",
+        "algorithms": ["PPO"],
+        "default_algorithm": "PPO",
+        "rl_library": "rsl_rl",
+        "log_dir": "xrplayground_pick_place_table_direct",
+        "unity_policy_folder": "PickPlace",
+        "source_dir": "pick_place_table",
+        "description": "Agibot A2D right arm picks random table pieces and places them in a front bucket. IL demo recording scaffold for later.",
+        "bridge_port": 9092,
+        "bridge_script": "scripts/bridge/run_xr_bridge_pick_place.py",
+    },
 }
 
 # GPU-tuned presets for RTX 3060 Ti (8 GB)
@@ -158,6 +173,16 @@ PROFILES: dict[str, dict[str, Any]] = {
         "num_envs_play": 2,
         "num_envs_demo": 2,
         "max_iterations": 2000,
+        "headless_train": True,
+    },
+    "pick_place": {
+        "label": "Agibot pick-place",
+        "hint": "A2D table pick — moderate envs, humanoid right arm",
+        "num_envs_train": 128,
+        "num_envs_train_visual": 4,
+        "num_envs_play": 2,
+        "num_envs_demo": 2,
+        "max_iterations": 2500,
         "headless_train": True,
     },
 }

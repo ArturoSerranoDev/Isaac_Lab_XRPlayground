@@ -43,6 +43,18 @@ namespace XRPlayground.ROS
     }
 
     [Serializable]
+    public class DemoRecordData
+    {
+        public float[] obs;
+        public float[] action;
+        public string[] joint_names;
+        public float[] joint_positions;
+        public float gripper;
+        public bool grasped;
+        public int frame;
+    }
+
+    [Serializable]
     public class ConveyorObjectData
     {
         public int id;
@@ -107,9 +119,15 @@ namespace XRPlayground.ROS
         public const string ConveyorObjectsState = "/xr/conveyor/objects_state";
         public const string ConveyorSpawn = "/xr/conveyor/spawn";
 
+        public const string PickPlaceRobotState = "/xr/pick_place/robot_state";
+        public const string PickPlaceObjectsState = "/xr/pick_place/objects_state";
+        public const string PickPlaceSpawn = "/xr/pick_place/spawn";
+        public const string PickPlaceDemoRecord = "/xr/pick_place/demo_record";
+
         public const string ModeMirror = "mirror";
         public const string ModeAwaitThrow = "await_throw";
         public const string ModeAwaitSpawn = "await_spawn";
+        public const string ModeRecordDemo = "record_demo";
     }
 
     public static class RosJson
@@ -169,6 +187,15 @@ namespace XRPlayground.ROS
         }
 
         [Serializable]
+        class DemoRecordEnvelope
+        {
+            public string topic;
+            public double stamp_s;
+            public string frame_id;
+            public DemoRecordData data;
+        }
+
+        [Serializable]
         class ConveyorObjectsEnvelope
         {
             public string topic;
@@ -225,6 +252,18 @@ namespace XRPlayground.ROS
             return JsonUtility.ToJson(env);
         }
 
+        public static string SerializeDemoRecord(DemoRecordData data, string frameId = "unity")
+        {
+            var env = new DemoRecordEnvelope
+            {
+                topic = RosTopics.PickPlaceDemoRecord,
+                stamp_s = Time.realtimeSinceStartupAsDouble,
+                frame_id = frameId,
+                data = data
+            };
+            return JsonUtility.ToJson(env);
+        }
+
         public static bool TryParseRobotState(string json, out RobotStateData data, out string topic)
         {
             data = null;
@@ -236,7 +275,9 @@ namespace XRPlayground.ROS
                     return false;
                 topic = env.topic;
                 data = env.data;
-                return topic == RosTopics.RobotState || topic == RosTopics.ConveyorRobotState;
+                return topic == RosTopics.RobotState
+                    || topic == RosTopics.ConveyorRobotState
+                    || topic == RosTopics.PickPlaceRobotState;
             }
             catch
             {

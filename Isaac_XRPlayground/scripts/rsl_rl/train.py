@@ -92,7 +92,8 @@ if version.parse(installed_version) < version.parse(RSL_RL_VERSION):
 
 TASK_UNITY = {
     "Template-Xrplayground-Conveyor-Color-Direct-v0": ("Conveyor", 66, 7, 4.0),
-    "Template-Xrplayground-Ball-Catch-Direct-v0": ("BallCatch", 28, 8, 5.0),
+    "Template-Xrplayground-Ball-Catch-Direct-v0": ("BallCatch", 30, 8, 5.0),
+    "Template-Xrplayground-Pick-Place-Table-Direct-v0": ("PickPlace", 30, 8, 5.0),
 }
 
 
