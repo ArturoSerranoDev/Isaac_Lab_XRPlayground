@@ -1,0 +1,13 @@
+﻿{
+    "action_scale":  1.5,
+    "runtime":  "unity_inference_engine",
+    "checkpoint":  "logs/rsl_rl/xrplayground_balance_bot_direct/2026-08-15_17-16-17/model_1998.pt",
+    "curriculum":  "stage 1 forced (2 balls); resume from 2026-08-15_17-00-25/model_999.pt",
+    "frame":  "isaac_env",
+    "best_ckpt_by_reward":  "model_1650.pt",
+    "action_dim":  2,
+    "task_id":  "Template-Xrplayground-Balance-Bot-Direct-v0",
+    "obs_dim":  20,
+    "dt":  0.016666666666666666,
+    "notes":  "Obs layout (20-D): roll, pitch, droll*scale, dpitch*scale, ball0_rel(3), ball0_vel(3), ball0_active, ball1_rel(3), ball1_vel(3), ball1_active, n_balls, curriculum_stage. 2-ball resume 999-\u003e1998; last50 mean_reward~1281, ep_len=479 (full), hold_rate=1 drop_rate=0 n_balls=2. mean_hold_steps metric stays 0 (dual-ball near-center gate too strict) — use ep_len/drop_rate. Set Unity curriculumStage=1 for 2 balls."
+}

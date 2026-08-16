@@ -11,16 +11,23 @@ import threading
 from collections import deque
 from typing import Any, Callable
 
-from .protocol import encode_message, try_decode_buffer
+from .protocol import MAX_MESSAGE_BYTES, encode_message, try_decode_buffer
 
 
 class RosTcpServer:
     """Simple multi-client TCP hub (Isaac side)."""
 
-    def __init__(self, host: str, port: int, on_message: Callable[[dict[str, Any]], None] | None = None):
+    def __init__(
+        self,
+        host: str,
+        port: int,
+        on_message: Callable[[dict[str, Any]], None] | None = None,
+        max_message_bytes: int = MAX_MESSAGE_BYTES,
+    ):
         self.host = host
         self.port = port
         self.on_message = on_message
+        self.max_message_bytes = max_message_bytes
         self._sock: socket.socket | None = None
         self._clients: list[socket.socket] = []
         self._buffers: dict[socket.socket, bytearray] = {}
@@ -62,7 +69,7 @@ class RosTcpServer:
                 self._sock = None
 
     def broadcast(self, envelope: dict[str, Any]) -> None:
-        raw = encode_message(envelope)
+        raw = encode_message(envelope, max_message_bytes=self.max_message_bytes)
         dead: list[socket.socket] = []
         with self._lock:
             clients = list(self._clients)
@@ -144,7 +151,18 @@ class RosTcpServer:
             buf = self._buffers.setdefault(conn, bytearray())
             buf.extend(chunk)
             while True:
-                msg, buf = try_decode_buffer(buf)
+                try:
+                    msg, buf = try_decode_buffer(buf, max_message_bytes=self.max_message_bytes)
+                except ValueError as exc:
+                    print(f"[XR Bridge] Dropping client with invalid frame: {exc}")
+                    if conn in self._clients:
+                        self._clients.remove(conn)
+                    self._buffers.pop(conn, None)
+                    try:
+                        conn.close()
+                    except OSError:
+                        pass
+                    break
                 self._buffers[conn] = buf
                 if msg is None:
                     break

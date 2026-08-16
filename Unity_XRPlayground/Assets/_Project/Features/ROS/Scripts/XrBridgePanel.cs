@@ -20,6 +20,7 @@ namespace XRPlayground.ROS
         public BallPoseFollower ballFollower;
         public KinovaLinkPoseFollower robotFollower;
         public BallCatchOfflinePolicyController offlinePolicy;
+        public BridgeHealthMonitor healthMonitor;
 
         [Header("UI (classic uGUI)")]
         public Text statusText;
@@ -42,6 +43,8 @@ namespace XRPlayground.ROS
             WireButtons();
             if (client != null)
                 client.MessageReceived += OnMessage;
+            if (healthMonitor == null)
+                healthMonitor = FindAnyObjectByType<BridgeHealthMonitor>();
             RefreshUi();
         }
 
@@ -78,6 +81,8 @@ namespace XRPlayground.ROS
                 Debug.LogWarning("XrBridgePanel: assign offlinePolicy (BallCatchOfflinePolicyController).", this);
                 return;
             }
+            if (offlinePolicy.policyRunner != null)
+                offlinePolicy.policyRunner.captureActivations = true;
             offlinePolicy.TogglePolicy();
             RefreshUi();
         }
@@ -257,6 +262,7 @@ namespace XRPlayground.ROS
                 (offline ? "Mode: OFFLINE ONNX (no Isaac)" : connected ? "Bridge: CONNECTED" : "Bridge: disconnected") +
                 $"\nIsaac phase: {_isaacPhase}" +
                 $"\nPolicy: {(_policyLoaded ? "loaded" : "none")}" +
+                $"\n{(healthMonitor != null ? healthMonitor.CompactSummary : "Checks: health monitor missing")}" +
                 $"\n{tip}";
         }
     }

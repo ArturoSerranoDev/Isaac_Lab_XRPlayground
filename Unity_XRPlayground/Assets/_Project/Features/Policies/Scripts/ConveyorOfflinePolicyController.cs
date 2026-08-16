@@ -9,10 +9,11 @@ namespace XRPlayground.Policies
     /// Assign cube slots + ModelAsset; press Start from the UI button.
     /// </summary>
     [DisallowMultipleComponent]
-    public sealed class ConveyorOfflinePolicyController : MonoBehaviour
+    public sealed class ConveyorOfflinePolicyController : MonoBehaviour, IPolicyMetadataConsumer
     {
         public const int ObsDim = 66;
         public const int ActionDim = 7;
+        const string TaskId = "Template-Xrplayground-Conveyor-Color-Direct-v0";
 
         [Header("Policy")]
         public OnnxPolicyRunner policyRunner;
@@ -113,13 +114,12 @@ namespace XRPlayground.Policies
                 return;
             }
 
-            if (policyRunner.expectedObsDim != ObsDim)
-                policyRunner.expectedObsDim = ObsDim;
-            if (policyRunner.expectedActionDim != ActionDim)
-                policyRunner.expectedActionDim = ActionDim;
-            if (!policyRunner.TryLoad())
+            policyRunner.expectedTaskId = TaskId;
+            string contractError = "ONNX load failed";
+            if (!policyRunner.TryLoad() || !policyRunner.MatchesContract(TaskId, ObsDim, ActionDim, out contractError))
             {
-                StatusLine = "model load failed";
+                StatusLine = "policy contract mismatch";
+                Debug.LogError($"ConveyorOfflinePolicyController: {contractError}", this);
                 return;
             }
 
@@ -144,6 +144,14 @@ namespace XRPlayground.Policies
                 StopPolicy();
             else
                 StartPolicy();
+        }
+
+        public void ApplyPolicyMetadata(PolicyMetadata metadata)
+        {
+            if (metadata.action_scale > 0f)
+                actionScale = metadata.action_scale;
+            if (metadata.dt > 0f)
+                controlDt = metadata.dt;
         }
 
         void Update()

@@ -109,8 +109,11 @@ namespace XRPlayground.ROS.Editor
             Undo.RegisterCreatedObjectUndo(bridgeGo, BridgeName);
             var client = bridgeGo.GetComponent<RosTcpClient>() ?? Undo.AddComponent<RosTcpClient>(bridgeGo);
             client.host = "127.0.0.1";
-            client.port = 9091;
+            StationRegistry.ApplyTo(client, "conveyor_color");
             client.autoConnect = false;
+            var health = bridgeGo.GetComponent<BridgeHealthMonitor>() ?? Undo.AddComponent<BridgeHealthMonitor>(bridgeGo);
+            health.stationId = "conveyor_color";
+            health.client = client;
             var hb = bridgeGo.GetComponent<RosHeartbeatPublisher>() ?? Undo.AddComponent<RosHeartbeatPublisher>(bridgeGo);
             hb.client = client;
 
@@ -139,6 +142,7 @@ namespace XRPlayground.ROS.Editor
             offline.cubeSlots = slots;
             offline.binAnchor = station.transform.Find("SortTable");
             offline.AutoBindLinks();
+            health.policyRunner = runner;
 
             EnsureEventSystem();
             var panel = EnsureWorldUi(station.transform.position);
@@ -147,11 +151,15 @@ namespace XRPlayground.ROS.Editor
             panel.objectFollower = objFollower;
             panel.robotFollower = robot.GetComponent<RobotLinkPoseFollower>();
             panel.offlinePolicy = offline;
+            panel.healthMonitor = health;
             panel.mode = ConveyorBridgeUiMode.MirrorIsaac;
+
+            runner.captureActivations = true;
+            PolicyNetworkPanelSetup.SetupConveyor();
 
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
             Debug.Log(
-                "XRPlayground: Conveyor Color Station B ready (UR10e + Robotiq, bridge :9091, offline ONNX). " +
+                "XRPlayground: Conveyor Color Station B ready (UR10e + Robotiq, bridge :9091, offline ONNX + Network panel). " +
                 "Assign Assets/_Project/Features/Policies/Conveyor/policy.onnx to OnnxPolicyRunner.modelAsset, " +
                 "then Play → Start Offline Policy.");
         }
@@ -184,10 +192,10 @@ namespace XRPlayground.ROS.Editor
                 return;
             }
 
-            client.port = 9091;
+            StationRegistry.ApplyTo(client, "conveyor_color");
             WireRobotFollower(robot, station.transform, client);
 
-            var panel = Object.FindFirstObjectByType<ConveyorBridgePanel>();
+            var panel = Object.FindAnyObjectByType<ConveyorBridgePanel>();
             if (panel != null)
             {
                 panel.client = client;

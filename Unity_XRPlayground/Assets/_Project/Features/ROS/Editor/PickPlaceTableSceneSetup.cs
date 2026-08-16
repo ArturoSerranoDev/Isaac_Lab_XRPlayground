@@ -85,8 +85,11 @@ namespace XRPlayground.ROS.Editor
             Undo.RegisterCreatedObjectUndo(bridgeGo, BridgeName);
             var client = bridgeGo.GetComponent<RosTcpClient>() ?? Undo.AddComponent<RosTcpClient>(bridgeGo);
             client.host = "127.0.0.1";
-            client.port = 9092;
+            StationRegistry.ApplyTo(client, "pick_place_table");
             client.autoConnect = false;
+            var health = bridgeGo.GetComponent<BridgeHealthMonitor>() ?? Undo.AddComponent<BridgeHealthMonitor>(bridgeGo);
+            health.stationId = "pick_place_table";
+            health.client = client;
             var hb = bridgeGo.GetComponent<RosHeartbeatPublisher>() ?? Undo.AddComponent<RosHeartbeatPublisher>(bridgeGo);
             hb.client = client;
 
@@ -112,6 +115,7 @@ namespace XRPlayground.ROS.Editor
             il.followGrabbedPiece = true;
 
             offline.policyRunner = runner;
+            health.policyRunner = runner;
             offline.jointDriver = joints;
             offline.envAnchor = station.transform;
             offline.linkMap = robot.GetComponent<AgibotLinkMap>();
@@ -134,11 +138,14 @@ namespace XRPlayground.ROS.Editor
             panel.demoRecorder = il;
             panel.mode = PickPlaceBridgeUiMode.MirrorIsaac;
 
+            runner.captureActivations = true;
+            PolicyNetworkPanelSetup.SetupPickPlace();
+
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
             bool hasUsd = AssetDatabase.LoadAssetAtPath<GameObject>(UsdPath) != null;
             bool hasOnnx = runner.modelAsset != null;
             Debug.Log(
-                "XRPlayground: Pick Place Station C ready (Agibot A2D, bridge :9092, IL recorder). " +
+                "XRPlayground: Pick Place Station C ready (Agibot A2D, bridge :9092, IL recorder + Network panel). " +
                 (hasUsd ? "USD loaded. " : "Using kinematic PLACEHOLDER robot (copy A2D_physics.usd). ") +
                 (hasOnnx ? "policy.onnx assigned. " : "Assign Policies/PickPlace/policy.onnx when trained. ") +
                 "Play → Record IL Demo (grab Piece_0) or Start Offline Policy.");

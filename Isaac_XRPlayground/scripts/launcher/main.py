@@ -724,7 +724,20 @@ class XRLauncher:
 
     def action_open_task_source(self) -> None:
         task = self.get_task()
-        open_path(TASKS_SOURCE / task["source_dir"])
+        root_name = str(task.get("tasks_root", "direct"))
+        src = str(task.get("source_dir", ""))
+        if root_name == "manager_based":
+            open_path(
+                ISAAC_PROJECT_ROOT
+                / "source"
+                / "XRPlayground"
+                / "XRPlayground"
+                / "tasks"
+                / "manager_based"
+                / src
+            )
+        else:
+            open_path(TASKS_SOURCE / src)
         pause("\nOpened task source folder.")
 
     def action_export_onnx(self) -> None:
@@ -734,7 +747,7 @@ class XRLauncher:
         self.config["task_key"] = task_key
         task = self.get_task(task_key)
         if self.rl_library(task) != "rsl_rl":
-            print(Style.paint("\n  ONNX export requires an RSL-RL task (ball_catch / conveyor_color).", Style.RED))
+            print(Style.paint("\n  ONNX export requires an RSL-RL task (ball_catch / conveyor / pick_place / balance_bot / spot_loco / spot_follow).", Style.RED))
             pause()
             return
 

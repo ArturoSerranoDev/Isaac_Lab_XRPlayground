@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -17,6 +18,8 @@ namespace XRPlayground.ROS
         public int port = 9090;
         public bool autoConnect = true;
         public float reconnectSeconds = 2f;
+        [Min(1024)]
+        public int maxMessageBytes = 1 << 20;
 
         public event Action<string> MessageReceived;
 
@@ -97,7 +100,7 @@ namespace XRPlayground.ROS
                                 break;
                             for (int i = 0; i < n; i++)
                                 assemble.Add(readBuf[i]);
-                            while (TryPopMessage(assemble, out var json))
+                            while (TryPopMessage(assemble, Math.Max(1024, maxMessageBytes), out var json))
                                 _inbox.Enqueue(json);
                         }
                         else
@@ -123,12 +126,17 @@ namespace XRPlayground.ROS
             _connected = false;
         }
 
-        static bool TryPopMessage(System.Collections.Generic.List<byte> buf, out string json)
+        static bool TryPopMessage(System.Collections.Generic.List<byte> buf, int maxFrameBytes, out string json)
         {
             json = null;
             if (buf.Count < 4)
                 return false;
             int len = BitConverter.ToInt32(buf.GetRange(0, 4).ToArray(), 0);
+            if (len <= 0 || len > maxFrameBytes)
+            {
+                buf.Clear();
+                throw new InvalidDataException($"Invalid ROS TCP frame length: {len}");
+            }
             if (buf.Count < 4 + len)
                 return false;
             var payload = buf.GetRange(4, len).ToArray();

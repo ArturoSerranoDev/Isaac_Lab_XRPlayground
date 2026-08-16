@@ -54,6 +54,7 @@ Unity uses `XrFrameConverter` (Isaac xyz → Unity xzy): robot (−0.78,0,0), ta
 2. Menu: **XRPlayground → Setup Pick Place Table Station**
 3. Assign `Policies/PickPlace/policy.onnx` to `OnnxPolicyRunner`
 4. Play → **Start Offline Policy**
+5. **Network viz:** **XRPlayground → Setup Policy Network Panel (PickPlace)** (also created by station setup). Placeholder until ONNX exists; then LIVE activations (`30 → 256 → 128 → 64 → 8` typical). See `Unity_XRPlayground/Assets/_Project/Features/Policies/NETWORK_VIZ.md`.
 
 Body names follow USD prims (`Link1_r`…`Link7_r`, `right_gripper_center`, …) — see `names_agibot.py` / `AgibotLinkMap`.
 

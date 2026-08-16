@@ -77,6 +77,26 @@ namespace XRPlayground.ROS
     }
 
     [Serializable]
+    public class BalanceBotBallData
+    {
+        public int id;
+        public bool active;
+        public float[] position;
+        public float[] orientation_xyzw;
+        public float[] linear_velocity;
+        public float[] angular_velocity;
+    }
+
+    [Serializable]
+    public class BalanceBotBallsStateData
+    {
+        public BalanceBotBallData[] balls;
+        public int n_balls;
+        public int curriculum_stage;
+        public string source;
+    }
+
+    [Serializable]
     public class ConveyorSpawnData
     {
         public int color;
@@ -123,6 +143,12 @@ namespace XRPlayground.ROS
         public const string PickPlaceObjectsState = "/xr/pick_place/objects_state";
         public const string PickPlaceSpawn = "/xr/pick_place/spawn";
         public const string PickPlaceDemoRecord = "/xr/pick_place/demo_record";
+
+        public const string BalanceBotRobotState = "/xr/balance_bot/robot_state";
+        public const string BalanceBotBallsState = "/xr/balance_bot/balls_state";
+
+        public const string SpotRobotState = "/xr/spot/robot_state";
+        public const string SpotPlayerPose = "/xr/spot/player_pose";
 
         public const string ModeMirror = "mirror";
         public const string ModeAwaitThrow = "await_throw";
@@ -264,6 +290,31 @@ namespace XRPlayground.ROS
             return JsonUtility.ToJson(env);
         }
 
+        [Serializable]
+        class PoseEnvelope
+        {
+            public string topic;
+            public double stamp_s;
+            public string frame_id;
+            public PoseData data;
+        }
+
+        public static string SerializePose(string topic, Vector3 isaacPos, Quaternion isaacRot, string frameId = "isaac_env")
+        {
+            var env = new PoseEnvelope
+            {
+                topic = topic,
+                stamp_s = Time.realtimeSinceStartupAsDouble,
+                frame_id = frameId,
+                data = new PoseData
+                {
+                    position = XrFrameConverter.ToArray(isaacPos),
+                    orientation_xyzw = XrFrameConverter.ToXyzw(isaacRot),
+                }
+            };
+            return JsonUtility.ToJson(env);
+        }
+
         public static bool TryParseRobotState(string json, out RobotStateData data, out string topic)
         {
             data = null;
@@ -277,7 +328,9 @@ namespace XRPlayground.ROS
                 data = env.data;
                 return topic == RosTopics.RobotState
                     || topic == RosTopics.ConveyorRobotState
-                    || topic == RosTopics.PickPlaceRobotState;
+                    || topic == RosTopics.PickPlaceRobotState
+                    || topic == RosTopics.BalanceBotRobotState
+                    || topic == RosTopics.SpotRobotState;
             }
             catch
             {
@@ -309,6 +362,32 @@ namespace XRPlayground.ROS
             {
                 var env = JsonUtility.FromJson<ConveyorObjectsEnvelope>(json);
                 if (env == null || env.data == null || env.topic != RosTopics.ConveyorObjectsState)
+                    return false;
+                data = env.data;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        [Serializable]
+        class BalanceBotBallsEnvelope
+        {
+            public string topic;
+            public double stamp_s;
+            public string frame_id;
+            public BalanceBotBallsStateData data;
+        }
+
+        public static bool TryParseBalanceBotBallsState(string json, out BalanceBotBallsStateData data)
+        {
+            data = null;
+            try
+            {
+                var env = JsonUtility.FromJson<BalanceBotBallsEnvelope>(json);
+                if (env == null || env.data == null || env.topic != RosTopics.BalanceBotBallsState)
                     return false;
                 data = env.data;
                 return true;

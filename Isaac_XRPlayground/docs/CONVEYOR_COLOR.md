@@ -73,6 +73,7 @@ Use `--checkpoint=...` for a trained policy. For XR with a headset, prefer `--no
 4. Optional: **XRPlayground → Audit UR10e Hierarchy**
 5. Play → Connect → Mirror (or Await spawn + Spawn R/G/B)
 6. **Offline ONNX (no Isaac):** assign `Policies/Conveyor/policy.onnx` to `OnnxPolicyRunner`, then **Start Offline Policy** on the world UI
+7. **Network viz:** **XRPlayground → Setup Policy Network Panel (Conveyor)** (also created by station setup). Idle until ONNX is assigned; then LIVE activations (`66 → 256 → 128 → 64 → 7` typical). See `Unity_XRPlayground/Assets/_Project/Features/Policies/NETWORK_VIZ.md`.
 
 ## Files
 

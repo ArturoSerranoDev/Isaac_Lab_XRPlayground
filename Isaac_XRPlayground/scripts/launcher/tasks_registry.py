@@ -12,7 +12,11 @@ from pathlib import Path
 from typing import Any
 
 from .project_config import CHECKPOINT_SUFFIXES, ISAAC_PROJECT_ROOT, TASKS, TASKS_SOURCE
+
+TASKS_ROOT = ISAAC_PROJECT_ROOT / "source" / "XRPlayground" / "XRPlayground" / "tasks"
+MANAGER_TASKS_SOURCE = TASKS_ROOT / "manager_based"
 from .scaffold_task import load_user_task_metadata
+from .station_manifest import apply_station_metadata
 
 GYM_ID_PATTERN = re.compile(r"""id\s*=\s*["']([^"']+)["']""")
 LOG_DIR_PATTERN = re.compile(r"""directory:\s*["']([^"']+)["']""")
@@ -91,14 +95,21 @@ def discover_tasks() -> dict[str, dict[str, Any]]:
                 f"Training environment registered as {task_id}.",
             ),
         }
-        for bridge_key in ("bridge_port", "bridge_script"):
-            if bridge_key in manual:
-                discovered[key][bridge_key] = manual[bridge_key]
+        discovered[key] = apply_station_metadata(discovered[key])
 
     # Keep manually registered tasks even if folder naming differs
     for key, manual in TASKS.items():
         if key not in discovered and manual.get("task_id"):
-            discovered[key] = dict(manual)
+            entry = dict(manual)
+            # Resolve manager_based package folders for Spot etc.
+            root_name = str(manual.get("tasks_root", "direct"))
+            src = str(manual.get("source_dir", key))
+            pkg = TASKS_ROOT / root_name / src
+            if pkg.is_dir():
+                entry["source_dir"] = src
+                entry["tasks_root"] = root_name
+                entry["package_path"] = str(pkg)
+            discovered[key] = apply_station_metadata(entry)
 
     return discovered
 

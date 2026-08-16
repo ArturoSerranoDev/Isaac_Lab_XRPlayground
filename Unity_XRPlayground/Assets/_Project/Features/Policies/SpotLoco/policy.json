@@ -1,0 +1,11 @@
+{
+  "task_id": "Template-Xrplayground-Spot-Loco-Walk-v0",
+  "obs_dim": 48,
+  "action_dim": 12,
+  "action_scale": 0.2,
+  "dt": 0.02,
+  "frame": "isaac_env",
+  "runtime": "unity_inference_engine",
+  "checkpoint": "logs/rsl_rl/xrplayground_spot_loco/2026-08-15_20-54-35/model_2499.pt",
+  "notes": "SpotLoco Walk after Stand resume. Obs(48): base_lin_vel(3), base_ang_vel(3), projected_gravity(3), velocity_commands(3), joint_pos_rel(12), joint_vel_rel(12), last_action(12). Actions: joint pos offset * 0.2 + default. Stand 2026-08-15_19-08-48; Walk 2026-08-15_19-33-05 then 2026-08-15_20-54-35."
+}

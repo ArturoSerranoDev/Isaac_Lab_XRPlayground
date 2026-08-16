@@ -93,6 +93,10 @@ if version.parse(installed_version) < version.parse(RSL_RL_VERSION):
 TASK_UNITY = {
     "Template-Xrplayground-Conveyor-Color-Direct-v0": ("Conveyor", 66, 7, 4.0),
     "Template-Xrplayground-Ball-Catch-Direct-v0": ("BallCatch", 30, 8, 5.0),
+    "Template-Xrplayground-Ball-Catch-Wrap-v0": ("BallCatch", 30, 8, 5.0),
+    "Template-Xrplayground-Ball-Catch-Throw-A-v0": ("BallCatch", 30, 8, 5.0),
+    "Template-Xrplayground-Ball-Catch-Throw-B-v0": ("BallCatch", 30, 8, 5.0),
+    "Template-Xrplayground-Ball-Catch-Throw-v0": ("BallCatch", 30, 8, 5.0),
     "Template-Xrplayground-Pick-Place-Table-Direct-v0": ("PickPlace", 30, 8, 5.0),
 }
 
@@ -120,7 +124,7 @@ def _export_onnx(runner, log_dir: str, task: str) -> None:
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(sidecar, f, indent=2)
     onnx_path = os.path.join(export_dir, "policy.onnx")
-    print(f"[INFO] ONNX exported → {onnx_path}")
+    print(f"[INFO] ONNX exported -> {onnx_path}")
 
     if not args_cli.no_copy_to_unity and unity_folder != "Unknown":
         monorepo = Path(__file__).resolve().parents[3]
@@ -128,7 +132,7 @@ def _export_onnx(runner, log_dir: str, task: str) -> None:
         dest.mkdir(parents=True, exist_ok=True)
         shutil.copy2(onnx_path, dest / "policy.onnx")
         shutil.copy2(json_path, dest / "policy.json")
-        print(f"[INFO] Copied to Unity → {dest}")
+        print(f"[INFO] Copied to Unity -> {dest}")
 
 
 @hydra_task_config(args_cli.task, args_cli.agent)

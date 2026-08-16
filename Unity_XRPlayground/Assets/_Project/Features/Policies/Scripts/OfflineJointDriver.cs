@@ -42,6 +42,9 @@ namespace XRPlayground.Policies
         Node[] _nodes;
         float[] _restJoints;
         float[] _pending;
+        Vector3 _rootPosIsaac;
+        Quaternion _rootRotIsaac;
+        bool _hasRootPoseOverride;
         bool _dirty;
 
         /// <summary>True after a successful Bind* (kinematic chain captured).</summary>
@@ -91,6 +94,17 @@ namespace XRPlayground.Policies
                 _pending = new float[angles.Length];
             System.Array.Copy(angles, _pending, angles.Length);
             _dirty = true;
+        }
+
+        /// <summary>
+        /// Sets the absolute Isaac-world pose used as the root of the next FK solve.
+        /// This keeps every visual link attached when an offline locomotion policy moves the body.
+        /// </summary>
+        public void SetRootPoseIsaac(Vector3 position, Quaternion rotation)
+        {
+            _rootPosIsaac = position;
+            _rootRotIsaac = rotation;
+            _hasRootPoseOverride = true;
         }
 
         public bool TryBindByNames(Transform searchRoot, string[] linkNames, Vector3 defaultAxis)
@@ -221,6 +235,122 @@ namespace XRPlayground.Policies
             CaptureIsaacRestFromUnity();
         }
 
+        /// <param name="force">
+        /// When false and already bound, keep the existing chain/rest (do not re-capture).
+        /// </param>
+        public void BindBalanceBot(BalanceBotLinkMap map, Transform anchor, bool force = false)
+        {
+            envAnchor = anchor != null ? anchor : envAnchor;
+            if (map != null)
+                map.Rebuild();
+
+            if (IsBound && !force)
+                return;
+
+            // Isaac default: level tray [roll, pitch] = [0, 0]
+            _restJoints = new[] { 0f, 0f };
+
+            // Isaac axes: roll about +X, pitch about +Y
+            var x = Vector3.right;
+            var y = Vector3.up;
+            var list = new List<Node>(4);
+            Add(list, map, "base_link", -1, -1, 0f, x);
+            Add(list, map, "roll_link", IndexOf(list, "base_link"), 0, 1f, x);
+            Add(list, map, "tray_link", IndexOf(list, "roll_link"), 1, 1f, y);
+            _nodes = list.ToArray();
+            FillLegacyJoints();
+            CaptureIsaacRestFromUnity();
+        }
+
+        /// <param name="force">
+        /// When false and already bound, keep the existing chain/rest (do not re-capture).
+        /// </param>
+        public void BindSpot(SpotLinkMap map, Transform anchor, bool force = false)
+        {
+            envAnchor = anchor != null ? anchor : envAnchor;
+            if (map != null)
+                map.Rebuild();
+
+            if (IsBound && !force)
+                return;
+
+            // The imported Spot USD is a zero-joint bind pose. Policy actions and
+            // bridge joint positions are absolute Isaac joint angles, so FK deltas
+            // are measured from zero rather than the standing command.
+            _restJoints = new[]
+            {
+                0f, 0f, 0f,
+                0f, 0f, 0f,
+                0f, 0f, 0f,
+                0f, 0f, 0f,
+            };
+
+            // Spot USD: hx about +X (abduction), hy/kn about +Y
+            var x = Vector3.right;
+            var y = Vector3.up;
+            var list = new List<Node>(20);
+            Add(list, map, "body", -1, -1, 0f, x);
+            // Isaac's Spot action manager orders all hip-X joints, then hip-Y, then knees.
+            AddLeg(list, map, "fl", 0, 4, 8, x, y);
+            AddLeg(list, map, "fr", 1, 5, 9, x, y);
+            AddLeg(list, map, "hl", 2, 6, 10, x, y);
+            AddLeg(list, map, "hr", 3, 7, 11, x, y);
+            _nodes = list.ToArray();
+            FillLegacyJoints();
+            CaptureIsaacRestFromUnity();
+        }
+
+        void AddLeg(
+            List<Node> list,
+            SpotLinkMap map,
+            string prefix,
+            int hipJoint,
+            int upperLegJoint,
+            int lowerLegJoint,
+            Vector3 x,
+            Vector3 y
+        )
+        {
+            string hip = prefix + "_hip";
+            string uleg = prefix + "_uleg";
+            string lleg = prefix + "_lleg";
+            string foot = prefix + "_foot";
+            Add(list, map, hip, IndexOf(list, "body"), hipJoint, 1f, x);
+            Add(list, map, uleg, IndexOf(list, hip), upperLegJoint, 1f, y);
+            Add(list, map, lleg, IndexOf(list, uleg), lowerLegJoint, 1f, y);
+            Add(list, map, foot, IndexOf(list, lleg), -1, 0f, y);
+        }
+
+        void Add(List<Node> list, SpotLinkMap map, string name, int parent, int joint, float mimic, Vector3 axis)
+        {
+            Transform t = null;
+            map?.TryGet(name, out t);
+            list.Add(new Node
+            {
+                name = name,
+                parent = parent,
+                joint = joint,
+                mimic = mimic,
+                axisIsaac = axis,
+                link = t,
+            });
+        }
+
+        void Add(List<Node> list, BalanceBotLinkMap map, string name, int parent, int joint, float mimic, Vector3 axis)
+        {
+            Transform t = null;
+            map?.TryGet(name, out t);
+            list.Add(new Node
+            {
+                name = name,
+                parent = parent,
+                joint = joint,
+                mimic = mimic,
+                axisIsaac = axis,
+                link = t,
+            });
+        }
+
         void Add(List<Node> list, AgibotLinkMap map, string name, int parent, int joint, float mimic, Vector3 axis)
         {
             Transform t = null;
@@ -320,8 +450,8 @@ namespace XRPlayground.Policies
                 var n = _nodes[i];
                 if (n.parent < 0)
                 {
-                    pos[i] = n.restPosIsaac;
-                    rot[i] = n.restRotIsaac;
+                    pos[i] = _hasRootPoseOverride ? _rootPosIsaac : n.restPosIsaac;
+                    rot[i] = _hasRootPoseOverride ? _rootRotIsaac : n.restRotIsaac;
                 }
                 else
                 {

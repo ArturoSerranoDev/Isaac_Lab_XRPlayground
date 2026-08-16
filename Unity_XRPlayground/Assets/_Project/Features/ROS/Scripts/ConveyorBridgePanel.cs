@@ -20,6 +20,7 @@ namespace XRPlayground.ROS
         public ConveyorObjectFollower objectFollower;
         public RobotLinkPoseFollower robotFollower;
         public ConveyorOfflinePolicyController offlinePolicy;
+        public BridgeHealthMonitor healthMonitor;
 
         public Text statusText;
         public Text modeText;
@@ -46,6 +47,8 @@ namespace XRPlayground.ROS
             WireButtons();
             if (client != null)
                 client.MessageReceived += OnMessage;
+            if (healthMonitor == null)
+                healthMonitor = FindAnyObjectByType<BridgeHealthMonitor>();
             RefreshUi();
         }
 
@@ -230,6 +233,7 @@ namespace XRPlayground.ROS
             statusText.text =
                 (offline ? "Mode: OFFLINE ONNX (no Isaac)" : connected ? "Bridge: CONNECTED :9091" : "Bridge: disconnected") +
                 $"\nPhase: {_phase}  Policy: {(_policyLoaded ? "loaded" : "none")}" +
+                $"\n{(healthMonitor != null ? healthMonitor.CompactSummary : "Checks: health monitor missing")}" +
                 $"\n{tip}";
         }
     }

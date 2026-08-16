@@ -5,7 +5,7 @@
   "action_scale": 5.0,
   "dt": 0.016666666666666666,
   "frame": "isaac_env",
-  "checkpoint": "C:\\PROYECTOS PERSONALES\\ISAAC_SIM\\Isaac_Lab_XRPlayground\\Isaac_XRPlayground\\logs\\rsl_rl\\xrplayground_ball_catch_direct\\2026-08-15_14-15-30\\model_700.pt",
+  "checkpoint": "C:\\PROYECTOS PERSONALES\\ISAAC_SIM\\Isaac_Lab_XRPlayground\\Isaac_XRPlayground\\logs\\rsl_rl\\xrplayground_ball_catch_direct\\2026-08-15_16-09-26\\model_200.pt",
   "runtime": "unity_inference_engine",
   "notes": "Obs must match Isaac DirectRL policy observation layout. Actions are mean (deterministic)."
 }

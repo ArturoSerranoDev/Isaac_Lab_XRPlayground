@@ -28,8 +28,12 @@ namespace XRPlayground.ROS.Editor
 
             var client = bridgeGo.GetComponent<RosTcpClient>() ?? Undo.AddComponent<RosTcpClient>(bridgeGo);
             client.host = "127.0.0.1";
-            client.port = 9090;
+            StationRegistry.ApplyTo(client, "ball_catch");
             client.autoConnect = false; // user connects from world UI
+
+            var health = bridgeGo.GetComponent<BridgeHealthMonitor>() ?? Undo.AddComponent<BridgeHealthMonitor>(bridgeGo);
+            health.stationId = "ball_catch";
+            health.client = client;
 
             var hb = bridgeGo.GetComponent<RosHeartbeatPublisher>() ?? Undo.AddComponent<RosHeartbeatPublisher>(bridgeGo);
             hb.client = client;
@@ -87,6 +91,7 @@ namespace XRPlayground.ROS.Editor
                 offline.ball = ball.transform;
                 offline.ballBody = ball.GetComponent<Rigidbody>();
                 offline.AutoBindLinks();
+                health.policyRunner = runner;
 
                 EnsureEventSystem();
                 var panel = EnsureWorldUi(robot.transform.position);
@@ -95,7 +100,11 @@ namespace XRPlayground.ROS.Editor
                 panel.ballFollower = followerBall;
                 panel.robotFollower = follower;
                 panel.offlinePolicy = offline;
+                panel.healthMonitor = health;
                 panel.mode = XrBridgeUiMode.MirrorIsaac;
+
+                runner.captureActivations = true;
+                PolicyNetworkPanelSetup.SetupBallCatch();
             }
             else
             {
@@ -110,7 +119,7 @@ namespace XRPlayground.ROS.Editor
 
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
             Debug.Log(
-                "XRPlayground: XR Bridge + offline ONNX ready. " +
+                "XRPlayground: XR Bridge + offline ONNX + Network panel ready. " +
                 "Assign Assets/_Project/Features/Policies/BallCatch/policy.onnx to OnnxPolicyRunner.modelAsset.");
         }
 

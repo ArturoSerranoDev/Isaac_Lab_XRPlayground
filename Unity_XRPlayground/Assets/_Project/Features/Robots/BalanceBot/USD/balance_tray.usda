@@ -1,0 +1,41 @@
+#usda 1.0
+(
+    defaultPrim = "BalanceBot"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+# Visual reference hierarchy for Balance Bot (2-DOF tray).
+# Isaac training uses procedural RigidObjects with the same prim/link names;
+# Unity builds an equivalent Transform tree via Setup Balance Bot Station.
+
+def Xform "BalanceBot" (
+    kind = "component"
+)
+{
+    def Cube "base_link" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsCollisionAPI"]
+    )
+    {
+        double size = 1
+        float3 xformOp:scale = (0.12, 0.12, 0.70)
+        float3 xformOp:translate = (0, 0, 0.35)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Xform "roll_link"
+    {
+        float3 xformOp:translate = (0, 0, 0.75)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+
+        def Cube "tray_link" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsCollisionAPI"]
+        )
+        {
+            double size = 1
+            float3 xformOp:scale = (0.60, 0.60, 0.02)
+            float3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+    }
+}

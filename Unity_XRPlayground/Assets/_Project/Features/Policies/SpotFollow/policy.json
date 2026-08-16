@@ -1,0 +1,9 @@
+{
+  "task_id": "Template-Xrplayground-Spot-Follow-v0",
+  "obs_dim": -1,
+  "action_dim": -1,
+  "action_scale": 1.0,
+  "dt": 0.016666666666666666,
+  "frame": "isaac_env",
+  "runtime": "unity_inference_engine"
+}

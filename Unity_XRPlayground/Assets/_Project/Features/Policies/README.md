@@ -5,7 +5,11 @@ Trained **RSL-RL** policies export here as `policy.onnx` + `policy.json`.
 | Folder | Task | Obs | Actions |
 |--------|------|-----|---------|
 | `Conveyor/` | Conveyor Color (UR10e) | 66 | 7 |
-| `BallCatch/` | Ball Catch (Kinova) | 28 | 8 |
+| `BallCatch/` | Ball Catch (Kinova) | 30 | 8 |
+| `PickPlace/` | Table Pick & Place (Agibot) | 30 | 8 |
+| `BalanceBot/` | Balance Bot (2-DOF tray) | 20 | 2 |
+| `SpotLoco/` | Spot stand→walk loco | 48 | 12 |
+| `SpotFollow/` | Spot HMD follow (nav) | 9 | 3 |
 
 ## Workflow
 
@@ -16,3 +20,7 @@ Trained **RSL-RL** policies export here as `policy.onnx` + `policy.json`.
 5. Play → **Start Offline Policy** on the world UI (uses cube slots / ball refs already wired).
 
 Package: local `Packages/com.unity.ai.inference` (embedded 2.3.0, patched for Unity 6.5 `EntityId`). Offline loops are kinematic approximations — good for demos, not bit-identical PhysX.
+
+## Network visualizer
+
+World-space MLP panel (activations while Offline Policy runs): see [`NETWORK_VIZ.md`](NETWORK_VIZ.md). Menu **XRPlayground → Setup Policy Network Panel (BallCatch)**.

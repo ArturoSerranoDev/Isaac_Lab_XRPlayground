@@ -8,10 +8,11 @@ namespace XRPlayground.Policies
     /// Unity-only Ball Catch loop: 30-D obs → ONNX → 8-D actions. Requires a ball Transform/Rigidbody.
     /// </summary>
     [DisallowMultipleComponent]
-    public sealed class BallCatchOfflinePolicyController : MonoBehaviour
+    public sealed class BallCatchOfflinePolicyController : MonoBehaviour, IPolicyMetadataConsumer
     {
         public const int ObsDim = 30;
         public const int ActionDim = 8;
+        const string TaskId = "Template-Xrplayground-Ball-Catch-Direct-v0";
 
         [Header("Policy")]
         public OnnxPolicyRunner policyRunner;
@@ -33,21 +34,15 @@ namespace XRPlayground.Policies
         [Tooltip("Matches Isaac robot_dof_speed_scales on gripper joints.")]
         public float gripperSpeedScale = 1.2f;
         [Tooltip("Ball gravity scale (matches Isaac buoyancy so the ball floats into the cup).")]
-        public float ballGravityScale = 0.50f;
+        public float ballGravityScale = 0.55f;
         public float dofVelocityScale = 0.1f;
         public float controlDt = 1f / 60f;
         public float gripperOpen = 0.04f;
         public float gripperClose = 1.10f;
-        [Tooltip("Isaac Z-up release box (easy lob into cup).")]
-        public Vector3 throwPosIsaacMin = new Vector3(0.40f, -0.10f, 0.55f);
-        public Vector3 throwPosIsaacMax = new Vector3(0.55f, 0.10f, 0.70f);
-        [Tooltip("Isaac Z-up aim window in cup workspace.")]
-        public Vector3 aimPosIsaacMin = new Vector3(0.28f, -0.08f, 0.50f);
-        public Vector3 aimPosIsaacMax = new Vector3(0.36f, 0.08f, 0.58f);
-        public float throwSpeedMin = 0.45f;
-        public float throwSpeedMax = 0.75f;
-        [System.Obsolete("Speed-based toss; kept for serialized scenes.")]
-        public float throwFlightSecondsMin = 0.88f;
+        [Tooltip("Episode length — matches Isaac episode_length_s.")]
+        public float episodeLengthSeconds = 6f;
+        [Tooltip("Isaac Z local height below which the ball counts as on the floor.")]
+        public float fallHeightThreshold = 0.06f;
         [System.Obsolete("Speed-based toss; kept for serialized scenes.")]
         public float throwFlightSecondsMax = 1.15f;
         [System.Obsolete("Ballistic launch uses aim + flight time; kept for serialized scenes.")]
@@ -82,6 +77,7 @@ namespace XRPlayground.Policies
         readonly float[] _obs = new float[ObsDim];
         readonly float[] _actions = new float[ActionDim];
         float _accum;
+        float _episodeTime;
         bool _followersPaused;
 
         public string StatusLine { get; private set; } = "idle";
@@ -181,11 +177,12 @@ namespace XRPlayground.Policies
                 return;
             }
 
-            policyRunner.expectedObsDim = ObsDim;
-            policyRunner.expectedActionDim = ActionDim;
-            if (!policyRunner.TryLoad())
+            policyRunner.expectedTaskId = TaskId;
+            string contractError = "ONNX load failed";
+            if (!policyRunner.TryLoad() || !policyRunner.MatchesContract(TaskId, ObsDim, ActionDim, out contractError))
             {
-                StatusLine = "model load failed";
+                StatusLine = "policy contract mismatch";
+                Debug.LogError($"BallCatchOfflinePolicyController: {contractError}", this);
                 return;
             }
 
@@ -214,6 +211,14 @@ namespace XRPlayground.Policies
                 StartPolicy();
         }
 
+        public void ApplyPolicyMetadata(PolicyMetadata metadata)
+        {
+            if (metadata.action_scale > 0f)
+                actionScale = metadata.action_scale;
+            if (metadata.dt > 0f)
+                controlDt = metadata.dt;
+        }
+
         void Update()
         {
             if (!running)
@@ -238,6 +243,18 @@ namespace XRPlayground.Policies
 
         void Step(float dt)
         {
+            _episodeTime += dt;
+            // Same reset rule as Isaac: floor drop OR episode timeout — never on near-grip.
+            Vector3 ballIsaac = BallIsaacLocal();
+            bool onFloor = ballIsaac.z < fallHeightThreshold;
+            bool timedOut = _episodeTime >= episodeLengthSeconds;
+            if (onFloor || timedOut)
+            {
+                StatusLine = onFloor ? "floor — reset" : "timeout — reset";
+                ResetEpisodeAndThrow();
+                return;
+            }
+
             BuildObs();
             if (!policyRunner.TryInfer(_obs, _actions))
             {
@@ -247,11 +264,12 @@ namespace XRPlayground.Policies
             }
             ApplyActions(dt);
             SyncArmVisuals();
-            StatusLine = "running (ball catch)";
+            StatusLine = $"running t={_episodeTime:F1}s";
         }
 
         void ResetEpisodeAndThrow()
         {
+            _episodeTime = 0f;
             ResetArmStateToIsaacDefault();
             // Pose the visual arm first so tip/EE aim uses the Isaac default cup, not a stale mesh.
             SyncArmVisuals();
@@ -268,19 +286,19 @@ namespace XRPlayground.Policies
                 : tipI;
             Vector3 cupAim = 0.55f * tipI + 0.45f * eeI;
 
-            // Player-style parabolic lob: farther spawn, random, clear arc, reaction time.
+            // Match Isaac reachable curriculum (easy→mid): always aimed at cup.
             Vector3 releaseI = cupAim + new Vector3(
-                Random.Range(0.30f, 0.50f),
-                Random.Range(-0.18f, 0.18f),
-                -Random.Range(0.02f, 0.10f));
+                Random.Range(0.12f, 0.30f),
+                Random.Range(-0.12f, 0.12f),
+                -Random.Range(0.02f, 0.08f));
             Vector3 targetI = cupAim + new Vector3(
-                Random.Range(-0.05f, 0.05f),
-                Random.Range(-0.05f, 0.05f),
-                Random.Range(-0.04f, 0.04f));
+                Random.Range(-0.03f, 0.03f),
+                Random.Range(-0.03f, 0.03f),
+                Random.Range(-0.025f, 0.025f));
             Vector3 midI = 0.5f * (releaseI + targetI);
-            midI.z += Random.Range(0.12f, 0.22f);
+            midI.z += Random.Range(0.05f, 0.12f);
 
-            float flightT = Random.Range(0.75f, 1.05f);
+            float flightT = Random.Range(0.55f, 0.80f);
             Vector3 dI = targetI - releaseI;
             float gEff = 9.81f * ballGravityScale;
             Vector3 gI = new Vector3(0f, 0f, -gEff);

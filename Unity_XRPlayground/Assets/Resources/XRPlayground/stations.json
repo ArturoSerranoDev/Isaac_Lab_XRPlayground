@@ -1,0 +1,70 @@
+{
+  "stations": [
+    {
+      "id": "ball_catch",
+      "task_ids": ["Template-Xrplayground-Ball-Catch-Direct-v0", "Template-Xrplayground-Ball-Catch-Wrap-v0", "Template-Xrplayground-Ball-Catch-Throw-A-v0", "Template-Xrplayground-Ball-Catch-Throw-B-v0", "Template-Xrplayground-Ball-Catch-Throw-v0"],
+      "policy_task_id": "Template-Xrplayground-Ball-Catch-Direct-v0",
+      "policy_folder": "BallCatch",
+      "bridge_script": "scripts/bridge/run_xr_bridge.py",
+      "port": 9090,
+      "obs_dim": 30,
+      "action_dim": 8,
+      "required_topics": ["/xr/heartbeat", "/xr/robot_state", "/xr/ball_state", "/xr/session_status"]
+    },
+    {
+      "id": "conveyor_color",
+      "task_ids": ["Template-Xrplayground-Conveyor-Color-Direct-v0"],
+      "policy_task_id": "Template-Xrplayground-Conveyor-Color-Direct-v0",
+      "policy_folder": "Conveyor",
+      "bridge_script": "scripts/bridge/run_xr_bridge_conveyor.py",
+      "port": 9091,
+      "obs_dim": 66,
+      "action_dim": 7,
+      "required_topics": ["/xr/heartbeat", "/xr/conveyor/robot_state", "/xr/conveyor/objects_state", "/xr/session_status"]
+    },
+    {
+      "id": "pick_place_table",
+      "task_ids": ["Template-Xrplayground-Pick-Place-Table-Direct-v0"],
+      "policy_task_id": "Template-Xrplayground-Pick-Place-Table-Direct-v0",
+      "policy_folder": "PickPlace",
+      "bridge_script": "scripts/bridge/run_xr_bridge_pick_place.py",
+      "port": 9092,
+      "obs_dim": 30,
+      "action_dim": 8,
+      "required_topics": ["/xr/heartbeat", "/xr/pick_place/robot_state", "/xr/pick_place/objects_state", "/xr/session_status"]
+    },
+    {
+      "id": "balance_bot",
+      "task_ids": ["Template-Xrplayground-Balance-Bot-Direct-v0"],
+      "policy_task_id": "Template-Xrplayground-Balance-Bot-Direct-v0",
+      "policy_folder": "BalanceBot",
+      "bridge_script": "scripts/bridge/run_xr_bridge_balance_bot.py",
+      "port": 9093,
+      "obs_dim": 20,
+      "action_dim": 2,
+      "required_topics": ["/xr/heartbeat", "/xr/balance_bot/robot_state", "/xr/balance_bot/balls_state", "/xr/session_status"]
+    },
+    {
+      "id": "spot_loco",
+      "task_ids": ["Template-Xrplayground-Spot-Loco-Stand-v0", "Template-Xrplayground-Spot-Loco-Walk-v0", "Template-Xrplayground-Spot-Loco-Walk-Play-v0"],
+      "policy_task_id": "Template-Xrplayground-Spot-Loco-Walk-v0",
+      "policy_folder": "SpotLoco",
+      "bridge_script": "scripts/bridge/run_xr_bridge_spot.py",
+      "port": 9094,
+      "obs_dim": 48,
+      "action_dim": 12,
+      "required_topics": ["/xr/heartbeat", "/xr/spot/robot_state", "/xr/session_status"]
+    },
+    {
+      "id": "spot_follow",
+      "task_ids": ["Template-Xrplayground-Spot-Follow-v0", "Template-Xrplayground-Spot-Follow-Play-v0"],
+      "policy_task_id": "Template-Xrplayground-Spot-Follow-v0",
+      "policy_folder": "SpotFollow",
+      "bridge_script": "scripts/bridge/run_xr_bridge_spot.py",
+      "port": 9094,
+      "obs_dim": 9,
+      "action_dim": 3,
+      "required_topics": ["/xr/heartbeat", "/xr/spot/robot_state", "/xr/session_status"]
+    }
+  ]
+}

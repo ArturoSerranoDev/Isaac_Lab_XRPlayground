@@ -8,10 +8,11 @@ namespace XRPlayground.Policies
     /// Unity-only Agibot pick-place: 30-D obs → ONNX → 8-D actions (right arm + gripper).
     /// </summary>
     [DisallowMultipleComponent]
-    public sealed class PickPlaceOfflinePolicyController : MonoBehaviour
+    public sealed class PickPlaceOfflinePolicyController : MonoBehaviour, IPolicyMetadataConsumer
     {
         public const int ObsDim = 30;
         public const int ActionDim = 8;
+        const string TaskId = "Template-Xrplayground-Pick-Place-Table-Direct-v0";
 
         [Header("Policy")]
         public OnnxPolicyRunner policyRunner;
@@ -103,11 +104,12 @@ namespace XRPlayground.Policies
                 return;
             }
 
-            policyRunner.expectedObsDim = ObsDim;
-            policyRunner.expectedActionDim = ActionDim;
-            if (!policyRunner.TryLoad())
+            policyRunner.expectedTaskId = TaskId;
+            string contractError = "ONNX load failed";
+            if (!policyRunner.TryLoad() || !policyRunner.MatchesContract(TaskId, ObsDim, ActionDim, out contractError))
             {
-                StatusLine = "model load failed";
+                StatusLine = "policy contract mismatch";
+                Debug.LogError($"PickPlaceOfflinePolicyController: {contractError}", this);
                 return;
             }
 
@@ -131,6 +133,14 @@ namespace XRPlayground.Policies
                 StopPolicy();
             else
                 StartPolicy();
+        }
+
+        public void ApplyPolicyMetadata(PolicyMetadata metadata)
+        {
+            if (metadata.action_scale > 0f)
+                actionScale = metadata.action_scale;
+            if (metadata.dt > 0f)
+                controlDt = metadata.dt;
         }
 
         void Update()
