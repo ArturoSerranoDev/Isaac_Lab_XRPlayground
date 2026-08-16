@@ -153,12 +153,17 @@ Place custom ball USD/meshes under monorepo `assets/ball_catch/` when you outgro
 | Throw | `.../2026-08-16_06-49-22` (resume wrap `model_5449.pt`, 2000 iters) | throw_soft_grasp ≥ ~0.8–0.95 | **FAIL** — catch_ema ≈ 0.02; latch-then-drop; cliff `in_hand_p=0` |
 | Unity | `Policies/BallCatch/` | copy only on throw gate | **Not updated** |
 
-### Fix applied (2026-08-16 afternoon)
+### Fix applied (2026-08-16 afternoon / evening)
 
-Soft Throw handoff: fade in-hand (no forced 0), in-aperture drift with arm freeze + relaxed enclose, curriculum gated on `throw_catch_ema` (held in drift until EMA ≥ ~0.55), milder latch close, Throw PPO entropy/lr for arm re-learn.
+Soft Throw handoff → **Throw-A / Throw-B** pipeline:
 
-| Phase | Run | Gate | Result |
-|-------|-----|------|--------|
-| Throw (handoff) | `.../2026-08-16_13-54-39` (resume wrap `model_5449.pt`, 3000 iters) | throw_soft_grasp ≥ ~0.8–0.95 | **FAIL gate** — better than cliff (early throw_sg ~0.3–0.5; end `throw_catch_ema` ≈ 0.14, last40 throw_sg ≈ 0.09). Cap stayed ~0.45 (drift). ONNX exported under run `exported/`; **Unity not updated**. |
+| Piece | Status |
+|-------|--------|
+| Gym IDs `…-Throw-A-v0` / `…-Throw-B-v0` | Done |
+| Rolling `throw_rolling` gate + drift ramp | Done |
+| Throw-A success truncation after sustained latch | Done |
+| Pipeline script `train_ball_catch_throw_pipeline.py` | Done |
+| Throw-A full train | **In progress** (resume wrap `model_5449`) |
+| Throw-B + Unity | Pending A gate (`throw_rolling` ≥ ~0.65–0.75) |
 
 Spot Follow was stopped for GPU: resume `xrplayground_spot_follow/2026-08-16_00-26-37` `model_1200.pt` (see `logs/spot_follow_resume_2026-08-16.txt`).

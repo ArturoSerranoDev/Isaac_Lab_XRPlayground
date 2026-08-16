@@ -11,11 +11,16 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import importlib.metadata as metadata
+import os
 import sys
 import time
+from pathlib import Path
 
 import gymnasium as gym
 import torch
+from packaging import version
+from rsl_rl.runners import DistillationRunner, OnPolicyRunner
 
 import isaaclab_tasks  # noqa: F401
 
@@ -27,6 +32,10 @@ from isaaclab_tasks.utils import (
     resolve_task_config,
     setup_preset_cli,
 )
+from isaaclab_rl.rsl_rl import RslRlVecEnvWrapper, handle_deprecated_rsl_rl_cfg
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "rsl_rl"))
+import cli_args as rsl_cli_args  # noqa: E402
 
 parser = argparse.ArgumentParser(description="XR TCP bridge for Spot (Unity ↔ Isaac).")
 parser.add_argument("--disable_fabric", action="store_true", default=False)
@@ -43,8 +52,10 @@ parser.add_argument("--port", type=int, default=9094)
 parser.add_argument("--publish_hz", type=float, default=60.0)
 parser.add_argument("--log_robot", action="store_true")
 parser.add_argument("--mode", type=str, default="mirror", choices=["mirror"])
-parser.add_argument("--action_mode", type=str, default="zero", choices=["zero", "random"])
+parser.add_argument("--action_mode", type=str, default="policy", choices=["zero", "random", "policy"])
 parser.add_argument("--seed", type=int, default=42)
+parser.add_argument("--agent", type=str, default="rsl_rl_cfg_entry_point")
+rsl_cli_args.add_rsl_rl_args(parser)
 add_launcher_args(parser)
 parser.set_defaults(visualizer=["kit"])
 args_cli, hydra_args = setup_preset_cli(parser)
@@ -61,6 +72,16 @@ from XRPlayground.bridge.names_spot import (
 from XRPlayground.bridge.protocol import make_envelope
 from XRPlayground.bridge.spot_bridge import SpotBridgeAdapter
 from XRPlayground.bridge.tcp_server import RosTcpServer
+
+
+DEFAULT_LOCO_CHECKPOINT = (
+    Path(__file__).resolve().parents[2]
+    / "logs"
+    / "rsl_rl"
+    / "xrplayground_spot_loco"
+    / "2026-08-15_20-54-35"
+    / "model_2499.pt"
+)
 
 
 class SessionState:
@@ -94,9 +115,34 @@ def _fallback_actions(base_env, action_mode: str):
     return torch.zeros(shape, device=base_env.device)
 
 
+def _load_policy(gym_env, agent_cfg):
+    """Use the same RSL-RL inference stack as scripts/rsl_rl/play.py."""
+    if args_cli.action_mode != "policy":
+        return gym_env, None, None
+
+    checkpoint = Path(args_cli.checkpoint) if args_cli.checkpoint else DEFAULT_LOCO_CHECKPOINT
+    if not checkpoint.is_file():
+        print(f"[XR Spot Bridge] Checkpoint not found: {checkpoint}")
+        return gym_env, None, None
+
+    agent_cfg = rsl_cli_args.update_rsl_rl_cfg(agent_cfg, args_cli)
+    agent_cfg = handle_deprecated_rsl_rl_cfg(agent_cfg, metadata.version("rsl-rl-lib"))
+    wrapped = RslRlVecEnvWrapper(gym_env, clip_actions=agent_cfg.clip_actions)
+    if agent_cfg.class_name == "OnPolicyRunner":
+        runner = OnPolicyRunner(wrapped, agent_cfg.to_dict(), log_dir=None, device=agent_cfg.device)
+    elif agent_cfg.class_name == "DistillationRunner":
+        runner = DistillationRunner(wrapped, agent_cfg.to_dict(), log_dir=None, device=agent_cfg.device)
+    else:
+        raise ValueError(f"Unsupported Spot RSL-RL runner: {agent_cfg.class_name}")
+
+    print(f"[XR Spot Bridge] Loading trained policy: {checkpoint}")
+    runner.load(str(checkpoint))
+    return wrapped, runner.get_inference_policy(device=wrapped.unwrapped.device), wrapped.get_observations()
+
+
 def main():
     torch.manual_seed(args_cli.seed)
-    env_cfg, _ = resolve_task_config(args_cli.task, "")
+    env_cfg, agent_cfg = resolve_task_config(args_cli.task, args_cli.agent)
 
     with launch_simulation(env_cfg, args_cli):
         env_cfg.scene.num_envs = args_cli.num_envs if args_cli.num_envs is not None else 1
@@ -108,10 +154,13 @@ def main():
         base_env = gym_env.unwrapped
         adapter = SpotBridgeAdapter(base_env, env_id=0)
         session = SessionState(args_cli.mode)
+        step_env, policy, obs = _load_policy(gym_env, agent_cfg)
+        session.policy_loaded = policy is not None
 
         server = RosTcpServer(args_cli.host, args_cli.port)
         server.start()
-        gym_env.reset()
+        if policy is None:
+            gym_env.reset()
 
         sim = base_env.sim
         step_dt = float(base_env.step_dt)
@@ -120,7 +169,10 @@ def main():
         last_heartbeat = 0.0
         last_status = 0.0
 
-        print(f"[XR Spot Bridge] task={args_cli.task} mode={session.mode} port={args_cli.port}")
+        print(
+            f"[XR Spot Bridge] task={args_cli.task} mode={session.mode} "
+            f"policy={'trained' if session.policy_loaded else args_cli.action_mode} port={args_cli.port}"
+        )
 
         try:
             while True:
@@ -135,18 +187,28 @@ def main():
                         mode = data.get("mode")
                         if mode:
                             session.set_mode(str(mode))
-                            gym_env.reset()
+                            if policy is not None:
+                                obs = step_env.get_observations()
+                            else:
+                                gym_env.reset()
                     elif topic == TOPIC_PLAYER_POSE:
                         adapter.handle_player_pose(data)
 
                 t0 = time.perf_counter()
-                actions = _fallback_actions(base_env, args_cli.action_mode)
-                _, _, term, trunc, _ = gym_env.step(actions)
-                done = bool(term.any() if hasattr(term, "any") else term) or bool(
-                    trunc.any() if hasattr(trunc, "any") else trunc
-                )
-                if done:
-                    gym_env.reset()
+                if policy is not None:
+                    with torch.inference_mode():
+                        actions = policy(obs)
+                        obs, _, dones, _ = step_env.step(actions)
+                        if version.parse(metadata.version("rsl-rl-lib")) >= version.parse("4.0.0"):
+                            policy.reset(dones)
+                else:
+                    actions = _fallback_actions(base_env, args_cli.action_mode)
+                    _, _, term, trunc, _ = gym_env.step(actions)
+                    done = bool(term.any() if hasattr(term, "any") else term) or bool(
+                        trunc.any() if hasattr(trunc, "any") else trunc
+                    )
+                    if done:
+                        gym_env.reset()
 
                 now = time.perf_counter()
                 if now - last_publish >= publish_period:

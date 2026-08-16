@@ -129,6 +129,7 @@ def _wait_gate(
     label: str,
     poll_s: float = 45.0,
     max_hours: float = 6.0,
+    min_iters: int = 800,
 ) -> tuple[bool, Path | None, str | None]:
     t0 = time.time()
     while True:
@@ -138,7 +139,17 @@ def _wait_gate(
             run = _latest_run()
             ckpt = _latest_ckpt(run) if run else None
             ok = _gate_ok(rows, threshold) if rows else False
-            print(f"[pipeline] {label} process exited code={proc.returncode} gate_ok={ok}")
+            last_iter = rows[-1]["iter"] if rows else 0
+            print(
+                f"[pipeline] {label} process exited code={proc.returncode} "
+                f"gate_ok={ok} last_iter={last_iter}",
+                flush=True,
+            )
+            if not ok and last_iter < min_iters:
+                print(
+                    f"[pipeline] {label} exited too early (<{min_iters} iters) — not advancing",
+                    flush=True,
+                )
             return ok, run, ckpt
         rows = _parse_metrics(log_file)
         if rows:
@@ -217,14 +228,20 @@ def main() -> int:
             args.wrap_ckpt,
             copy_unity=False,
         )
-        ok, run, ckpt = _wait_gate(proc, fout, log_a, args.a_gate, "Throw-A")
+        ok, run, ckpt = _wait_gate(proc, fout, log_a, args.a_gate, "Throw-A", min_iters=1000)
         if run is None or ckpt is None:
             print("[pipeline] Throw-A produced no checkpoint", file=sys.stderr)
             return 2
         a_run_name, a_ckpt = run.name, ckpt
-        print(f"[pipeline] Throw-A ckpt: {a_run_name}/{a_ckpt} gate={ok}")
+        print(f"[pipeline] Throw-A ckpt: {a_run_name}/{a_ckpt} gate={ok}", flush=True)
         if not ok:
-            print("[pipeline] Throw-A gate not met — continuing to B from best A anyway")
+            # Only continue to B if A trained long enough (early crash → abort).
+            rows = _parse_metrics(log_a)
+            last_iter = rows[-1]["iter"] if rows else 0
+            if last_iter < 1000:
+                print("[pipeline] Abort: Throw-A did not train long enough", file=sys.stderr)
+                return 2
+            print("[pipeline] Throw-A gate not met — continuing to B from best A anyway", flush=True)
     else:
         if not a_run_name or not a_ckpt:
             print("--skip-a requires --a-run and --a-ckpt", file=sys.stderr)

@@ -274,15 +274,14 @@ namespace XRPlayground.Policies
             if (IsBound && !force)
                 return;
 
-            // The imported Spot USD is a zero-joint bind pose. Policy actions and
-            // bridge joint positions are absolute Isaac joint angles, so FK deltas
-            // are measured from zero rather than the standing command.
+            // The Unity scene serializes Spot in Isaac's standing pose.  Capture
+            // that pose as the FK rest; otherwise ResetEpisode applies the same
+            // default joint targets a second time and lifts every foot off ground.
             _restJoints = new[]
             {
-                0f, 0f, 0f,
-                0f, 0f, 0f,
-                0f, 0f, 0f,
-                0f, 0f, 0f,
+                0.1f, -0.1f, 0.1f, -0.1f,
+                0.9f, 0.9f, 1.1f, 1.1f,
+                -1.5f, -1.5f, -1.5f, -1.5f,
             };
 
             // Spot USD: hx about +X (abduction), hy/kn about +Y

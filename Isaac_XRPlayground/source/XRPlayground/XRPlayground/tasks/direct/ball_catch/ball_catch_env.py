@@ -674,11 +674,16 @@ class BallCatchEnv(DirectRLEnv):
         dropped = ball_pos[:, 2] < self.cfg.fall_height_threshold
         self._dropped |= dropped
 
-        # Episode ends only when the ball hits the floor, or after episode_length_s.
-        # Catch / body-contact / tip-platform do NOT reset — otherwise near-grip looks like
-        # a flicker and you never see a real hold.
+        # Default: episode ends only on floor or timeout (never on brief latch flicker).
         terminated = dropped
         time_out = self.episode_length_buf >= self.max_episode_length - 1
+        # Throw-A: after a sustained soft_grasp, truncate as success so close-under-motion
+        # can be learned before long end-hold (Throw-B keeps full hold-to-timeout).
+        if self._phase() == "throw_a":
+            hold_need = max(int(self.cfg.grasp_hold_steps) * 4, 8)
+            soft_ok = self._step_soft_grasp if hasattr(self, "_step_soft_grasp") else self._episode_caught
+            success_trunc = self._episode_caught & soft_ok & (self._grasp_hold_count >= hold_need)
+            time_out = time_out | success_trunc
         return terminated, time_out
 
     def _reset_idx(self, env_ids: Sequence[int] | None):

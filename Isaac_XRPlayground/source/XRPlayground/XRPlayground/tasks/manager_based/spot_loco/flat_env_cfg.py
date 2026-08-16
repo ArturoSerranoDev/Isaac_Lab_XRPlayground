@@ -15,6 +15,7 @@ from isaaclab_tasks.manager_based.locomotion.velocity.config.spot.flat_env_cfg i
 )
 
 
+
 @configclass
 class SpotLocoStandCommandsCfg(SpotCommandsCfg):
     """Phase A: mostly standing, tiny velocity commands."""
