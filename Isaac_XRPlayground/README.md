@@ -1,4 +1,6 @@
-# Template for Isaac Lab Projects
+# XRPlayground Isaac Lab
+
+The generalized Isaac Lab to Unity deployment framework is documented in [`../deployment/README.md`](../deployment/README.md). Use `python -m XRPlayground.cli` for training, play, bridge, export, and validation; the station catalog is the source of task IDs, dimensions, ports, and cadence.
 
 ## Overview
 

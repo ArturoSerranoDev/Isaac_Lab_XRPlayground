@@ -47,15 +47,18 @@ class BalanceBotBridgeAdapter:
         return make_envelope(
             TOPIC_ROBOT_STATE,
             {
-                "joint_names": names,
-                "joint_positions": positions,
+                "joints": [
+                    {"name": name, "position": position, "velocity": 0.0}
+                    for name, position in zip(names, positions, strict=True)
+                ],
                 "ee": ee,
                 "links": links,
                 "n_balls": int(self.env._n_balls[i].item()),
                 "curriculum_stage": int(self.env._curriculum_stage()),
             },
+            station_id="balance_bot",
             frame_id="isaac_env",
-            stamp_s=stamp_s,
+            sim_time_s=stamp_s,
         )
 
     def build_balls_state_envelope(self, stamp_s: float | None = None) -> dict[str, Any]:
@@ -71,7 +74,7 @@ class BalanceBotBridgeAdapter:
             x, y, z, w = [float(v) for v in quat.tolist()]
             balls.append(
                 {
-                    "id": slot,
+                    "id": f"ball_{slot}",
                     "active": active,
                     "position": [float(v) for v in pos.tolist()],
                     "orientation_xyzw": [x, y, z, w],
@@ -82,11 +85,12 @@ class BalanceBotBridgeAdapter:
         return make_envelope(
             TOPIC_BALLS_STATE,
             {
-                "balls": balls,
+                "objects": balls,
                 "n_balls": int(self.env._n_balls[i].item()),
                 "curriculum_stage": int(self.env._curriculum_stage()),
                 "source": "isaac",
             },
+            station_id="balance_bot",
             frame_id="isaac_env",
-            stamp_s=stamp_s,
+            sim_time_s=stamp_s,
         )

@@ -1,0 +1,24 @@
+{
+  "name": "XRPlayground.Deployment.EditModeTests",
+  "rootNamespace": "XRPlayground.Deployment.Tests",
+  "references": [
+    "XRPlayground.Deployment",
+    "XRPlayground.Deployment.Editor"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using XRPlayground.Deployment;
 using XRPlayground.Policies;
 
 namespace XRPlayground.ROS
@@ -13,6 +14,8 @@ namespace XRPlayground.ROS
         public SpotLinkPoseFollower robotFollower;
         public SpotPlayerTargetPublisher playerPublisher;
         public SpotOfflinePolicyController offlinePolicy;
+        public DeploymentModeController deploymentModes;
+        public string stationId = "spot_follow";
 
         public Text statusText;
         public Text modeText;
@@ -28,6 +31,8 @@ namespace XRPlayground.ROS
 
         void OnEnable()
         {
+            if (deploymentModes == null)
+                deploymentModes = FindAnyObjectByType<DeploymentModeController>();
             WireButtons();
             if (client != null)
                 client.MessageReceived += OnMessage;
@@ -68,6 +73,13 @@ namespace XRPlayground.ROS
 
         void SetMirror()
         {
+            if (deploymentModes != null)
+            {
+                deploymentModes.SelectStation(stationId);
+                deploymentModes.SetMirror();
+                RefreshUi();
+                return;
+            }
             if (robotFollower != null)
                 robotFollower.followingEnabled = true;
             if (playerPublisher != null)
@@ -79,6 +91,17 @@ namespace XRPlayground.ROS
 
         void ToggleOfflinePolicy()
         {
+            if (deploymentModes != null)
+            {
+                deploymentModes.SelectStation(stationId);
+                StationRuntime runtime = FindDeploymentRuntime();
+                if (runtime != null && runtime.Mode == StationMode.OfflinePolicy)
+                    deploymentModes.SetDisabled();
+                else
+                    deploymentModes.SetOfflinePolicy();
+                RefreshUi();
+                return;
+            }
             if (offlinePolicy == null)
                 return;
             if (offlinePolicy.running)
@@ -107,13 +130,17 @@ namespace XRPlayground.ROS
 
         void RefreshUi()
         {
+            StationRuntime runtime = FindDeploymentRuntime();
+            bool offline = deploymentModes != null
+                ? runtime != null && runtime.Mode == StationMode.OfflinePolicy
+                : offlinePolicy != null && offlinePolicy.running;
             if (modeText != null)
-                modeText.text = offlinePolicy != null && offlinePolicy.running ? "Offline Follow" : "Mirror Isaac";
+                modeText.text = offline ? "Offline Follow" : "Mirror Isaac";
             if (connectButtonLabel != null)
                 connectButtonLabel.text = client != null && client.IsConnected ? "Disconnect" : "Connect";
             if (startPolicyButtonLabel != null)
                 startPolicyButtonLabel.text =
-                    offlinePolicy != null && offlinePolicy.running ? "Stop Offline Policy" : "Start Offline Policy";
+                    offline ? "Stop Offline Policy" : "Start Offline Policy";
             RefreshStatusLine();
         }
 
@@ -122,10 +149,29 @@ namespace XRPlayground.ROS
             if (statusText == null)
                 return;
             string conn = client != null && client.IsConnected ? "connected" : "idle";
-            string pol = offlinePolicy != null && offlinePolicy.running
-                ? offlinePolicy.StatusLine
-                : (_policyLoaded ? "isaac policy loaded" : "zero/random actions");
+            StationRuntime runtime = FindDeploymentRuntime();
+            bool genericOffline = runtime != null && runtime.Mode == StationMode.OfflinePolicy;
+            string pol = genericOffline
+                ? "local ONNX hierarchy"
+                : offlinePolicy != null && offlinePolicy.running
+                    ? offlinePolicy.StatusLine
+                    : (_policyLoaded ? "isaac policy loaded" : "zero/random actions");
             statusText.text = $"Spot :9094 · {conn} · {_phase} · {pol}";
+        }
+
+        StationRuntime FindDeploymentRuntime()
+        {
+            if (deploymentModes == null)
+                return null;
+            DeploymentCatalogBinder binder = deploymentModes.binder != null
+                ? deploymentModes.binder
+                : FindAnyObjectByType<DeploymentCatalogBinder>();
+            if (binder == null)
+                return null;
+            foreach (StationRuntime runtime in binder.GetComponentsInChildren<StationRuntime>(true))
+                if (runtime.stationId == stationId)
+                    return runtime;
+            return null;
         }
     }
 }

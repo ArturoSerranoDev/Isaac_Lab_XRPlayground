@@ -1,0 +1,1994 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d4bed842a90a584da2b12a73b9d4422, type: 3}
+  m_Name: robot.definition
+  m_EditorClassIdentifier: XRPlayground.Deployment::XRPlayground.Deployment.RobotDefinition
+  robotId: agibot_a2d
+  sourceAsset: https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.0/Isaac/IsaacLab/Robots/Agibot/A2D/A2D_physics.usd
+  sourceSha256: 
+  definitionSha256: 65d2f12bddb18d8b67dae0430010d2b36baeaf906372a393ffe665a4e2e09c07
+  provenance: Existing project-local A2D_physics.usd; original redistribution terms
+    have not been recorded.
+  redistributionLicense: UNVERIFIED
+  links:
+  - name: base_link
+    mass: 23.208538
+    centerOfMass: {x: -0.0134486975, y: -0.032007676, z: 0.0015210394}
+    inertiaTensor: {x: 1.0475358, y: 10.408035, z: 10.537334}
+    inertiaTensorRotation: {x: 0.67962396, y: 0.73339677, z: 0.014252549, w: 0.0061075}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: -0.014662506, y: 0.21233192, z: -0.00018127292}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/base_link/base_link_01
+  - name: link_up_down_body
+    mass: 3.2627544
+    centerOfMass: {x: 0.033835154, y: 0.0008384311, z: -0.0024804405}
+    inertiaTensor: {x: 0.018176714, y: 0.022470582, z: 0.03127614}
+    inertiaTensorRotation: {x: 0.4667699, y: 0.5174982, z: 0.5335974, w: -0.479161}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/link_up_down_body/collisions
+  - name: link_pitch_body
+    mass: 7.531992
+    centerOfMass: {x: 0.19373356, y: -0.0012401142, z: -0.00048418017}
+    inertiaTensor: {x: 0.07391034, y: 0.1752378, z: 0.20671968}
+    inertiaTensorRotation: {x: 0.0048254314, y: 0.0027051717, z: 0.0027803404, w: 0.9999808}
+    collisionShapeCount: 2
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: -0.69483805, y: 1.4975532, z: 0.66946065}
+      localRotation: {x: 0.49999818, y: 0.5, z: 0.5000018, w: -0.5}
+      scale: {x: 0.000010000001, y: 0.000010000001, z: 0.000010000001}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/link_pitch_body/Xform/brep_08/brep_7
+    - shapeType: mesh
+      localPosition: {x: -0.69483805, y: 1.4975532, z: 0.66946065}
+      localRotation: {x: 0.49999818, y: 0.5, z: 0.5000018, w: -0.5}
+      scale: {x: 0.000010000001, y: 0.000010000001, z: 0.000010000001}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/link_pitch_body/Xform/brep_02/brep_1
+  - name: link_arm
+    mass: 0.000001
+    centerOfMass: {x: 0, y: 0, z: 0}
+    inertiaTensor: {x: 0.00001, y: 0.00001, z: 0.00001}
+    inertiaTensorRotation: {x: 0, y: 0, z: 0, w: 1}
+    collisionShapeCount: 0
+    collisionEnabled: 0
+    staticFriction: -1
+    dynamicFriction: -1
+    restitution: -1
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: link_yaw_head
+    mass: 0.41434288
+    centerOfMass: {x: 0.044606812, y: 0.052837376, z: 0.0024175313}
+    inertiaTensor: {x: 0.00042735512, y: 0.0030064955, z: 0.003048759}
+    inertiaTensorRotation: {x: -0.7048503, y: -0.034071352, z: 0.014493027, w: 0.7083891}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 1, z: 0, w: -0.0000012675908}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/link_yaw_head/collisions
+  - name: base_link_l
+    mass: 0.37595
+    centerOfMass: {x: 0.00020641, y: 0.034396, z: -0.00057488}
+    inertiaTensor: {x: 0.0003511488, y: 0.00036705044, z: 0.0003820819}
+    inertiaTensorRotation: {x: 0.40232104, y: 0.18087147, z: -0.5901437, w: 0.6761314}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/base_link_l/collisions
+  - name: base_link_r
+    mass: 0.37595
+    centerOfMass: {x: 0.00020641, y: 0.034396, z: -0.00057488}
+    inertiaTensor: {x: 0.0003511488, y: 0.00036705044, z: 0.0003820819}
+    inertiaTensorRotation: {x: 0.40232104, y: 0.18087147, z: -0.5901437, w: 0.6761314}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/base_link_r/collisions
+  - name: link_pitch_head
+    mass: 0.707064
+    centerOfMass: {x: 0.025700927, y: -0.000037739013, z: 0.03162541}
+    inertiaTensor: {x: 0.0033539466, y: 0.005139578, z: 0.0055291224}
+    inertiaTensorRotation: {x: 0.73103553, y: -0.027711252, z: 0.056687556, w: 0.67941564}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: -0.062427334, y: -0.0029271643, z: 0.018128093}
+      localRotation: {x: -0.0050309086, y: 0.00050344976, z: 0.9999833, w: -0.0027950238}
+      scale: {x: 1.0000002, y: 1, z: 1.0000002}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/link_pitch_head/link_pitch_head_01
+  - name: Link1_l
+    mass: 0.43694
+    centerOfMass: {x: -0.0014596, y: 0.017089, z: 0.00049476}
+    inertiaTensor: {x: 0.00041855648, y: 0.0013175042, z: 0.0013443693}
+    inertiaTensorRotation: {x: 0.1891438, y: -0.19458835, z: -0.6870659, w: 0.6740181}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/Link1_l/collisions
+  - name: Link1_r
+    mass: 0.48414
+    centerOfMass: {x: 0.0013193, y: 0.018211, z: 0.00016098}
+    inertiaTensor: {x: 0.00046656406, y: 0.0014244592, z: 0.001451329}
+    inertiaTensorRotation: {x: 0.70098746, y: -0.6953808, z: -0.11198078, w: 0.11190374}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/Link1_r/collisions
+  - name: Link2_l
+    mass: 0.31992
+    centerOfMass: {x: -0.00043013, y: -0.0065021, z: 0.088101}
+    inertiaTensor: {x: 0.0004232417, y: 0.001477915, z: 0.0015129105}
+    inertiaTensorRotation: {x: 0.042916324, y: -0.7065226, z: 0.009486736, w: 0.70632434}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/Link2_l/collisions
+  - name: Link2_r
+    mass: 0.31993
+    centerOfMass: {x: 0.00012037, y: -0.0062668, z: -0.088102}
+    inertiaTensor: {x: 0.00042148106, y: 0.0014816541, z: 0.0015219566}
+    inertiaTensorRotation: {x: -0.70453876, y: 0.0374149, z: 0.7086785, w: 0.00025870206}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/Link2_r/collisions
+  - name: Link3_l
+    mass: 0.35545
+    centerOfMass: {x: 0.00022593, y: 0.034985, z: 0.0010417}
+    inertiaTensor: {x: 0.00039283984, y: 0.0022751966, z: 0.002304009}
+    inertiaTensorRotation: {x: 0.46336532, y: -0.46601376, z: -0.5322824, w: 0.5336658}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/Link3_l/collisions
+  - name: Link3_r
+    mass: 0.34932
+    centerOfMass: {x: -0.0000037545, y: -0.035846, z: -0.00012549}
+    inertiaTensor: {x: 0.00038102115, y: 0.0022221333, z: 0.0022391332}
+    inertiaTensorRotation: {x: 0.5301871, y: -0.5290586, z: -0.4645779, w: 0.4724046}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/Link3_r/collisions
+  - name: Link4_l
+    mass: 0.1848
+    centerOfMass: {x: 0.0000021713, y: -0.0054645, z: 0.071943}
+    inertiaTensor: {x: 0.00019088606, y: 0.0005745633, z: 0.00061084935}
+    inertiaTensorRotation: {x: 0.7063786, y: -0.05576025, z: 0.70417887, w: -0.045301538}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/Link4_l/collisions
+  - name: Link4_r
+    mass: 0.1848
+    centerOfMass: {x: 0.0000019102, y: -0.0054646, z: 0.071943}
+    inertiaTensor: {x: 0.0001927475, y: 0.00057169463, z: 0.00061072607}
+    inertiaTensorRotation: {x: 0.04549691, y: 0.70631766, z: 0.053635247, w: 0.70439243}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/Link4_r/collisions
+  - name: Link5_l
+    mass: 0.1775
+    centerOfMass: {x: -0.00000076715, y: -0.012879, z: -0.000067798}
+    inertiaTensor: {x: 0.00013958612, y: 0.00044495193, z: 0.00044709884}
+    inertiaTensorRotation: {x: 0.5873604, y: -0.5859432, z: -0.38898984, w: 0.40045634}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/Link5_l/collisions
+  - name: Link5_r
+    mass: 0.1775
+    centerOfMass: {x: 0.0000040146, y: -0.012877, z: -0.000067798}
+    inertiaTensor: {x: 0.00014058263, y: 0.00045114863, z: 0.00045304903}
+    inertiaTensorRotation: {x: 0.5349361, y: 0.5288484, z: 0.467788, w: 0.46404433}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/Link5_r/collisions
+  - name: Link6_l
+    mass: 0.17825
+    centerOfMass: {x: 0.0000022696, y: -0.0029117, z: -0.10227}
+    inertiaTensor: {x: 0.00012247222, y: 0.00088856264, z: 0.0009083187}
+    inertiaTensorRotation: {x: -0.7059317, y: 0.025942836, z: 0.70773053, w: 0.010239331}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/Link6_l/collisions
+  - name: Link6_r
+    mass: 0.17825
+    centerOfMass: {x: -0.0000024946, y: -0.0029098, z: -0.10227}
+    inertiaTensor: {x: 0.00012171812, y: 0.00089935237, z: 0.0009186011}
+    inertiaTensorRotation: {x: -0.7061259, y: 0.030234518, z: 0.707149, w: 0.020305587}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/Link6_r/collisions
+  - name: Link7_l
+    mass: 0.061580002
+    centerOfMass: {x: -0.00025629, y: -0.017205, z: 0.000009064}
+    inertiaTensor: {x: 0.000024321143, y: 0.000024926228, z: 0.000025542073}
+    inertiaTensorRotation: {x: -0.003974458, y: -0.13011469, z: 0.22162987, w: 0.9664029}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/Link7_l/collisions
+  - name: Link7_r
+    mass: 0.061580002
+    centerOfMass: {x: 0.0002265, y: -0.017205, z: 0.00012031}
+    inertiaTensor: {x: 0.00002420504, y: 0.000024952964, z: 0.000025417587}
+    inertiaTensorRotation: {x: 0.31931242, y: 0.86615336, z: 0.08524188, w: 0.37490237}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/Link7_r/collisions
+  - name: left_base_link
+    mass: 0.44310576
+    centerOfMass: {x: 0.0000012398929, y: 0.0536187, z: 0.0000003275644}
+    inertiaTensor: {x: 0.00029984454, y: 0.0006764562, z: 0.0007167372}
+    inertiaTensorRotation: {x: 0.70734227, y: -0.70657694, z: -0.014465483, w: 0.014377173}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/left_base_link/collisions
+  - name: right_base_link
+    mass: 0.44310576
+    centerOfMass: {x: 0.0000012398929, y: 0.0536187, z: 0.0000003275644}
+    inertiaTensor: {x: 0.00029984454, y: 0.0006764562, z: 0.0007167372}
+    inertiaTensorRotation: {x: 0.70734227, y: -0.70657694, z: -0.014465483, w: 0.014377173}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/right_base_link/collisions
+  - name: gripper_center
+    mass: 0.000001
+    centerOfMass: {x: 0, y: 0, z: 0}
+    inertiaTensor: {x: 0.00001, y: 0.00001, z: 0.00001}
+    inertiaTensorRotation: {x: 0, y: 0, z: 0, w: 1}
+    collisionShapeCount: 0
+    collisionEnabled: 0
+    staticFriction: -1
+    dynamicFriction: -1
+    restitution: -1
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: left_Right_01_Link
+    mass: 0.011289938
+    centerOfMass: {x: 0.0065638786, y: -9.408122e-10, z: 0.02485026}
+    inertiaTensor: {x: 0.0000012824393, y: 0.0000057340208, z: 0.0000063113994}
+    inertiaTensorRotation: {x: -0.4604701, y: -0.53657603, z: 0.53723836, w: -0.45981345}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/left_Right_01_Link/collisions
+  - name: left_Left_01_Link
+    mass: 0.011289938
+    centerOfMass: {x: 0.0065638786, y: -9.40817e-10, z: 0.02485026}
+    inertiaTensor: {x: 0.0000012824393, y: 0.0000057340208, z: 0.0000063113994}
+    inertiaTensorRotation: {x: -0.4604701, y: -0.53657603, z: 0.53723836, w: -0.45981345}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/left_Left_01_Link/collisions
+  - name: right_Right_01_Link
+    mass: 0.011289938
+    centerOfMass: {x: 0.0065638786, y: -9.408122e-10, z: 0.02485026}
+    inertiaTensor: {x: 0.0000012824393, y: 0.0000057340208, z: 0.0000063113994}
+    inertiaTensorRotation: {x: -0.4604701, y: -0.53657603, z: 0.53723836, w: -0.45981345}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/right_Right_01_Link/collisions
+  - name: right_gripper_center
+    mass: 0.000001
+    centerOfMass: {x: 0, y: 0, z: 0}
+    inertiaTensor: {x: 0.00001, y: 0.00001, z: 0.00001}
+    inertiaTensorRotation: {x: 0, y: 0, z: 0, w: 1}
+    collisionShapeCount: 0
+    collisionEnabled: 0
+    staticFriction: -1
+    dynamicFriction: -1
+    restitution: -1
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: right_Left_01_Link
+    mass: 0.011289938
+    centerOfMass: {x: 0.0065638786, y: -9.40817e-10, z: 0.02485026}
+    inertiaTensor: {x: 0.0000012824393, y: 0.0000057340208, z: 0.0000063113994}
+    inertiaTensorRotation: {x: -0.4604701, y: -0.53657603, z: 0.53723836, w: -0.45981345}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/right_Left_01_Link/collisions
+  - name: left_Right_00_Link
+    mass: 0.011289938
+    centerOfMass: {x: 0.0065638786, y: -9.408122e-10, z: 0.02485026}
+    inertiaTensor: {x: 0.000002872312, y: 0.0000062334157, z: 0.000008180793}
+    inertiaTensorRotation: {x: 0.70638186, y: 0.024759274, z: -0.026175128, w: 0.70691335}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/left_Right_00_Link/collisions
+  - name: left_Left_00_Link
+    mass: 0.011289938
+    centerOfMass: {x: 0.0065638786, y: -9.40817e-10, z: 0.02485026}
+    inertiaTensor: {x: 0.0000028459629, y: 0.000006287666, z: 0.000008208696}
+    inertiaTensorRotation: {x: 0.70624655, y: 0.02834755, z: -0.029753217, w: 0.7067722}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/left_Left_00_Link/collisions
+  - name: right_Right_00_Link
+    mass: 0.011289938
+    centerOfMass: {x: 0.0065638786, y: -9.408122e-10, z: 0.02485026}
+    inertiaTensor: {x: 0.000002872312, y: 0.0000062334157, z: 0.000008180793}
+    inertiaTensorRotation: {x: 0.70638186, y: 0.024759274, z: -0.026175128, w: 0.70691335}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/right_Right_00_Link/collisions
+  - name: right_Left_00_Link
+    mass: 0.011289938
+    centerOfMass: {x: 0.0065638786, y: -9.40817e-10, z: 0.02485026}
+    inertiaTensor: {x: 0.0000028459629, y: 0.000006287666, z: 0.000008208696}
+    inertiaTensorRotation: {x: 0.70624655, y: 0.02834755, z: -0.029753217, w: 0.7067722}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/right_Left_00_Link/collisions
+  - name: left_Right_Support_Link
+    mass: 0.014009209
+    centerOfMass: {x: -0.011970095, y: -0.0000013662443, z: 0.023833804}
+    inertiaTensor: {x: 0.00000093161805, y: 0.0000046183113, z: 0.0000048731567}
+    inertiaTensorRotation: {x: 0.60822356, y: 0.0033150902, z: 0.7937571, w: -0.0016774748}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/left_Right_Support_Link/collisions
+  - name: left_Left_Support_Link
+    mass: 0.014009209
+    centerOfMass: {x: -0.011970095, y: -0.0000013662443, z: 0.023833804}
+    inertiaTensor: {x: 0.0000009316179, y: 0.0000046183122, z: 0.000004873158}
+    inertiaTensorRotation: {x: 0.6082235, y: 0.00331508, z: 0.79375714, w: -0.0016774653}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/left_Left_Support_Link/collisions
+  - name: right_Right_Support_Link
+    mass: 0.014009209
+    centerOfMass: {x: -0.011970095, y: -0.0000013662443, z: 0.023833804}
+    inertiaTensor: {x: 0.00000093161805, y: 0.0000046183113, z: 0.0000048731567}
+    inertiaTensorRotation: {x: 0.60822356, y: 0.0033150902, z: 0.7937571, w: -0.0016774748}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/right_Right_Support_Link/collisions
+  - name: right_Left_Support_Link
+    mass: 0.014009209
+    centerOfMass: {x: -0.011970095, y: -0.0000013662443, z: 0.023833804}
+    inertiaTensor: {x: 0.0000009316179, y: 0.0000046183122, z: 0.000004873158}
+    inertiaTensorRotation: {x: 0.6082235, y: 0.00331508, z: 0.79375714, w: -0.0016774653}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/right_Left_Support_Link/collisions
+  - name: left_Right_Pad_Link
+    mass: 0.003324114
+    centerOfMass: {x: 0.000000005434572, y: -1.2164604e-16, z: 0.0020901777}
+    inertiaTensor: {x: 0.00000014359242, y: 0.00000041415794, z: 0.00000055276854}
+    inertiaTensorRotation: {x: 0.00035827697, y: -0.7070779, z: -0.0008333444, w: 0.707135}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/left_Right_Pad_Link/collisions
+  - name: left_Right_2_Link
+    mass: 0.008039558
+    centerOfMass: {x: -0.0043895296, y: -0.00002551359, z: 0.024881572}
+    inertiaTensor: {x: 0.00000039730855, y: 0.0000028261998, z: 0.0000030974832}
+    inertiaTensorRotation: {x: 0.7621336, y: -0.00066289434, z: -0.64741945, w: 0.000068897185}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/left_Right_2_Link/collisions
+  - name: left_Left_Pad_Link
+    mass: 0.003324114
+    centerOfMass: {x: 0.0000000014668882, y: -8.172801e-17, z: 0.0020901777}
+    inertiaTensor: {x: 0.00000014359242, y: 0.00000041415794, z: 0.00000055276854}
+    inertiaTensorRotation: {x: 0.00035827697, y: -0.7070779, z: -0.0008333444, w: 0.707135}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/left_Left_Pad_Link/collisions
+  - name: left_Left_2_Link
+    mass: 0.008039558
+    centerOfMass: {x: -0.0043895296, y: -0.00002551359, z: 0.024881572}
+    inertiaTensor: {x: 0.00000039730855, y: 0.0000028261998, z: 0.0000030974832}
+    inertiaTensorRotation: {x: 0.7621336, y: -0.00066289434, z: -0.64741945, w: 0.000068897185}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/left_Left_2_Link/collisions
+  - name: right_Right_Pad_Link
+    mass: 0.003324114
+    centerOfMass: {x: 0.000000005434572, y: -1.2164604e-16, z: 0.0020901777}
+    inertiaTensor: {x: 0.00000014359242, y: 0.00000041415794, z: 0.00000055276854}
+    inertiaTensorRotation: {x: 0.00035827697, y: -0.7070779, z: -0.0008333444, w: 0.707135}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/right_Right_Pad_Link/collisions
+  - name: right_Right_2_Link
+    mass: 0.008039558
+    centerOfMass: {x: -0.0043895296, y: -0.00002551359, z: 0.024881572}
+    inertiaTensor: {x: 0.00000039730855, y: 0.0000028261998, z: 0.0000030974832}
+    inertiaTensorRotation: {x: 0.7621336, y: -0.00066289434, z: -0.64741945, w: 0.000068897185}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/right_Right_2_Link/collisions
+  - name: right_Left_Pad_Link
+    mass: 0.003324114
+    centerOfMass: {x: 0.0000000014668882, y: -8.172801e-17, z: 0.0020901777}
+    inertiaTensor: {x: 0.00000014359242, y: 0.00000041415794, z: 0.00000055276854}
+    inertiaTensorRotation: {x: 0.00035827697, y: -0.7070779, z: -0.0008333444, w: 0.707135}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/right_Left_Pad_Link/collisions
+  - name: right_Left_2_Link
+    mass: 0.008039558
+    centerOfMass: {x: -0.0043895296, y: -0.00002551359, z: 0.024881572}
+    inertiaTensor: {x: 0.00000039730855, y: 0.0000028261998, z: 0.0000030974832}
+    inertiaTensorRotation: {x: 0.7621336, y: -0.00066289434, z: -0.64741945, w: 0.000068897185}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes:
+    - shapeType: mesh
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: 0, z: 0, w: -1}
+      scale: {x: 1, y: 1, z: 1}
+      size: {x: 0, y: 0, z: 0}
+      radius: 0
+      height: 0
+      axis: {x: 0, y: 1, z: 0}
+      sourcePrimPath: /World/envs/env_0/Robot/right_Left_2_Link/collisions
+  joints:
+  - name: joint_lift_body
+    parentLink: base_link
+    childLink: link_up_down_body
+    jointType: 1
+    positionUnit: meter
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0, y: 0.6485, z: 0}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: 0
+    upperLimit: 0.5
+    defaultPosition: 0.1995
+    stiffness: 10000000
+    damping: 500
+    forceLimit: 10000
+    maxVelocity: 2.61
+    actuatorGroup: body
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: joint_body_pitch
+    parentLink: link_up_down_body
+    childLink: link_pitch_body
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0.131, y: 0, z: 0}
+    parentAnchorRotation: {x: -0.50000185, y: 0.5, z: 0.4999982, w: -0.5}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 1, w: -0}
+    lowerLimit: 0
+    upperLimit: 1.0471976
+    defaultPosition: 0.6025
+    stiffness: 10000000
+    damping: 500
+    forceLimit: 10000
+    maxVelocity: 2.61
+    actuatorGroup: body
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: joint_head_yaw
+    parentLink: link_pitch_body
+    childLink: link_yaw_head
+    jointType: 2
+    positionUnit: radian
+    limitMode: continuous
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0, y: -3.5312783e-14, z: 0}
+    parentAnchorRotation: {x: -0.000000012414751, y: 0.00000001738742, z: 0.00000004221729, w: -1}
+    anchorPosition: {x: 0.0000016273235, y: -0.44100004, z: -0.0000015999082}
+    anchorRotation: {x: 0.49999997, y: 0.5, z: 0.5000018, w: 0.4999982}
+    lowerLimit: -3.4028235e+38
+    upperLimit: 3.4028235e+38
+    defaultPosition: 0
+    stiffness: 800
+    damping: 40
+    forceLimit: 50
+    maxVelocity: 1
+    actuatorGroup: head
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: joint_head_pitch
+    parentLink: link_yaw_head
+    childLink: link_pitch_head
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 0, z: 1}
+    parentAnchorPosition: {x: -2.7755576e-17, y: 0, z: 0}
+    parentAnchorRotation: {x: -1.0587912e-22, y: 8.993796e-18, z: -4.2351647e-22, w: -1}
+    anchorPosition: {x: 0.050238002, y: 0.00000021852048, z: -0.060065024}
+    anchorRotation: {x: 0.7071081, y: -1.1712838e-13, z: 5.1421032e-14, w: 0.7071055}
+    lowerLimit: -1.0471976
+    upperLimit: 1.0471976
+    defaultPosition: 0.6708
+    stiffness: 800
+    damping: 40
+    forceLimit: 50
+    maxVelocity: 1
+    actuatorGroup: head
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: left_arm_joint1
+    parentLink: base_link_l
+    childLink: Link1_l
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0, y: 0.188, z: 0}
+    parentAnchorRotation: {x: 0, y: 1, z: -0.0000036199901, w: 0}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 1, w: -0}
+    lowerLimit: -3.1399999
+    upperLimit: 3.1399999
+    defaultPosition: -1.0817
+    stiffness: 80000
+    damping: 80
+    forceLimit: 2000
+    maxVelocity: 1.57
+    actuatorGroup: left_arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: right_arm_joint1
+    parentLink: base_link_r
+    childLink: Link1_r
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0, y: 0.188, z: 0}
+    parentAnchorRotation: {x: -0, y: -1, z: -0.0000036199901, w: 0}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 1, w: -0}
+    lowerLimit: -3.1399999
+    upperLimit: 3.1399999
+    defaultPosition: 1.0817
+    stiffness: 10000000
+    damping: 0
+    forceLimit: 2000
+    maxVelocity: 1.57
+    actuatorGroup: right_arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: left_arm_joint2
+    parentLink: Link1_l
+    childLink: Link2_l
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0, y: 0, z: 0}
+    parentAnchorRotation: {x: 0.5, y: -0.5, z: 0.4999982, w: 0.50000185}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 1, w: -0}
+    lowerLimit: -2.3561945
+    upperLimit: 2.3561945
+    defaultPosition: 0.5907
+    stiffness: 80000
+    damping: 80
+    forceLimit: 1000
+    maxVelocity: 1.57
+    actuatorGroup: left_arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: right_arm_joint2
+    parentLink: Link1_r
+    childLink: Link2_r
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0, y: 0, z: 0}
+    parentAnchorRotation: {x: 0.5, y: 0.5, z: 0.4999982, w: -0.50000185}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 1, w: -0}
+    lowerLimit: -2.3561945
+    upperLimit: 2.3561945
+    defaultPosition: -0.5907
+    stiffness: 20000
+    damping: 0
+    forceLimit: 1000
+    maxVelocity: 1.57
+    actuatorGroup: right_arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: left_arm_joint3
+    parentLink: Link2_l
+    childLink: Link3_l
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0, y: 0, z: 0.305}
+    parentAnchorRotation: {x: 0.50000185, y: 0.5, z: 0.4999982, w: 0.5}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 1, w: -0}
+    lowerLimit: -3.1399999
+    upperLimit: 3.1399999
+    defaultPosition: 0.3442
+    stiffness: 80000
+    damping: 80
+    forceLimit: 1000
+    maxVelocity: 1.57
+    actuatorGroup: left_arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: right_arm_joint3
+    parentLink: Link2_r
+    childLink: Link3_r
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0, y: 0, z: -0.305}
+    parentAnchorRotation: {x: 0.5, y: -0.50000185, z: 0.5, w: -0.4999982}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -3.1399999
+    upperLimit: 3.1399999
+    defaultPosition: -0.3442
+    stiffness: 20000
+    damping: 0
+    forceLimit: 1000
+    maxVelocity: 1.57
+    actuatorGroup: right_arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: left_arm_joint4
+    parentLink: Link3_l
+    childLink: Link4_l
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0, y: 0, z: 0}
+    parentAnchorRotation: {x: 0, y: -0.7071081, z: 0.7071055, w: -0}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 1, w: -0}
+    lowerLimit: -2.3561945
+    upperLimit: 2.3561945
+    defaultPosition: -1.2819
+    stiffness: 80000
+    damping: 80
+    forceLimit: 1000
+    maxVelocity: 1.57
+    actuatorGroup: left_arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: right_arm_joint4
+    parentLink: Link3_r
+    childLink: Link4_r
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0, y: 0, z: 0}
+    parentAnchorRotation: {x: 0.7071055, y: -0.0000025597242, z: -0.000002559715, w: -0.7071081}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 1, w: -0}
+    lowerLimit: -2.3561945
+    upperLimit: 2.3561945
+    defaultPosition: 1.2819
+    stiffness: 20000
+    damping: 0
+    forceLimit: 1000
+    maxVelocity: 1.57
+    actuatorGroup: right_arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: left_arm_joint5
+    parentLink: Link4_l
+    childLink: Link5_l
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0, y: 0, z: 0.1975}
+    parentAnchorRotation: {x: -0.0000025597242, y: -0.7071055, z: -0.7071081, w: 0.000002559715}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -3.1399999
+    upperLimit: 3.1399999
+    defaultPosition: 0.6928
+    stiffness: 80000
+    damping: 80
+    forceLimit: 1000
+    maxVelocity: 1.57
+    actuatorGroup: left_arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: right_arm_joint5
+    parentLink: Link4_r
+    childLink: Link5_r
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0, y: 0, z: 0.1975}
+    parentAnchorRotation: {x: -0.0000025597242, y: -0.7071055, z: -0.7071081, w: 0.000002559715}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -3.1399999
+    upperLimit: 3.1399999
+    defaultPosition: -0.6928
+    stiffness: 20000
+    damping: 0
+    forceLimit: 1000
+    maxVelocity: 1.57
+    actuatorGroup: right_arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: left_arm_joint6
+    parentLink: Link5_l
+    childLink: Link6_l
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0, y: 0, z: 0}
+    parentAnchorRotation: {x: -0.7071055, y: 0.0000025597242, z: -0.000002559715, w: -0.7071081}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 1, w: -0}
+    lowerLimit: -2.3561945
+    upperLimit: 2.3561945
+    defaultPosition: 1.4725
+    stiffness: 80000
+    damping: 80
+    forceLimit: 1000
+    maxVelocity: 1.57
+    actuatorGroup: left_arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: right_arm_joint6
+    parentLink: Link5_r
+    childLink: Link6_r
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0, y: 0, z: 0}
+    parentAnchorRotation: {x: -0.7071055, y: 0.0000025597242, z: -0.000002559715, w: -0.7071081}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 1, w: -0}
+    lowerLimit: -2.3561945
+    upperLimit: 2.3561945
+    defaultPosition: -0.7
+    stiffness: 20000
+    damping: 0
+    forceLimit: 1000
+    maxVelocity: 1.57
+    actuatorGroup: right_arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: left_arm_joint7
+    parentLink: Link6_l
+    childLink: Link7_l
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0, y: 0, z: -0.181}
+    parentAnchorRotation: {x: 0.0000025597242, y: -0.7071055, z: 0.7071081, w: 0.000002559715}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -6.2799997
+    upperLimit: 6.2799997
+    defaultPosition: -0.1599
+    stiffness: 80000
+    damping: 80
+    forceLimit: 1000
+    maxVelocity: 1.57
+    actuatorGroup: left_arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: right_arm_joint7
+    parentLink: Link6_r
+    childLink: Link7_r
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0, y: 0, z: -0.181}
+    parentAnchorRotation: {x: 0.0000025597242, y: 0.7071055, z: -0.7071081, w: 0.000002559715}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -3.1399999
+    upperLimit: 3.1399999
+    defaultPosition: 0
+    stiffness: 20000
+    damping: 0
+    forceLimit: 1000
+    maxVelocity: 1.57
+    actuatorGroup: right_arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: left_Right_1_Joint
+    parentLink: left_base_link
+    childLink: left_Right_01_Link
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0.032553, y: 0.10644, z: 0}
+    parentAnchorRotation: {x: 0.7071081, y: 0, z: 0, w: -0.7071055}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -0.99999994
+    upperLimit: 0.99999994
+    defaultPosition: 0
+    stiffness: 0
+    damping: 0
+    forceLimit: 10
+    maxVelocity: 10
+    actuatorGroup: left_gripper_passive
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: left_hand_joint1
+    parentLink: left_base_link
+    childLink: left_Left_01_Link
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: -0.032553, y: 0.10644, z: 0}
+    parentAnchorRotation: {x: -0.7071055, y: -0.0000025597242, z: -0.000002559715, w: 0.7071081}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 1, w: -0}
+    lowerLimit: 0
+    upperLimit: 0.99999994
+    defaultPosition: 0.994
+    stiffness: 20
+    damping: 0.1
+    forceLimit: 10
+    maxVelocity: 2
+    actuatorGroup: left_gripper
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: right_Right_1_Joint
+    parentLink: right_base_link
+    childLink: right_Right_01_Link
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0.032553, y: 0.10644, z: 0}
+    parentAnchorRotation: {x: 0.7071081, y: 0, z: 0, w: -0.7071055}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -0.99999994
+    upperLimit: 0.99999994
+    defaultPosition: 0
+    stiffness: 0
+    damping: 0
+    forceLimit: 100
+    maxVelocity: 10
+    actuatorGroup: right_gripper_passive
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: right_hand_joint1
+    parentLink: right_base_link
+    childLink: right_Left_01_Link
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: -0.032553, y: 0.10644, z: 0}
+    parentAnchorRotation: {x: -0.7071055, y: -0.0000025597242, z: -0.000002559715, w: 0.7071081}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 1, w: -0}
+    lowerLimit: 0
+    upperLimit: 0.99999994
+    defaultPosition: 0.994
+    stiffness: 20
+    damping: 0.1
+    forceLimit: 100
+    maxVelocity: 10
+    actuatorGroup: right_gripper
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: left_Right_0_Joint
+    parentLink: left_Right_01_Link
+    childLink: left_Right_00_Link
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0.01946, y: 0, z: 0.0129}
+    parentAnchorRotation: {x: 0, y: 0, z: 1, w: -0}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 1, w: -0}
+    lowerLimit: -0.17453292
+    upperLimit: 0.17453292
+    defaultPosition: 0
+    stiffness: 0
+    damping: 0
+    forceLimit: 10
+    maxVelocity: 10
+    actuatorGroup: left_gripper_passive
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: left_Left_0_Joint
+    parentLink: left_Left_01_Link
+    childLink: left_Left_00_Link
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0.01946, y: 0, z: 0.0129}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -0.17453292
+    upperLimit: 0.17453292
+    defaultPosition: 0
+    stiffness: 0
+    damping: 0
+    forceLimit: 10
+    maxVelocity: 10
+    actuatorGroup: left_gripper_passive
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: right_Right_0_Joint
+    parentLink: right_Right_01_Link
+    childLink: right_Right_00_Link
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0.01946, y: 0, z: 0.0129}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -0.17453292
+    upperLimit: 0.17453292
+    defaultPosition: 0
+    stiffness: 0
+    damping: 0
+    forceLimit: 100
+    maxVelocity: 10
+    actuatorGroup: right_gripper_passive
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: right_Left_0_Joint
+    parentLink: right_Left_01_Link
+    childLink: right_Left_00_Link
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0.01946, y: 0, z: 0.0129}
+    parentAnchorRotation: {x: 0, y: 0, z: 1, w: -0}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 1, w: -0}
+    lowerLimit: -0.17453292
+    upperLimit: 0.17453292
+    defaultPosition: 0
+    stiffness: 0
+    damping: 0
+    forceLimit: 100
+    maxVelocity: 10
+    actuatorGroup: right_gripper_passive
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: left_Right_Support_Joint
+    parentLink: left_Right_00_Link
+    childLink: left_Right_Support_Link
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: -0.028819755, y: 0.00000071525574, z: 0.04332888}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: 0
+    upperLimit: 0.99999994
+    defaultPosition: 0.994
+    stiffness: 2
+    damping: 0.01
+    forceLimit: 1
+    maxVelocity: 2
+    actuatorGroup: left_gripper
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: left_Left_Support_Joint
+    parentLink: left_Left_00_Link
+    childLink: left_Left_Support_Link
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: -0.028819405, y: -0.000000027745243, z: 0.043329027}
+    parentAnchorRotation: {x: -6.546235e-19, y: 6.127626e-14, z: -2.071524e-15, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: 0
+    upperLimit: 0.99999994
+    defaultPosition: 0.994
+    stiffness: 2
+    damping: 0.01
+    forceLimit: 1
+    maxVelocity: 2
+    actuatorGroup: left_gripper
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: right_Right_Support_Joint
+    parentLink: right_Right_00_Link
+    childLink: right_Right_Support_Link
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: -0.02888, y: 0, z: 0.04341}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: 0
+    upperLimit: 0.99999994
+    defaultPosition: 0.994
+    stiffness: 2
+    damping: 0.01
+    forceLimit: 100
+    maxVelocity: 10
+    actuatorGroup: right_gripper
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: right_Left_Support_Joint
+    parentLink: right_Left_00_Link
+    childLink: right_Left_Support_Link
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: -0.02888, y: 0, z: 0.04341}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: 0
+    upperLimit: 0.99999994
+    defaultPosition: 0.994
+    stiffness: 2
+    damping: 0.01
+    forceLimit: 100
+    maxVelocity: 10
+    actuatorGroup: right_gripper
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: left_Right_RevoluteJoint
+    parentLink: left_Right_2_Link
+    childLink: left_Right_Support_Link
+    jointType: 2
+    positionUnit: radian
+    limitMode: continuous
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: -0.009224549, y: 0.00000023841858, z: 0.05677724}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: -0.015417856, y: 0, z: 0.016108207}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -3.4028235e+38
+    upperLimit: 3.4028235e+38
+    defaultPosition: 0
+    stiffness: 0
+    damping: 0
+    forceLimit: 10
+    maxVelocity: 10
+    actuatorGroup: left_gripper_passive
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: left_Left_RevoluteJoint
+    parentLink: left_Left_2_Link
+    childLink: left_Left_Support_Link
+    jointType: 2
+    positionUnit: radian
+    limitMode: continuous
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: -0.009274921, y: -0.00000020075035, z: 0.056455784}
+    parentAnchorRotation: {x: -6.546235e-19, y: 6.127626e-14, z: -2.071524e-15, w: -1}
+    anchorPosition: {x: -0.015468532, y: -0.00000033481479, z: 0.015786761}
+    anchorRotation: {x: -6.546235e-19, y: 6.127626e-14, z: -2.071524e-15, w: -1}
+    lowerLimit: -3.4028235e+38
+    upperLimit: 3.4028235e+38
+    defaultPosition: 0
+    stiffness: 0
+    damping: 0
+    forceLimit: 10
+    maxVelocity: 10
+    actuatorGroup: left_gripper_passive
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: right_Right_RevoluteJoint
+    parentLink: right_Right_2_Link
+    childLink: right_Right_Support_Link
+    jointType: 2
+    positionUnit: radian
+    limitMode: continuous
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: -0.009467072, y: -0.00000009654805, z: 0.056171935}
+    parentAnchorRotation: {x: -2.1316206e-14, y: -8.4984584e-16, z: 3.9602876e-14, w: -1}
+    anchorPosition: {x: -0.0156000685, y: -0.00000007545189, z: 0.015422}
+    anchorRotation: {x: -2.1316206e-14, y: -8.4984584e-16, z: 3.9602876e-14, w: -1}
+    lowerLimit: -3.4028235e+38
+    upperLimit: 3.4028235e+38
+    defaultPosition: 0
+    stiffness: 0
+    damping: 0
+    forceLimit: 100
+    maxVelocity: 10
+    actuatorGroup: right_gripper_passive
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: right_Left_RevoluteJoint
+    parentLink: right_Left_2_Link
+    childLink: right_Left_Support_Link
+    jointType: 2
+    positionUnit: radian
+    limitMode: continuous
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: -0.009142027, y: 0.00000008285289, z: 0.056294292}
+    parentAnchorRotation: {x: -5.575217e-17, y: 1.1665193e-13, z: -6.7081635e-14, w: -1}
+    anchorPosition: {x: -0.015275018, y: -0.000000070108804, z: 0.015544294}
+    anchorRotation: {x: -5.575217e-17, y: 1.1665193e-13, z: -6.7081635e-14, w: -1}
+    lowerLimit: -3.4028235e+38
+    upperLimit: 3.4028235e+38
+    defaultPosition: 0
+    stiffness: 0
+    damping: 0
+    forceLimit: 100
+    maxVelocity: 10
+    actuatorGroup: right_gripper_passive
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  fixedJoints:
+  - name: joint_arm_mount
+    parentLink: link_pitch_body
+    childLink: link_arm
+    parentAnchorPosition: {x: 0.305, y: 0, z: 0}
+    parentAnchorRotation: {x: -0.5, y: -0.5, z: 0.50000185, w: -0.4999982}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+  - name: joint_left_arm_mount
+    parentLink: link_arm
+    childLink: base_link_l
+    parentAnchorPosition: {x: 0, y: 0, z: 0.025}
+    parentAnchorRotation: {x: -0.7071081, y: 0, z: 0, w: -0.7071055}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+  - name: joint_right_arm_mount
+    parentLink: link_arm
+    childLink: base_link_r
+    parentAnchorPosition: {x: 0, y: 0, z: -0.025}
+    parentAnchorRotation: {x: 0.00000089632374, y: 0.7071081, z: -0.7071055, w: -0.0000008963205}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+  - name: Joint_hand_l
+    parentLink: Link7_l
+    childLink: left_base_link
+    parentAnchorPosition: {x: 0, y: 0, z: 0}
+    parentAnchorRotation: {x: 0, y: 0, z: 0.70710677, w: -0.70710677}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0.70710677, w: -0.70710677}
+  - name: Joint_hand_r
+    parentLink: Link7_r
+    childLink: right_base_link
+    parentAnchorPosition: {x: 0, y: 0, z: 0}
+    parentAnchorRotation: {x: 0, y: 0, z: 0.70710677, w: -0.70710677}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0.70710677, w: -0.70710677}
+  - name: gripper_center_joint
+    parentLink: left_base_link
+    childLink: gripper_center
+    parentAnchorPosition: {x: 0, y: 0.23, z: 0}
+    parentAnchorRotation: {x: 0, y: -0.70710677, z: 0, w: -0.70710677}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+  - name: right_gripper_center_joint
+    parentLink: right_base_link
+    childLink: right_gripper_center
+    parentAnchorPosition: {x: 0, y: 0.227, z: 0}
+    parentAnchorRotation: {x: 0, y: -0.70710677, z: 0, w: -0.70710677}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+  - name: left_Right_Pad_Joint
+    parentLink: left_Right_Support_Link
+    childLink: left_Right_Pad_Link
+    parentAnchorPosition: {x: -0.022056, y: 0, z: 0.044306}
+    parentAnchorRotation: {x: 0, y: 0, z: 0.70710677, w: -0.70710677}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0.70710677, w: -0.70710677}
+  - name: left_Left_Pad_Joint
+    parentLink: left_Left_Support_Link
+    childLink: left_Left_Pad_Link
+    parentAnchorPosition: {x: -0.022056, y: 0, z: 0.044306}
+    parentAnchorRotation: {x: 0, y: 0, z: 0.70710677, w: -0.70710677}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0.70710677, w: -0.70710677}
+  - name: right_Right_Pad_Joint
+    parentLink: right_Right_Support_Link
+    childLink: right_Right_Pad_Link
+    parentAnchorPosition: {x: -0.022056, y: 0, z: 0.044306}
+    parentAnchorRotation: {x: 0, y: 0, z: 0.70710677, w: -0.70710677}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0.70710677, w: -0.70710677}
+  - name: right_Left_Pad_Joint
+    parentLink: right_Left_Support_Link
+    childLink: right_Left_Pad_Link
+    parentAnchorPosition: {x: -0.022056, y: 0, z: 0.044306}
+    parentAnchorRotation: {x: 0, y: 0, z: 0.70710677, w: -0.70710677}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0.70710677, w: -0.70710677}
+  auxiliaryJoints:
+  - name: left_Left_2_Joint
+    sourcePrimPath: /World/envs/env_0/Robot/left_base_link/left_Left_2_Joint
+    sourceJointType: PhysicsRevoluteJoint
+    jointType: RevoluteJoint
+    topologyRole: loop_closure
+    parentLink: left_base_link
+    childLink: left_Left_2_Link
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: -0.017, y: 0.122, z: 0}
+    parentAnchorRotation: {x: -0.7071055, y: -0.0000025597242, z: -0.000002559715, w: 0.7071081}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 1, w: -0}
+  - name: left_Right_2_Joint
+    sourcePrimPath: /World/envs/env_0/Robot/left_base_link/left_Right_2_Joint
+    sourceJointType: PhysicsRevoluteJoint
+    jointType: RevoluteJoint
+    topologyRole: loop_closure
+    parentLink: left_base_link
+    childLink: left_Right_2_Link
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0.017, y: 0.122, z: 0}
+    parentAnchorRotation: {x: 0.7071081, y: 0, z: 0, w: -0.7071055}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+  - name: right_Left_2_Joint
+    sourcePrimPath: /World/envs/env_0/Robot/right_base_link/right_Left_2_Joint
+    sourceJointType: PhysicsRevoluteJoint
+    jointType: RevoluteJoint
+    topologyRole: loop_closure
+    parentLink: right_base_link
+    childLink: right_Left_2_Link
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: -0.017, y: 0.122, z: 0}
+    parentAnchorRotation: {x: -0.7071055, y: -0.0000025597242, z: -0.000002559715, w: 0.7071081}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 1, w: -0}
+  - name: right_Right_2_Joint
+    sourcePrimPath: /World/envs/env_0/Robot/right_base_link/right_Right_2_Joint
+    sourceJointType: PhysicsRevoluteJoint
+    jointType: RevoluteJoint
+    topologyRole: loop_closure
+    parentLink: right_base_link
+    childLink: right_Right_2_Link
+    axis: {x: 0, y: 1, z: 0}
+    parentAnchorPosition: {x: 0.017, y: 0.122, z: 0}
+    parentAnchorRotation: {x: 0.7071081, y: 0, z: 0, w: -0.7071055}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}

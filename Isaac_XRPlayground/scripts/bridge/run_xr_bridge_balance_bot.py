@@ -58,7 +58,7 @@ from XRPlayground.bridge.names_balance_bot import (
     TOPIC_SESSION_COMMAND,
     TOPIC_SESSION_STATUS,
 )
-from XRPlayground.bridge.protocol import make_envelope
+from XRPlayground.bridge.protocol import make_envelope, message_type_from_topic
 from XRPlayground.bridge.tcp_server import RosTcpServer
 
 
@@ -125,9 +125,9 @@ def main():
                     continue
 
                 for msg in server.pop_messages():
-                    topic = msg.get("topic")
-                    data = msg.get("data") or {}
-                    if topic == TOPIC_SESSION_COMMAND:
+                    topic = msg.get("message_type")
+                    data = msg.get("payload") or {}
+                    if topic == message_type_from_topic(TOPIC_SESSION_COMMAND):
                         mode = data.get("mode")
                         if mode:
                             session.set_mode(str(mode))
@@ -145,8 +145,9 @@ def main():
                 now = time.perf_counter()
                 if now - last_publish >= publish_period:
                     try:
-                        server.broadcast(adapter.build_robot_state_envelope(stamp_s=now))
-                        server.broadcast(adapter.build_balls_state_envelope(stamp_s=now))
+                        sim_time_s = float(base_env.episode_length_buf[0].item()) * step_dt
+                        server.broadcast(adapter.build_robot_state_envelope(stamp_s=sim_time_s))
+                        server.broadcast(adapter.build_balls_state_envelope(stamp_s=sim_time_s))
                     except Exception as exc:  # noqa: BLE001
                         print(f"[XR BalanceBot Bridge] publish failed: {exc}")
                     last_publish = now
@@ -161,7 +162,8 @@ def main():
                                 "role": "isaac_balance_bot",
                                 "sim_time": float(base_env.episode_length_buf[0].item()) * step_dt,
                             },
-                            stamp_s=now,
+                            station_id="balance_bot",
+                            sim_time_s=float(base_env.episode_length_buf[0].item()) * step_dt,
                         )
                     )
                     last_heartbeat = now
@@ -177,7 +179,8 @@ def main():
                                 "clients": server.client_count(),
                                 "task": "balance_bot",
                             },
-                            stamp_s=now,
+                            station_id="balance_bot",
+                            sim_time_s=float(base_env.episode_length_buf[0].item()) * step_dt,
                         )
                     )
                     last_status = now

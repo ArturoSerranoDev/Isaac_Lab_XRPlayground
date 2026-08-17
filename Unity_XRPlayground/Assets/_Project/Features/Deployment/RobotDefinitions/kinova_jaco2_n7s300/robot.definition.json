@@ -1,0 +1,1084 @@
+{
+  "definition_sha256": "afc0dcfc14c3cd51f27041afab0fbd438e02177b4cb6d94a6dfe21f4ce854f24",
+  "fixed_joints": [
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "child_link": "j2n7s300_end_effector",
+      "name": "j2n7s300_joint_end_effector",
+      "parent_anchor_position": [
+        0.0,
+        -0.1599999964237213,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.5,
+        0.4999999403953552,
+        0.4999999403953552,
+        0.5
+      ],
+      "parent_link": "j2n7s300_link_7"
+    }
+  ],
+  "joints": [
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "j2n7s300_link_1",
+      "damping": 12.0,
+      "default_position": 0.0,
+      "effort_limit_curve": [],
+      "force_limit": 220.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "continuous",
+      "lower_limit": -3.4028234663852886e+38,
+      "max_velocity": 3.5,
+      "name": "j2n7s300_joint_1",
+      "parent_anchor_position": [
+        0.0,
+        0.15674999356269836,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.7071068286895752,
+        -0.7071067094802856
+      ],
+      "parent_link": "j2n7s300_link_base",
+      "position_unit": "radian",
+      "stiffness": 280.0,
+      "upper_limit": 3.4028234663852886e+38
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "j2n7s300_link_2",
+      "damping": 12.0,
+      "default_position": 2.3499999046325684,
+      "effort_limit_curve": [],
+      "force_limit": 220.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": 0.5235987901687622,
+      "max_velocity": 3.5,
+      "name": "j2n7s300_joint_2",
+      "parent_anchor_position": [
+        0.0,
+        -0.11874999850988388,
+        0.0015999999595806003
+      ],
+      "parent_anchor_rotation": [
+        0.5,
+        0.4999999403953552,
+        -0.4999999403953552,
+        0.5
+      ],
+      "parent_link": "j2n7s300_link_1",
+      "position_unit": "radian",
+      "stiffness": 280.0,
+      "upper_limit": 5.759585857391357
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "j2n7s300_link_3",
+      "damping": 12.0,
+      "default_position": 0.25,
+      "effort_limit_curve": [],
+      "force_limit": 140.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "continuous",
+      "lower_limit": -3.4028234663852886e+38,
+      "max_velocity": 3.5,
+      "name": "j2n7s300_joint_3",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        -0.20499999821186066
+      ],
+      "parent_anchor_rotation": [
+        0.4999999403953552,
+        0.5,
+        0.5,
+        -0.4999999403953552
+      ],
+      "parent_link": "j2n7s300_link_2",
+      "position_unit": "radian",
+      "stiffness": 280.0,
+      "upper_limit": 3.4028234663852886e+38
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "j2n7s300_link_4",
+      "damping": 12.0,
+      "default_position": 1.649999976158142,
+      "effort_limit_curve": [],
+      "force_limit": 140.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": 0.5235987901687622,
+      "max_velocity": 3.5,
+      "name": "j2n7s300_joint_4",
+      "parent_anchor_position": [
+        0.0,
+        -0.20499999821186066,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.4999999403953552,
+        0.5,
+        0.5,
+        -0.4999999403953552
+      ],
+      "parent_link": "j2n7s300_link_3",
+      "position_unit": "radian",
+      "stiffness": 280.0,
+      "upper_limit": 5.759585857391357
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "j2n7s300_link_5",
+      "damping": 6.0,
+      "default_position": 1.399999976158142,
+      "effort_limit_curve": [],
+      "force_limit": 80.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "continuous",
+      "lower_limit": -3.4028234663852886e+38,
+      "max_velocity": 3.5,
+      "name": "j2n7s300_joint_5",
+      "parent_anchor_position": [
+        0.0,
+        -0.01140000019222498,
+        0.20730000734329224
+      ],
+      "parent_anchor_rotation": [
+        0.5,
+        0.4999999403953552,
+        -0.4999999403953552,
+        0.5
+      ],
+      "parent_link": "j2n7s300_link_4",
+      "position_unit": "radian",
+      "stiffness": 120.0,
+      "upper_limit": 3.4028234663852886e+38
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "j2n7s300_link_6",
+      "damping": 6.0,
+      "default_position": 0.3499999940395355,
+      "effort_limit_curve": [],
+      "force_limit": 80.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "continuous",
+      "lower_limit": -3.4028234663852886e+38,
+      "max_velocity": 3.5,
+      "name": "j2n7s300_joint_6",
+      "parent_anchor_position": [
+        0.0,
+        -0.06413999944925308,
+        -0.03703000023961067
+      ],
+      "parent_anchor_rotation": [
+        0.6123723983764648,
+        0.6123723983764648,
+        0.3535534143447876,
+        -0.3535533547401428
+      ],
+      "parent_link": "j2n7s300_link_5",
+      "position_unit": "radian",
+      "stiffness": 120.0,
+      "upper_limit": 3.4028234663852886e+38
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "j2n7s300_link_7",
+      "damping": 6.0,
+      "default_position": 0.0,
+      "effort_limit_curve": [],
+      "force_limit": 80.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "continuous",
+      "lower_limit": -3.4028234663852886e+38,
+      "max_velocity": 3.5,
+      "name": "j2n7s300_joint_7",
+      "parent_anchor_position": [
+        0.0,
+        -0.06413999944925308,
+        -0.03703000023961067
+      ],
+      "parent_anchor_rotation": [
+        0.6123723983764648,
+        0.6123723983764648,
+        0.3535534143447876,
+        -0.3535533547401428
+      ],
+      "parent_link": "j2n7s300_link_6",
+      "position_unit": "radian",
+      "stiffness": 120.0,
+      "upper_limit": 3.4028234663852886e+38
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "gripper",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "j2n7s300_link_finger_1",
+      "damping": 6.0,
+      "default_position": 0.03999999910593033,
+      "effort_limit_curve": [],
+      "force_limit": 28.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": 0.0,
+      "max_velocity": 6.0,
+      "name": "j2n7s300_joint_finger_1",
+      "parent_anchor_position": [
+        0.00279000005684793,
+        -0.11467000097036362,
+        0.03125999867916107
+      ],
+      "parent_anchor_rotation": [
+        -0.007039517164230347,
+        0.8890993595123291,
+        -0.44531744718551636,
+        0.10556966066360474
+      ],
+      "parent_link": "j2n7s300_link_7",
+      "position_unit": "radian",
+      "stiffness": 120.0,
+      "upper_limit": 1.5099999904632568
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "gripper",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "j2n7s300_link_finger_2",
+      "damping": 6.0,
+      "default_position": 0.03999999910593033,
+      "effort_limit_curve": [],
+      "force_limit": 28.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": 0.0,
+      "max_velocity": 6.0,
+      "name": "j2n7s300_joint_finger_2",
+      "parent_anchor_position": [
+        0.022260000929236412,
+        -0.11482000350952148,
+        -0.027070000767707825
+      ],
+      "parent_anchor_rotation": [
+        -0.44274136424064636,
+        0.0825817883014679,
+        -0.04099392890930176,
+        -0.8918967247009277
+      ],
+      "parent_link": "j2n7s300_link_7",
+      "position_unit": "radian",
+      "stiffness": 120.0,
+      "upper_limit": 1.5099999904632568
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "gripper",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "j2n7s300_link_finger_3",
+      "damping": 6.0,
+      "default_position": 0.03999999910593033,
+      "effort_limit_curve": [],
+      "force_limit": 28.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": 0.0,
+      "max_velocity": 6.0,
+      "name": "j2n7s300_joint_finger_3",
+      "parent_anchor_position": [
+        -0.022260000929236412,
+        -0.11482000350952148,
+        -0.027070000767707825
+      ],
+      "parent_anchor_rotation": [
+        -0.44274136424064636,
+        -0.0825817883014679,
+        0.04099392890930176,
+        -0.8918967247009277
+      ],
+      "parent_link": "j2n7s300_link_7",
+      "position_unit": "radian",
+      "stiffness": 120.0,
+      "upper_limit": 1.5099999904632568
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "gripper",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "j2n7s300_link_finger_tip_1",
+      "damping": 6.0,
+      "default_position": 0.03999999910593033,
+      "effort_limit_curve": [],
+      "force_limit": 28.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": 0.0,
+      "max_velocity": 6.0,
+      "name": "j2n7s300_joint_finger_tip_1",
+      "parent_anchor_position": [
+        0.04399999976158142,
+        0.0,
+        -0.003000000026077032
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "parent_link": "j2n7s300_link_finger_1",
+      "position_unit": "radian",
+      "stiffness": 120.0,
+      "upper_limit": 1.9999998807907104
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "gripper",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "j2n7s300_link_finger_tip_2",
+      "damping": 6.0,
+      "default_position": 0.03999999910593033,
+      "effort_limit_curve": [],
+      "force_limit": 28.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": 0.0,
+      "max_velocity": 6.0,
+      "name": "j2n7s300_joint_finger_tip_2",
+      "parent_anchor_position": [
+        0.04399999976158142,
+        0.0,
+        -0.003000000026077032
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "parent_link": "j2n7s300_link_finger_2",
+      "position_unit": "radian",
+      "stiffness": 120.0,
+      "upper_limit": 1.9999998807907104
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "gripper",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "j2n7s300_link_finger_tip_3",
+      "damping": 6.0,
+      "default_position": 0.03999999910593033,
+      "effort_limit_curve": [],
+      "force_limit": 28.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": 0.0,
+      "max_velocity": 6.0,
+      "name": "j2n7s300_joint_finger_tip_3",
+      "parent_anchor_position": [
+        0.04399999976158142,
+        0.0,
+        -0.003000000026077032
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "parent_link": "j2n7s300_link_finger_3",
+      "position_unit": "radian",
+      "stiffness": 120.0,
+      "upper_limit": 1.9999998807907104
+    }
+  ],
+  "links": [
+    {
+      "center_of_mass": [
+        0.0,
+        0.12549999356269836,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.00037427202914841473,
+        0.0009512708056718111,
+        0.0009512708056718111
+      ],
+      "inertia_tensor_rotation": [
+        0.7071067811865475,
+        0.7071067811865476,
+        0.0,
+        -0.0
+      ],
+      "mass": 0.4678400158882141,
+      "name": "j2n7s300_link_base",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.0,
+        -0.060499999672174454,
+        -0.0020000000949949026
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.0005981600261293352,
+        0.00152031728066504,
+        0.00152031728066504
+      ],
+      "inertia_tensor_rotation": [
+        0.7071067811865475,
+        0.7071067811865476,
+        0.0,
+        -0.0
+      ],
+      "mass": 0.7476999759674072,
+      "name": "j2n7s300_link_1",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.0,
+        0.0,
+        -0.10356321185827255
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.00038011500146239996,
+        0.0024707375559955835,
+        0.0024707375559955835
+      ],
+      "inertia_tensor_rotation": [
+        0.0,
+        -0.7071067811865475,
+        0.0,
+        0.7071067811865476
+      ],
+      "mass": 0.8446999788284302,
+      "name": "j2n7s300_link_2",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.0,
+        -0.10224474221467972,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.00038011500146239996,
+        0.0024707375559955835,
+        0.0024707375559955835
+      ],
+      "inertia_tensor_rotation": [
+        0.7071067811865475,
+        0.7071067811865476,
+        0.0,
+        -0.0
+      ],
+      "mass": 0.8446999788284302,
+      "name": "j2n7s300_link_3",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.0,
+        -0.00860000029206276,
+        0.08100000023841858
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.0003043350006919354,
+        0.001420224318280816,
+        0.001420224318280816
+      ],
+      "inertia_tensor_rotation": [
+        0.0,
+        -0.7071067811865475,
+        0.0,
+        0.7071067811865476
+      ],
+      "mass": 0.6762999892234802,
+      "name": "j2n7s300_link_4",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.0,
+        -0.06419999897480011,
+        -0.03700000047683716
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        7.734969403827563e-05,
+        7.734969403827563e-05,
+        0.00014279999595601112
+      ],
+      "inertia_tensor_rotation": [
+        0.7071067811865475,
+        -0.0,
+        0.0,
+        0.7071067811865476
+      ],
+      "mass": 0.42636701464653015,
+      "name": "j2n7s300_link_5",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.0,
+        -0.06419999897480011,
+        -0.03700000047683716
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        7.734969403827563e-05,
+        7.734969403827563e-05,
+        0.00014279999595601112
+      ],
+      "inertia_tensor_rotation": [
+        0.7071067811865475,
+        -0.0,
+        0.0,
+        0.7071067811865476
+      ],
+      "mass": 0.42636701464653015,
+      "name": "j2n7s300_link_6",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.0,
+        -0.05999999865889549,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.00034532361314632,
+        0.00034532361314632,
+        0.0005816000048071146
+      ],
+      "inertia_tensor_rotation": [
+        0.7071067811865475,
+        -0.0,
+        0.0,
+        0.7071067811865476
+      ],
+      "mass": 0.9900000691413879,
+      "name": "j2n7s300_link_7",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "collision_enabled": false,
+      "collision_shape_count": 0,
+      "contact_offset": -1.0,
+      "dynamic_friction": -1.0,
+      "inertia_tensor": [
+        4.000000053405728e-10,
+        4.000000053405728e-10,
+        4.000000053405728e-10
+      ],
+      "inertia_tensor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mass": 1.0000000116860974e-07,
+      "name": "j2n7s300_end_effector",
+      "rest_offset": -1.0,
+      "restitution": -1.0,
+      "static_friction": -1.0
+    },
+    {
+      "center_of_mass": [
+        0.02199999988079071,
+        0.0,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        7.999999951380232e-08,
+        7.899968181845907e-07,
+        7.899968181845907e-07
+      ],
+      "inertia_tensor_rotation": [
+        0.7071067811865475,
+        0.7071067811865476,
+        0.0,
+        -0.0
+      ],
+      "mass": 0.009999999776482582,
+      "name": "j2n7s300_link_finger_1",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.02199999988079071,
+        0.0,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        7.999999951380232e-08,
+        7.899968181845907e-07,
+        7.899968181845907e-07
+      ],
+      "inertia_tensor_rotation": [
+        0.7071067811865475,
+        0.7071067811865476,
+        0.0,
+        -0.0
+      ],
+      "mass": 0.009999999776482582,
+      "name": "j2n7s300_link_finger_2",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.02199999988079071,
+        0.0,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        7.999999951380232e-08,
+        7.899968181845907e-07,
+        7.899968181845907e-07
+      ],
+      "inertia_tensor_rotation": [
+        0.7071067811865475,
+        0.7071067811865476,
+        0.0,
+        -0.0
+      ],
+      "mass": 0.009999999776482582,
+      "name": "j2n7s300_link_finger_3",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.02199999988079071,
+        0.0,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        7.999999951380232e-08,
+        7.899968181845907e-07,
+        7.899968181845907e-07
+      ],
+      "inertia_tensor_rotation": [
+        0.7071067811865475,
+        0.7071067811865476,
+        0.0,
+        -0.0
+      ],
+      "mass": 0.009999999776482582,
+      "name": "j2n7s300_link_finger_tip_1",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.02199999988079071,
+        0.0,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        7.999999951380232e-08,
+        7.899968181845907e-07,
+        7.899968181845907e-07
+      ],
+      "inertia_tensor_rotation": [
+        0.7071067811865475,
+        0.7071067811865476,
+        0.0,
+        -0.0
+      ],
+      "mass": 0.009999999776482582,
+      "name": "j2n7s300_link_finger_tip_2",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.02199999988079071,
+        0.0,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        7.999999951380232e-08,
+        7.899968181845907e-07,
+        7.899968181845907e-07
+      ],
+      "inertia_tensor_rotation": [
+        0.7071067811865475,
+        0.7071067811865476,
+        0.0,
+        -0.0
+      ],
+      "mass": 0.009999999776482582,
+      "name": "j2n7s300_link_finger_tip_3",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    }
+  ],
+  "provenance": "Kinova Jaco2 source mirrored from the NVIDIA Isaac distribution; underlying Kinova asset copyright 2018.",
+  "redistribution_license": "BSD-3-Clause",
+  "robot_id": "kinova_jaco2_n7s300",
+  "schema_version": 6,
+  "source_asset": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.0/Isaac/Robots/Kinova/Jaco2/J2N7S300/j2n7s300_instanceable.usd",
+  "source_sha256": ""
+}

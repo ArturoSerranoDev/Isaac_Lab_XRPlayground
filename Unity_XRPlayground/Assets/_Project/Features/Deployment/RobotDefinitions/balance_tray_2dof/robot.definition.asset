@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d4bed842a90a584da2b12a73b9d4422, type: 3}
+  m_Name: robot.definition
+  m_EditorClassIdentifier: XRPlayground.Deployment::XRPlayground.Deployment.RobotDefinition
+  robotId: balance_tray_2dof
+  sourceAsset: procedural://balance_tray_2dof
+  sourceSha256: 
+  definitionSha256: 8a03f4fab225e062403222a197a45df33fbfe4cf1a0a51df0f651c7f095c4036
+  provenance: XRPlayground project-authored procedural tray and ball geometry.
+  redistributionLicense: project-authored
+  links:
+  - name: tray_root
+    mass: 5
+    centerOfMass: {x: 0, y: 0, z: 0}
+    inertiaTensor: {x: 0.25, y: 0.25, z: 0.25}
+    inertiaTensorRotation: {x: 0, y: 0, z: 0, w: 1}
+    collisionShapeCount: 0
+    collisionEnabled: 0
+    staticFriction: -1
+    dynamicFriction: -1
+    restitution: -1
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: roll_link
+    mass: 1
+    centerOfMass: {x: 0, y: 0, z: 0}
+    inertiaTensor: {x: 0.05, y: 0.05, z: 0.05}
+    inertiaTensorRotation: {x: 0, y: 0, z: 0, w: 1}
+    collisionShapeCount: 0
+    collisionEnabled: 0
+    staticFriction: -1
+    dynamicFriction: -1
+    restitution: -1
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: tray
+    mass: 2
+    centerOfMass: {x: 0, y: 0, z: 0}
+    inertiaTensor: {x: 0.1, y: 0.1, z: 0.1}
+    inertiaTensorRotation: {x: 0, y: 0, z: 0, w: 1}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: 0.005
+    restOffset: 0
+    collisionShapes: []
+  joints:
+  - name: roll_joint
+    parentLink: tray_root
+    childLink: roll_link
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: 0, y: 0, z: 0}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: 1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: 1}
+    lowerLimit: -0.35
+    upperLimit: 0.35
+    defaultPosition: 0
+    stiffness: 0
+    damping: 0
+    forceLimit: 100
+    maxVelocity: 2
+    actuatorGroup: procedural_tray
+    actuatorModel: UnityKinematicTarget
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: pitch_joint
+    parentLink: roll_link
+    childLink: tray
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 0, z: 1}
+    parentAnchorPosition: {x: 0, y: 0, z: 0}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: 1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: 1}
+    lowerLimit: -0.35
+    upperLimit: 0.35
+    defaultPosition: 0
+    stiffness: 0
+    damping: 0
+    forceLimit: 100
+    maxVelocity: 2
+    actuatorGroup: procedural_tray
+    actuatorModel: UnityKinematicTarget
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  fixedJoints: []
+  auxiliaryJoints: []

@@ -1,0 +1,246 @@
+{
+  "actions": [
+    {
+      "action_type": null,
+      "dtype": "None",
+      "extras": {
+        "description": "Pre-trained policy action term. This action term infers a pre-trained policy and applies the corresponding low-level actions to the robot. The raw actions correspond to the commands for the pre-trained policy."
+      },
+      "frame": "none",
+      "full_path": "isaaclab_tasks.manager_based.navigation.mdp.pre_trained_policy_action.PreTrainedPolicyAction",
+      "history": 1,
+      "integration": "absolute_command",
+      "mdp_type": "Action",
+      "name": "pre_trained_policy_action",
+      "names": [
+        "linear_x",
+        "linear_y",
+        "yaw_rate"
+      ],
+      "offset": 0.0,
+      "scale": 1.0,
+      "shape": [
+        3
+      ],
+      "target_type": "velocity_command",
+      "units": "m/s,m/s,rad/s"
+    }
+  ],
+  "adapter_id": "spot_follow",
+  "assist_profile_id": "spot_upright_damping",
+  "checkpoint": "model_1499.pt",
+  "checkpoint_sha256": "0bbc7ce8fd0b87cd21ced1feba9fc4131fb979d94f71f42d267fae2e8ab7158e",
+  "config_sha256": "ec3f1ac182fef182e7b9c7eaff91d5d447e55d720f7418ec3042c4cfb7e212ce",
+  "dependencies": [
+    {
+      "model_sha256": "76079616df7f8f13ce970cc5ed912afbd36bea9b7f2798cd0a0ac0f874def6d5",
+      "policy_id": "spot.locomotion",
+      "torchscript_sha256": "91fe1db4568ca6f51de877e32451377617e48dbb28c567864fed63eee0722d88"
+    }
+  ],
+  "evaluation": {
+    "minimum_isaac_score": 0.8,
+    "minimum_unity_relative_score": 0.8,
+    "observation_limit": 0.0001,
+    "primary_metric": "follow_score",
+    "python_unity_limit": 0.0001,
+    "ready": false,
+    "seeded_scenarios": 100,
+    "task_thresholds": [
+      {
+        "comparison": "equal",
+        "metric": "follow_observation_dim",
+        "value": 10.0
+      },
+      {
+        "comparison": "equal",
+        "metric": "high_level_policy_hz",
+        "value": 5.0
+      },
+      {
+        "comparison": "equal",
+        "metric": "low_level_policy_hz",
+        "value": 50.0
+      },
+      {
+        "comparison": "max",
+        "metric": "target_distance_error_m",
+        "value": 0.6
+      },
+      {
+        "comparison": "max",
+        "metric": "heading_error_rad",
+        "value": 0.5
+      },
+      {
+        "comparison": "max",
+        "metric": "fall_rate",
+        "value": 0.1
+      }
+    ],
+    "torch_onnx_limit": 1e-05,
+    "torch_onnx_max_abs_error": 7.152557373046875e-07
+  },
+  "frame": {
+    "deployment": "unity_lh_y_up",
+    "never_extrapolate_authoritative_state": true,
+    "position_mapping": [
+      "x",
+      "z",
+      "y"
+    ],
+    "quaternion_xyzw_mapping": [
+      "x",
+      "z",
+      "y",
+      "-w"
+    ],
+    "source": "isaac_rh_z_up"
+  },
+  "model_sha256": "23143f6aea9af67028f7643088a69226bbeb5c2f49d757e90bb8ad16d18cee75",
+  "normalization_embedded": true,
+  "observations": [
+    {
+      "dtype": "float32",
+      "extras": {
+        "axes": [
+          "X",
+          "Y",
+          "Z"
+        ],
+        "description": "Root linear velocity in the asset's root frame.",
+        "modifiers": null,
+        "units": "m/s"
+      },
+      "frame": "robot_base",
+      "full_path": "isaaclab.envs.mdp.observations.base_lin_vel",
+      "history": 1,
+      "mdp_type": "Observation",
+      "name": "base_lin_vel",
+      "observation_type": "RootState",
+      "offset": 0.0,
+      "overloads": {
+        "clip": null,
+        "flatten_history_dim": true,
+        "history_length": 0,
+        "scale": null
+      },
+      "scale": 1.0,
+      "shape": [
+        3
+      ],
+      "units": "m/s"
+    },
+    {
+      "dtype": "float32",
+      "extras": {
+        "axes": [
+          "X",
+          "Y",
+          "Z"
+        ],
+        "description": "Gravity projection on the asset's root frame.",
+        "modifiers": null,
+        "units": "m/s^2"
+      },
+      "frame": "robot_base",
+      "full_path": "isaaclab.envs.mdp.observations.projected_gravity",
+      "history": 1,
+      "mdp_type": "Observation",
+      "name": "projected_gravity",
+      "observation_type": "RootState",
+      "offset": 0.0,
+      "overloads": {
+        "clip": null,
+        "flatten_history_dim": true,
+        "history_length": 0,
+        "scale": null
+      },
+      "scale": 1.0,
+      "shape": [
+        3
+      ],
+      "units": "m/s^2"
+    },
+    {
+      "dtype": "float32",
+      "extras": {
+        "description": "The generated command from command term in the command manager with the given name.",
+        "modifiers": null
+      },
+      "frame": "robot_base",
+      "full_path": "isaaclab.envs.mdp.observations.generated_commands",
+      "history": 1,
+      "mdp_type": "Observation",
+      "name": "generated_commands",
+      "names": [
+        "position_x",
+        "position_y",
+        "position_z",
+        "heading"
+      ],
+      "observation_type": "Command",
+      "offset": 0.0,
+      "overloads": {
+        "clip": null,
+        "flatten_history_dim": true,
+        "history_length": 0,
+        "scale": null
+      },
+      "scale": 1.0,
+      "shape": [
+        4
+      ],
+      "units": "m,m,m,rad"
+    }
+  ],
+  "onnx": {
+    "input_name": "obs",
+    "input_shape": [
+      1,
+      10
+    ],
+    "inputs": [
+      {
+        "name": "obs",
+        "shape": [
+          1,
+          10
+        ]
+      }
+    ],
+    "opset": 15,
+    "output_name": "actions",
+    "output_shape": [
+      1,
+      3
+    ],
+    "outputs": [
+      {
+        "name": "actions",
+        "shape": [
+          1,
+          3
+        ]
+      }
+    ],
+    "sha256": "23143f6aea9af67028f7643088a69226bbeb5c2f49d757e90bb8ad16d18cee75"
+  },
+  "physics_profile_id": "spot_250hz",
+  "policy_id": "spot.follow",
+  "recurrent_state": [],
+  "robot_id": "spot",
+  "schema_version": 2,
+  "source_task_id": "Template-Xrplayground-Spot-Follow-v0",
+  "station_id": "spot_follow",
+  "timing": {
+    "deployment_decimation": 50,
+    "deployment_physics_hz": 250,
+    "deployment_sim_dt": 0.004,
+    "policy_dt": 0.2,
+    "policy_hz": 5,
+    "source_physics_hz": 250,
+    "source_sim_dt": 0.004
+  },
+  "torchscript_sha256": "117508bfe514fc3add9b1f46aa2627bb8771eec7fe9efd7f229fd01a065489c4"
+}

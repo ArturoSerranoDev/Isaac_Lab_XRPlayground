@@ -22,6 +22,8 @@ dependencies = [
     "isaaclab-tasks",
     "isaaclab-tasks-experimental",
     "isaaclab-visualizers",
+    "onnx==1.21.0",
+    "onnxruntime==1.28.0",
     "torch==2.10.0",
     "torchaudio==2.10.0",
     "torchvision==0.25.0",

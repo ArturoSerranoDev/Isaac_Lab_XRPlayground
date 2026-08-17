@@ -1,0 +1,6 @@
+{
+  "policy_id": "spot.locomotion",
+  "promotion_eligible": false,
+  "purpose": "reference checkpoint physics and inference inspection only",
+  "schema_version": 1
+}

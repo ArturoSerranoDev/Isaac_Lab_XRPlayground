@@ -1,0 +1,1383 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d4bed842a90a584da2b12a73b9d4422, type: 3}
+  m_Name: robot.definition
+  m_EditorClassIdentifier: XRPlayground.Deployment::XRPlayground.Deployment.RobotDefinition
+  robotId: spot
+  sourceAsset: https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.0/Isaac/Robots/BostonDynamics/spot/spot.usd
+  sourceSha256: 
+  definitionSha256: da13fffb49550be124d27012c3f8540c1daec6d0eeea5d941195b2a28af6ad0b
+  provenance: Spot Xacro, meshes, and model metadata from RAI-Opensource/spot_description
+    commit 156d1802bfb117f219dbfce7597d283d5fabc968; physics truth is overlaid from
+    the actual Isaac articulation during export.
+  redistributionLicense: MIT AND BSD-3-Clause
+  links:
+  - name: body
+    mass: 14.468234
+    centerOfMass: {x: 0, y: -0.00496172, z: 0}
+    inertiaTensor: {x: 0.07061403, y: 0.4756148, z: 0.49312735}
+    inertiaTensorRotation: {x: 0.70710677, y: -0, z: 0, w: 0.70710677}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: fl_hip
+    mass: 1.1368834
+    centerOfMass: {x: -0.01586739, y: 0.00000903, z: 0.00855842}
+    inertiaTensor: {x: 0.0011499589, y: 0.0016612656, z: 0.0017290362}
+    inertiaTensorRotation: {x: -0.6972445, y: -0.13412839, z: -0.13561109, w: 0.6909915}
+    collisionShapeCount: 0
+    collisionEnabled: 0
+    staticFriction: -1
+    dynamicFriction: -1
+    restitution: -1
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: fr_hip
+    mass: 1.1368834
+    centerOfMass: {x: -0.01586739, y: 0.00000903, z: -0.00855842}
+    inertiaTensor: {x: 0.0011499589, y: 0.0016612656, z: 0.0017290362}
+    inertiaTensorRotation: {x: 0.6972445, y: 0.13412839, z: -0.13561109, w: 0.6909915}
+    collisionShapeCount: 0
+    collisionEnabled: 0
+    staticFriction: -1
+    dynamicFriction: -1
+    restitution: -1
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: hl_hip
+    mass: 1.1368834
+    centerOfMass: {x: 0.01586739, y: 0.00000903, z: 0.00855842}
+    inertiaTensor: {x: 0.0011499589, y: 0.0016612656, z: 0.0017290362}
+    inertiaTensorRotation: {x: -0.6972445, y: 0.13412839, z: 0.13561109, w: 0.6909915}
+    collisionShapeCount: 0
+    collisionEnabled: 0
+    staticFriction: -1
+    dynamicFriction: -1
+    restitution: -1
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: hr_hip
+    mass: 1.1368834
+    centerOfMass: {x: 0.01586739, y: 0.00000903, z: -0.00855842}
+    inertiaTensor: {x: 0.0011499589, y: 0.0016612656, z: 0.0017290362}
+    inertiaTensorRotation: {x: 0.6972445, y: -0.13412839, z: 0.13561109, w: 0.6909915}
+    collisionShapeCount: 0
+    collisionEnabled: 0
+    staticFriction: -1
+    dynamicFriction: -1
+    restitution: -1
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: fl_uleg
+    mass: 2.2562037
+    centerOfMass: {x: 0.00214442, y: -0.07881204, z: -0.01110184}
+    inertiaTensor: {x: 0.002986657, y: 0.026025377, z: 0.026939424}
+    inertiaTensorRotation: {x: 0.47130334, y: -0.5061332, z: -0.48192543, w: 0.53800577}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: fr_uleg
+    mass: 2.2562037
+    centerOfMass: {x: 0.00214442, y: -0.07881204, z: 0.01110184}
+    inertiaTensor: {x: 0.002986657, y: 0.026025377, z: 0.026939424}
+    inertiaTensorRotation: {x: 0.53800577, y: -0.48192543, z: -0.5061332, w: 0.47130334}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: hl_uleg
+    mass: 2.2562037
+    centerOfMass: {x: 0.00214442, y: -0.07881204, z: -0.01110184}
+    inertiaTensor: {x: 0.002986657, y: 0.026025377, z: 0.026939424}
+    inertiaTensorRotation: {x: 0.47130334, y: -0.5061332, z: -0.48192543, w: 0.53800577}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: hr_uleg
+    mass: 2.2562037
+    centerOfMass: {x: 0.00214442, y: -0.07881204, z: 0.01110184}
+    inertiaTensor: {x: 0.002986657, y: 0.026025377, z: 0.026939424}
+    inertiaTensorRotation: {x: 0.53800577, y: -0.48192543, z: -0.5061332, w: 0.47130334}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: fl_lleg
+    mass: 0.33
+    centerOfMass: {x: 0.0059736, y: -0.17466427, z: 0}
+    inertiaTensor: {x: 0.00014465585, y: 0.007014196, z: 0.00709946}
+    inertiaTensorRotation: {x: 0.71049565, y: -0.7037016, z: 0, w: 0}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: fr_lleg
+    mass: 0.33
+    centerOfMass: {x: 0.0059736, y: -0.17466427, z: 0}
+    inertiaTensor: {x: 0.00014465585, y: 0.007014196, z: 0.00709946}
+    inertiaTensorRotation: {x: 0.71049565, y: -0.7037016, z: 0, w: 0}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: hl_lleg
+    mass: 0.33
+    centerOfMass: {x: 0.0059736, y: -0.17466427, z: 0}
+    inertiaTensor: {x: 0.00014465585, y: 0.007014196, z: 0.00709946}
+    inertiaTensorRotation: {x: 0.71049565, y: -0.7037016, z: 0, w: 0}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: hr_lleg
+    mass: 0.33
+    centerOfMass: {x: 0.0059736, y: -0.17466427, z: 0}
+    inertiaTensor: {x: 0.00014465585, y: 0.007014196, z: 0.00709946}
+    inertiaTensorRotation: {x: 0.71049565, y: -0.7037016, z: 0, w: 0}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: fl_foot
+    mass: 0.000001
+    centerOfMass: {x: 0, y: 0, z: 0}
+    inertiaTensor: {x: 4.900001e-10, y: 4.900001e-10, z: 4.900001e-10}
+    inertiaTensorRotation: {x: 0, y: 0, z: 0, w: 1}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: fr_foot
+    mass: 0.000001
+    centerOfMass: {x: 0, y: 0, z: 0}
+    inertiaTensor: {x: 4.900001e-10, y: 4.900001e-10, z: 4.900001e-10}
+    inertiaTensorRotation: {x: 0, y: 0, z: 0, w: 1}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: hl_foot
+    mass: 0.000001
+    centerOfMass: {x: 0, y: 0, z: 0}
+    inertiaTensor: {x: 4.900001e-10, y: 4.900001e-10, z: 4.900001e-10}
+    inertiaTensorRotation: {x: 0, y: 0, z: 0, w: 1}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: hr_foot
+    mass: 0.000001
+    centerOfMass: {x: 0, y: 0, z: 0}
+    inertiaTensor: {x: 4.900001e-10, y: 4.900001e-10, z: 4.900001e-10}
+    inertiaTensorRotation: {x: 0, y: 0, z: 0, w: 1}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  joints:
+  - name: fl_hx
+    parentLink: body
+    childLink: fl_hip
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: 0.29785, y: 0, z: 0.055}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -0.78539795
+    upperLimit: 0.78539795
+    defaultPosition: 0.1
+    stiffness: 60
+    damping: 1.5
+    forceLimit: 45
+    maxVelocity: 100
+    actuatorGroup: spot_hip
+    actuatorModel: DelayedPDActuator
+    actuatorIsImplicit: 0
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 4
+    actuatorNominalDelaySteps: 2
+    effortLimitCurve: []
+  - name: fr_hx
+    parentLink: body
+    childLink: fr_hip
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: 0.29785, y: 0, z: -0.055}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -0.78539795
+    upperLimit: 0.78539795
+    defaultPosition: -0.1
+    stiffness: 60
+    damping: 1.5
+    forceLimit: 45
+    maxVelocity: 100
+    actuatorGroup: spot_hip
+    actuatorModel: DelayedPDActuator
+    actuatorIsImplicit: 0
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 4
+    actuatorNominalDelaySteps: 2
+    effortLimitCurve: []
+  - name: hl_hx
+    parentLink: body
+    childLink: hl_hip
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: -0.29785, y: 0, z: 0.055}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -0.78539795
+    upperLimit: 0.78539795
+    defaultPosition: 0.1
+    stiffness: 60
+    damping: 1.5
+    forceLimit: 45
+    maxVelocity: 100
+    actuatorGroup: spot_hip
+    actuatorModel: DelayedPDActuator
+    actuatorIsImplicit: 0
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 4
+    actuatorNominalDelaySteps: 2
+    effortLimitCurve: []
+  - name: hr_hx
+    parentLink: body
+    childLink: hr_hip
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: -0.29785, y: 0, z: -0.055}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -0.78539795
+    upperLimit: 0.78539795
+    defaultPosition: -0.1
+    stiffness: 60
+    damping: 1.5
+    forceLimit: 45
+    maxVelocity: 100
+    actuatorGroup: spot_hip
+    actuatorModel: DelayedPDActuator
+    actuatorIsImplicit: 0
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 4
+    actuatorNominalDelaySteps: 2
+    effortLimitCurve: []
+  - name: fl_hy
+    parentLink: fl_hip
+    childLink: fl_uleg
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 0, z: 1}
+    parentAnchorPosition: {x: 0, y: 0, z: 0.110945}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -0.89884496
+    upperLimit: 2.2951078
+    defaultPosition: 0.9
+    stiffness: 60
+    damping: 1.5
+    forceLimit: 45
+    maxVelocity: 100
+    actuatorGroup: spot_hip
+    actuatorModel: DelayedPDActuator
+    actuatorIsImplicit: 0
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 4
+    actuatorNominalDelaySteps: 2
+    effortLimitCurve: []
+  - name: fr_hy
+    parentLink: fr_hip
+    childLink: fr_uleg
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 0, z: 1}
+    parentAnchorPosition: {x: 0, y: 0, z: -0.110945}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -0.89884496
+    upperLimit: 2.2951078
+    defaultPosition: 0.9
+    stiffness: 60
+    damping: 1.5
+    forceLimit: 45
+    maxVelocity: 100
+    actuatorGroup: spot_hip
+    actuatorModel: DelayedPDActuator
+    actuatorIsImplicit: 0
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 4
+    actuatorNominalDelaySteps: 2
+    effortLimitCurve: []
+  - name: hl_hy
+    parentLink: hl_hip
+    childLink: hl_uleg
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 0, z: 1}
+    parentAnchorPosition: {x: 0, y: 0, z: 0.110945}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -0.89884496
+    upperLimit: 2.2951078
+    defaultPosition: 1.1
+    stiffness: 60
+    damping: 1.5
+    forceLimit: 45
+    maxVelocity: 100
+    actuatorGroup: spot_hip
+    actuatorModel: DelayedPDActuator
+    actuatorIsImplicit: 0
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 4
+    actuatorNominalDelaySteps: 2
+    effortLimitCurve: []
+  - name: hr_hy
+    parentLink: hr_hip
+    childLink: hr_uleg
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 0, z: 1}
+    parentAnchorPosition: {x: 0, y: 0, z: -0.110945}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -0.89884496
+    upperLimit: 2.2951078
+    defaultPosition: 1.1
+    stiffness: 60
+    damping: 1.5
+    forceLimit: 45
+    maxVelocity: 100
+    actuatorGroup: spot_hip
+    actuatorModel: DelayedPDActuator
+    actuatorIsImplicit: 0
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 4
+    actuatorNominalDelaySteps: 2
+    effortLimitCurve: []
+  - name: fl_kn
+    parentLink: fl_uleg
+    childLink: fl_lleg
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 0, z: 1}
+    parentAnchorPosition: {x: 0.025, y: -0.3205, z: 0}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -2.7928998
+    upperLimit: -0.24709998
+    defaultPosition: -1.5
+    stiffness: 60
+    damping: 1.5
+    forceLimit: 113.236015
+    maxVelocity: 100
+    actuatorGroup: spot_knee
+    actuatorModel: RemotizedPDActuator
+    actuatorIsImplicit: 0
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 4
+    actuatorNominalDelaySteps: 2
+    effortLimitCurve:
+    - position: -2.7929
+      maxEffort: 37.165077
+    - position: -2.767442
+      maxEffort: 39.43516
+    - position: -2.741984
+      maxEffort: 41.690056
+    - position: -2.716526
+      maxEffort: 43.928997
+    - position: -2.691068
+      maxEffort: 46.151302
+    - position: -2.66561
+      maxEffort: 48.356133
+    - position: -2.640152
+      maxEffort: 50.54275
+    - position: -2.614694
+      maxEffort: 52.71033
+    - position: -2.589236
+      maxEffort: 54.858078
+    - position: -2.563778
+      maxEffort: 56.985126
+    - position: -2.53832
+      maxEffort: 59.090595
+    - position: -2.512862
+      maxEffort: 61.17361
+    - position: -2.487404
+      maxEffort: 63.23323
+    - position: -2.461946
+      maxEffort: 65.268555
+    - position: -2.436488
+      maxEffort: 67.27856
+    - position: -2.41103
+      maxEffort: 69.26231
+    - position: -2.385572
+      maxEffort: 71.218735
+    - position: -2.360114
+      maxEffort: 73.14683
+    - position: -2.334656
+      maxEffort: 75.0455
+    - position: -2.309198
+      maxEffort: 76.91364
+    - position: -2.28374
+      maxEffort: 78.75015
+    - position: -2.258282
+      maxEffort: 80.55388
+    - position: -2.232824
+      maxEffort: 82.32366
+    - position: -2.207366
+      maxEffort: 84.05829
+    - position: -2.181908
+      maxEffort: 85.75654
+    - position: -2.15645
+      maxEffort: 87.4172
+    - position: -2.130992
+      maxEffort: 89.03897
+    - position: -2.105534
+      maxEffort: 90.620605
+    - position: -2.080076
+      maxEffort: 92.16079
+    - position: -2.054618
+      maxEffort: 93.65822
+    - position: -2.02916
+      maxEffort: 95.11154
+    - position: -2.003702
+      maxEffort: 96.5194
+    - position: -1.978244
+      maxEffort: 97.88051
+    - position: -1.952786
+      maxEffort: 99.19342
+    - position: -1.927328
+      maxEffort: 100.456764
+    - position: -1.90187
+      maxEffort: 101.66919
+    - position: -1.876412
+      maxEffort: 102.82929
+    - position: -1.850954
+      maxEffort: 103.93568
+    - position: -1.825496
+      maxEffort: 104.986984
+    - position: -1.800038
+      maxEffort: 105.98181
+    - position: -1.77458
+      maxEffort: 106.918785
+    - position: -1.749122
+      maxEffort: 107.79648
+    - position: -1.723664
+      maxEffort: 108.61363
+    - position: -1.698206
+      maxEffort: 109.36885
+    - position: -1.672748
+      maxEffort: 110.06081
+    - position: -1.64729
+      maxEffort: 110.688194
+    - position: -1.621832
+      maxEffort: 111.24976
+    - position: -1.596374
+      maxEffort: 111.744225
+    - position: -1.570916
+      maxEffort: 112.17038
+    - position: -1.545458
+      maxEffort: 112.527
+    - position: -1.52
+      maxEffort: 112.81298
+    - position: -1.494542
+      maxEffort: 113.02717
+    - position: -1.469084
+      maxEffort: 113.16853
+    - position: -1.443626
+      maxEffort: 113.236015
+    - position: -1.418168
+      maxEffort: 113.22866
+    - position: -1.39271
+      maxEffort: 113.145515
+    - position: -1.367252
+      maxEffort: 112.98574
+    - position: -1.341794
+      maxEffort: 112.74853
+    - position: -1.316336
+      maxEffort: 112.433105
+    - position: -1.290878
+      maxEffort: 112.038826
+    - position: -1.26542
+      maxEffort: 111.56504
+    - position: -1.239962
+      maxEffort: 111.011215
+    - position: -1.214504
+      maxEffort: 110.37687
+    - position: -1.189046
+      maxEffort: 109.66161
+    - position: -1.163588
+      maxEffort: 108.86513
+    - position: -1.13813
+      maxEffort: 107.98718
+    - position: -1.112672
+      maxEffort: 107.02756
+    - position: -1.087214
+      maxEffort: 105.98623
+    - position: -1.061756
+      maxEffort: 104.86322
+    - position: -1.036298
+      maxEffort: 103.658585
+    - position: -1.01084
+      maxEffort: 102.372505
+    - position: -0.985382
+      maxEffort: 101.005295
+    - position: -0.959924
+      maxEffort: 99.55727
+    - position: -0.934466
+      maxEffort: 98.02892
+    - position: -0.909008
+      maxEffort: 96.4208
+    - position: -0.88355
+      maxEffort: 94.73354
+    - position: -0.858092
+      maxEffort: 92.96788
+    - position: -0.832634
+      maxEffort: 91.124664
+    - position: -0.807176
+      maxEffort: 89.204765
+    - position: -0.781718
+      maxEffort: 87.20925
+    - position: -0.75626
+      maxEffort: 85.13923
+    - position: -0.730802
+      maxEffort: 82.995926
+    - position: -0.705344
+      maxEffort: 80.780594
+    - position: -0.679886
+      maxEffort: 78.4947
+    - position: -0.654428
+      maxEffort: 76.13964
+    - position: -0.62897
+      maxEffort: 73.71705
+    - position: -0.603512
+      maxEffort: 71.22861
+    - position: -0.578054
+      maxEffort: 68.676
+    - position: -0.552596
+      maxEffort: 66.06115
+    - position: -0.527138
+      maxEffort: 63.3859
+    - position: -0.50168
+      maxEffort: 60.652325
+    - position: -0.476222
+      maxEffort: 57.86242
+    - position: -0.450764
+      maxEffort: 55.018475
+    - position: -0.425306
+      maxEffort: 52.122646
+    - position: -0.399848
+      maxEffort: 49.177254
+    - position: -0.37439
+      maxEffort: 46.184715
+    - position: -0.348932
+      maxEffort: 43.147427
+    - position: -0.323474
+      maxEffort: 40.067955
+    - position: -0.298016
+      maxEffort: 36.948864
+    - position: -0.272558
+      maxEffort: 33.79282
+    - position: -0.2471
+      maxEffort: 30.6025
+  - name: fr_kn
+    parentLink: fr_uleg
+    childLink: fr_lleg
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 0, z: 1}
+    parentAnchorPosition: {x: 0.025, y: -0.3205, z: 0}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -2.7928998
+    upperLimit: -0.24709998
+    defaultPosition: -1.5
+    stiffness: 60
+    damping: 1.5
+    forceLimit: 113.236015
+    maxVelocity: 100
+    actuatorGroup: spot_knee
+    actuatorModel: RemotizedPDActuator
+    actuatorIsImplicit: 0
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 4
+    actuatorNominalDelaySteps: 2
+    effortLimitCurve:
+    - position: -2.7929
+      maxEffort: 37.165077
+    - position: -2.767442
+      maxEffort: 39.43516
+    - position: -2.741984
+      maxEffort: 41.690056
+    - position: -2.716526
+      maxEffort: 43.928997
+    - position: -2.691068
+      maxEffort: 46.151302
+    - position: -2.66561
+      maxEffort: 48.356133
+    - position: -2.640152
+      maxEffort: 50.54275
+    - position: -2.614694
+      maxEffort: 52.71033
+    - position: -2.589236
+      maxEffort: 54.858078
+    - position: -2.563778
+      maxEffort: 56.985126
+    - position: -2.53832
+      maxEffort: 59.090595
+    - position: -2.512862
+      maxEffort: 61.17361
+    - position: -2.487404
+      maxEffort: 63.23323
+    - position: -2.461946
+      maxEffort: 65.268555
+    - position: -2.436488
+      maxEffort: 67.27856
+    - position: -2.41103
+      maxEffort: 69.26231
+    - position: -2.385572
+      maxEffort: 71.218735
+    - position: -2.360114
+      maxEffort: 73.14683
+    - position: -2.334656
+      maxEffort: 75.0455
+    - position: -2.309198
+      maxEffort: 76.91364
+    - position: -2.28374
+      maxEffort: 78.75015
+    - position: -2.258282
+      maxEffort: 80.55388
+    - position: -2.232824
+      maxEffort: 82.32366
+    - position: -2.207366
+      maxEffort: 84.05829
+    - position: -2.181908
+      maxEffort: 85.75654
+    - position: -2.15645
+      maxEffort: 87.4172
+    - position: -2.130992
+      maxEffort: 89.03897
+    - position: -2.105534
+      maxEffort: 90.620605
+    - position: -2.080076
+      maxEffort: 92.16079
+    - position: -2.054618
+      maxEffort: 93.65822
+    - position: -2.02916
+      maxEffort: 95.11154
+    - position: -2.003702
+      maxEffort: 96.5194
+    - position: -1.978244
+      maxEffort: 97.88051
+    - position: -1.952786
+      maxEffort: 99.19342
+    - position: -1.927328
+      maxEffort: 100.456764
+    - position: -1.90187
+      maxEffort: 101.66919
+    - position: -1.876412
+      maxEffort: 102.82929
+    - position: -1.850954
+      maxEffort: 103.93568
+    - position: -1.825496
+      maxEffort: 104.986984
+    - position: -1.800038
+      maxEffort: 105.98181
+    - position: -1.77458
+      maxEffort: 106.918785
+    - position: -1.749122
+      maxEffort: 107.79648
+    - position: -1.723664
+      maxEffort: 108.61363
+    - position: -1.698206
+      maxEffort: 109.36885
+    - position: -1.672748
+      maxEffort: 110.06081
+    - position: -1.64729
+      maxEffort: 110.688194
+    - position: -1.621832
+      maxEffort: 111.24976
+    - position: -1.596374
+      maxEffort: 111.744225
+    - position: -1.570916
+      maxEffort: 112.17038
+    - position: -1.545458
+      maxEffort: 112.527
+    - position: -1.52
+      maxEffort: 112.81298
+    - position: -1.494542
+      maxEffort: 113.02717
+    - position: -1.469084
+      maxEffort: 113.16853
+    - position: -1.443626
+      maxEffort: 113.236015
+    - position: -1.418168
+      maxEffort: 113.22866
+    - position: -1.39271
+      maxEffort: 113.145515
+    - position: -1.367252
+      maxEffort: 112.98574
+    - position: -1.341794
+      maxEffort: 112.74853
+    - position: -1.316336
+      maxEffort: 112.433105
+    - position: -1.290878
+      maxEffort: 112.038826
+    - position: -1.26542
+      maxEffort: 111.56504
+    - position: -1.239962
+      maxEffort: 111.011215
+    - position: -1.214504
+      maxEffort: 110.37687
+    - position: -1.189046
+      maxEffort: 109.66161
+    - position: -1.163588
+      maxEffort: 108.86513
+    - position: -1.13813
+      maxEffort: 107.98718
+    - position: -1.112672
+      maxEffort: 107.02756
+    - position: -1.087214
+      maxEffort: 105.98623
+    - position: -1.061756
+      maxEffort: 104.86322
+    - position: -1.036298
+      maxEffort: 103.658585
+    - position: -1.01084
+      maxEffort: 102.372505
+    - position: -0.985382
+      maxEffort: 101.005295
+    - position: -0.959924
+      maxEffort: 99.55727
+    - position: -0.934466
+      maxEffort: 98.02892
+    - position: -0.909008
+      maxEffort: 96.4208
+    - position: -0.88355
+      maxEffort: 94.73354
+    - position: -0.858092
+      maxEffort: 92.96788
+    - position: -0.832634
+      maxEffort: 91.124664
+    - position: -0.807176
+      maxEffort: 89.204765
+    - position: -0.781718
+      maxEffort: 87.20925
+    - position: -0.75626
+      maxEffort: 85.13923
+    - position: -0.730802
+      maxEffort: 82.995926
+    - position: -0.705344
+      maxEffort: 80.780594
+    - position: -0.679886
+      maxEffort: 78.4947
+    - position: -0.654428
+      maxEffort: 76.13964
+    - position: -0.62897
+      maxEffort: 73.71705
+    - position: -0.603512
+      maxEffort: 71.22861
+    - position: -0.578054
+      maxEffort: 68.676
+    - position: -0.552596
+      maxEffort: 66.06115
+    - position: -0.527138
+      maxEffort: 63.3859
+    - position: -0.50168
+      maxEffort: 60.652325
+    - position: -0.476222
+      maxEffort: 57.86242
+    - position: -0.450764
+      maxEffort: 55.018475
+    - position: -0.425306
+      maxEffort: 52.122646
+    - position: -0.399848
+      maxEffort: 49.177254
+    - position: -0.37439
+      maxEffort: 46.184715
+    - position: -0.348932
+      maxEffort: 43.147427
+    - position: -0.323474
+      maxEffort: 40.067955
+    - position: -0.298016
+      maxEffort: 36.948864
+    - position: -0.272558
+      maxEffort: 33.79282
+    - position: -0.2471
+      maxEffort: 30.6025
+  - name: hl_kn
+    parentLink: hl_uleg
+    childLink: hl_lleg
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 0, z: 1}
+    parentAnchorPosition: {x: 0.025, y: -0.3205, z: 0}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -2.7928998
+    upperLimit: -0.24709998
+    defaultPosition: -1.5
+    stiffness: 60
+    damping: 1.5
+    forceLimit: 113.236015
+    maxVelocity: 100
+    actuatorGroup: spot_knee
+    actuatorModel: RemotizedPDActuator
+    actuatorIsImplicit: 0
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 4
+    actuatorNominalDelaySteps: 2
+    effortLimitCurve:
+    - position: -2.7929
+      maxEffort: 37.165077
+    - position: -2.767442
+      maxEffort: 39.43516
+    - position: -2.741984
+      maxEffort: 41.690056
+    - position: -2.716526
+      maxEffort: 43.928997
+    - position: -2.691068
+      maxEffort: 46.151302
+    - position: -2.66561
+      maxEffort: 48.356133
+    - position: -2.640152
+      maxEffort: 50.54275
+    - position: -2.614694
+      maxEffort: 52.71033
+    - position: -2.589236
+      maxEffort: 54.858078
+    - position: -2.563778
+      maxEffort: 56.985126
+    - position: -2.53832
+      maxEffort: 59.090595
+    - position: -2.512862
+      maxEffort: 61.17361
+    - position: -2.487404
+      maxEffort: 63.23323
+    - position: -2.461946
+      maxEffort: 65.268555
+    - position: -2.436488
+      maxEffort: 67.27856
+    - position: -2.41103
+      maxEffort: 69.26231
+    - position: -2.385572
+      maxEffort: 71.218735
+    - position: -2.360114
+      maxEffort: 73.14683
+    - position: -2.334656
+      maxEffort: 75.0455
+    - position: -2.309198
+      maxEffort: 76.91364
+    - position: -2.28374
+      maxEffort: 78.75015
+    - position: -2.258282
+      maxEffort: 80.55388
+    - position: -2.232824
+      maxEffort: 82.32366
+    - position: -2.207366
+      maxEffort: 84.05829
+    - position: -2.181908
+      maxEffort: 85.75654
+    - position: -2.15645
+      maxEffort: 87.4172
+    - position: -2.130992
+      maxEffort: 89.03897
+    - position: -2.105534
+      maxEffort: 90.620605
+    - position: -2.080076
+      maxEffort: 92.16079
+    - position: -2.054618
+      maxEffort: 93.65822
+    - position: -2.02916
+      maxEffort: 95.11154
+    - position: -2.003702
+      maxEffort: 96.5194
+    - position: -1.978244
+      maxEffort: 97.88051
+    - position: -1.952786
+      maxEffort: 99.19342
+    - position: -1.927328
+      maxEffort: 100.456764
+    - position: -1.90187
+      maxEffort: 101.66919
+    - position: -1.876412
+      maxEffort: 102.82929
+    - position: -1.850954
+      maxEffort: 103.93568
+    - position: -1.825496
+      maxEffort: 104.986984
+    - position: -1.800038
+      maxEffort: 105.98181
+    - position: -1.77458
+      maxEffort: 106.918785
+    - position: -1.749122
+      maxEffort: 107.79648
+    - position: -1.723664
+      maxEffort: 108.61363
+    - position: -1.698206
+      maxEffort: 109.36885
+    - position: -1.672748
+      maxEffort: 110.06081
+    - position: -1.64729
+      maxEffort: 110.688194
+    - position: -1.621832
+      maxEffort: 111.24976
+    - position: -1.596374
+      maxEffort: 111.744225
+    - position: -1.570916
+      maxEffort: 112.17038
+    - position: -1.545458
+      maxEffort: 112.527
+    - position: -1.52
+      maxEffort: 112.81298
+    - position: -1.494542
+      maxEffort: 113.02717
+    - position: -1.469084
+      maxEffort: 113.16853
+    - position: -1.443626
+      maxEffort: 113.236015
+    - position: -1.418168
+      maxEffort: 113.22866
+    - position: -1.39271
+      maxEffort: 113.145515
+    - position: -1.367252
+      maxEffort: 112.98574
+    - position: -1.341794
+      maxEffort: 112.74853
+    - position: -1.316336
+      maxEffort: 112.433105
+    - position: -1.290878
+      maxEffort: 112.038826
+    - position: -1.26542
+      maxEffort: 111.56504
+    - position: -1.239962
+      maxEffort: 111.011215
+    - position: -1.214504
+      maxEffort: 110.37687
+    - position: -1.189046
+      maxEffort: 109.66161
+    - position: -1.163588
+      maxEffort: 108.86513
+    - position: -1.13813
+      maxEffort: 107.98718
+    - position: -1.112672
+      maxEffort: 107.02756
+    - position: -1.087214
+      maxEffort: 105.98623
+    - position: -1.061756
+      maxEffort: 104.86322
+    - position: -1.036298
+      maxEffort: 103.658585
+    - position: -1.01084
+      maxEffort: 102.372505
+    - position: -0.985382
+      maxEffort: 101.005295
+    - position: -0.959924
+      maxEffort: 99.55727
+    - position: -0.934466
+      maxEffort: 98.02892
+    - position: -0.909008
+      maxEffort: 96.4208
+    - position: -0.88355
+      maxEffort: 94.73354
+    - position: -0.858092
+      maxEffort: 92.96788
+    - position: -0.832634
+      maxEffort: 91.124664
+    - position: -0.807176
+      maxEffort: 89.204765
+    - position: -0.781718
+      maxEffort: 87.20925
+    - position: -0.75626
+      maxEffort: 85.13923
+    - position: -0.730802
+      maxEffort: 82.995926
+    - position: -0.705344
+      maxEffort: 80.780594
+    - position: -0.679886
+      maxEffort: 78.4947
+    - position: -0.654428
+      maxEffort: 76.13964
+    - position: -0.62897
+      maxEffort: 73.71705
+    - position: -0.603512
+      maxEffort: 71.22861
+    - position: -0.578054
+      maxEffort: 68.676
+    - position: -0.552596
+      maxEffort: 66.06115
+    - position: -0.527138
+      maxEffort: 63.3859
+    - position: -0.50168
+      maxEffort: 60.652325
+    - position: -0.476222
+      maxEffort: 57.86242
+    - position: -0.450764
+      maxEffort: 55.018475
+    - position: -0.425306
+      maxEffort: 52.122646
+    - position: -0.399848
+      maxEffort: 49.177254
+    - position: -0.37439
+      maxEffort: 46.184715
+    - position: -0.348932
+      maxEffort: 43.147427
+    - position: -0.323474
+      maxEffort: 40.067955
+    - position: -0.298016
+      maxEffort: 36.948864
+    - position: -0.272558
+      maxEffort: 33.79282
+    - position: -0.2471
+      maxEffort: 30.6025
+  - name: hr_kn
+    parentLink: hr_uleg
+    childLink: hr_lleg
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 0, y: 0, z: 1}
+    parentAnchorPosition: {x: 0.025, y: -0.3205, z: 0}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    lowerLimit: -2.7928998
+    upperLimit: -0.24709998
+    defaultPosition: -1.5
+    stiffness: 60
+    damping: 1.5
+    forceLimit: 113.236015
+    maxVelocity: 100
+    actuatorGroup: spot_knee
+    actuatorModel: RemotizedPDActuator
+    actuatorIsImplicit: 0
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 4
+    actuatorNominalDelaySteps: 2
+    effortLimitCurve:
+    - position: -2.7929
+      maxEffort: 37.165077
+    - position: -2.767442
+      maxEffort: 39.43516
+    - position: -2.741984
+      maxEffort: 41.690056
+    - position: -2.716526
+      maxEffort: 43.928997
+    - position: -2.691068
+      maxEffort: 46.151302
+    - position: -2.66561
+      maxEffort: 48.356133
+    - position: -2.640152
+      maxEffort: 50.54275
+    - position: -2.614694
+      maxEffort: 52.71033
+    - position: -2.589236
+      maxEffort: 54.858078
+    - position: -2.563778
+      maxEffort: 56.985126
+    - position: -2.53832
+      maxEffort: 59.090595
+    - position: -2.512862
+      maxEffort: 61.17361
+    - position: -2.487404
+      maxEffort: 63.23323
+    - position: -2.461946
+      maxEffort: 65.268555
+    - position: -2.436488
+      maxEffort: 67.27856
+    - position: -2.41103
+      maxEffort: 69.26231
+    - position: -2.385572
+      maxEffort: 71.218735
+    - position: -2.360114
+      maxEffort: 73.14683
+    - position: -2.334656
+      maxEffort: 75.0455
+    - position: -2.309198
+      maxEffort: 76.91364
+    - position: -2.28374
+      maxEffort: 78.75015
+    - position: -2.258282
+      maxEffort: 80.55388
+    - position: -2.232824
+      maxEffort: 82.32366
+    - position: -2.207366
+      maxEffort: 84.05829
+    - position: -2.181908
+      maxEffort: 85.75654
+    - position: -2.15645
+      maxEffort: 87.4172
+    - position: -2.130992
+      maxEffort: 89.03897
+    - position: -2.105534
+      maxEffort: 90.620605
+    - position: -2.080076
+      maxEffort: 92.16079
+    - position: -2.054618
+      maxEffort: 93.65822
+    - position: -2.02916
+      maxEffort: 95.11154
+    - position: -2.003702
+      maxEffort: 96.5194
+    - position: -1.978244
+      maxEffort: 97.88051
+    - position: -1.952786
+      maxEffort: 99.19342
+    - position: -1.927328
+      maxEffort: 100.456764
+    - position: -1.90187
+      maxEffort: 101.66919
+    - position: -1.876412
+      maxEffort: 102.82929
+    - position: -1.850954
+      maxEffort: 103.93568
+    - position: -1.825496
+      maxEffort: 104.986984
+    - position: -1.800038
+      maxEffort: 105.98181
+    - position: -1.77458
+      maxEffort: 106.918785
+    - position: -1.749122
+      maxEffort: 107.79648
+    - position: -1.723664
+      maxEffort: 108.61363
+    - position: -1.698206
+      maxEffort: 109.36885
+    - position: -1.672748
+      maxEffort: 110.06081
+    - position: -1.64729
+      maxEffort: 110.688194
+    - position: -1.621832
+      maxEffort: 111.24976
+    - position: -1.596374
+      maxEffort: 111.744225
+    - position: -1.570916
+      maxEffort: 112.17038
+    - position: -1.545458
+      maxEffort: 112.527
+    - position: -1.52
+      maxEffort: 112.81298
+    - position: -1.494542
+      maxEffort: 113.02717
+    - position: -1.469084
+      maxEffort: 113.16853
+    - position: -1.443626
+      maxEffort: 113.236015
+    - position: -1.418168
+      maxEffort: 113.22866
+    - position: -1.39271
+      maxEffort: 113.145515
+    - position: -1.367252
+      maxEffort: 112.98574
+    - position: -1.341794
+      maxEffort: 112.74853
+    - position: -1.316336
+      maxEffort: 112.433105
+    - position: -1.290878
+      maxEffort: 112.038826
+    - position: -1.26542
+      maxEffort: 111.56504
+    - position: -1.239962
+      maxEffort: 111.011215
+    - position: -1.214504
+      maxEffort: 110.37687
+    - position: -1.189046
+      maxEffort: 109.66161
+    - position: -1.163588
+      maxEffort: 108.86513
+    - position: -1.13813
+      maxEffort: 107.98718
+    - position: -1.112672
+      maxEffort: 107.02756
+    - position: -1.087214
+      maxEffort: 105.98623
+    - position: -1.061756
+      maxEffort: 104.86322
+    - position: -1.036298
+      maxEffort: 103.658585
+    - position: -1.01084
+      maxEffort: 102.372505
+    - position: -0.985382
+      maxEffort: 101.005295
+    - position: -0.959924
+      maxEffort: 99.55727
+    - position: -0.934466
+      maxEffort: 98.02892
+    - position: -0.909008
+      maxEffort: 96.4208
+    - position: -0.88355
+      maxEffort: 94.73354
+    - position: -0.858092
+      maxEffort: 92.96788
+    - position: -0.832634
+      maxEffort: 91.124664
+    - position: -0.807176
+      maxEffort: 89.204765
+    - position: -0.781718
+      maxEffort: 87.20925
+    - position: -0.75626
+      maxEffort: 85.13923
+    - position: -0.730802
+      maxEffort: 82.995926
+    - position: -0.705344
+      maxEffort: 80.780594
+    - position: -0.679886
+      maxEffort: 78.4947
+    - position: -0.654428
+      maxEffort: 76.13964
+    - position: -0.62897
+      maxEffort: 73.71705
+    - position: -0.603512
+      maxEffort: 71.22861
+    - position: -0.578054
+      maxEffort: 68.676
+    - position: -0.552596
+      maxEffort: 66.06115
+    - position: -0.527138
+      maxEffort: 63.3859
+    - position: -0.50168
+      maxEffort: 60.652325
+    - position: -0.476222
+      maxEffort: 57.86242
+    - position: -0.450764
+      maxEffort: 55.018475
+    - position: -0.425306
+      maxEffort: 52.122646
+    - position: -0.399848
+      maxEffort: 49.177254
+    - position: -0.37439
+      maxEffort: 46.184715
+    - position: -0.348932
+      maxEffort: 43.147427
+    - position: -0.323474
+      maxEffort: 40.067955
+    - position: -0.298016
+      maxEffort: 36.948864
+    - position: -0.272558
+      maxEffort: 33.79282
+    - position: -0.2471
+      maxEffort: 30.6025
+  fixedJoints:
+  - name: fl_ank
+    parentLink: fl_lleg
+    childLink: fl_foot
+    parentAnchorPosition: {x: 0, y: -0.3365, z: 0}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+  - name: fr_ank
+    parentLink: fr_lleg
+    childLink: fr_foot
+    parentAnchorPosition: {x: 0, y: -0.3365, z: 0}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+  - name: hl_ank
+    parentLink: hl_lleg
+    childLink: hl_foot
+    parentAnchorPosition: {x: 0, y: -0.3365, z: 0}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+  - name: hr_ank
+    parentLink: hr_lleg
+    childLink: hr_foot
+    parentAnchorPosition: {x: 0, y: -0.3365, z: 0}
+    parentAnchorRotation: {x: 0, y: 0, z: 0, w: -1}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0, w: -1}
+  auxiliaryJoints: []

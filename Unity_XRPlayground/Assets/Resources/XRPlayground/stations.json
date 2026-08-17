@@ -1,70 +1,389 @@
 {
+  "assist_profiles": [
+    {
+      "break_force_n": 0.0,
+      "break_torque_nm": 0.0,
+      "enabled_in_production": false,
+      "kind": "None",
+      "maximum_upright_tilt_degrees": 0.0,
+      "profile_id": "none",
+      "required_distinct_contacts": 0,
+      "upright_angular_damping": 0.0
+    },
+    {
+      "break_force_n": 150.0,
+      "break_torque_nm": 50.0,
+      "enabled_in_production": true,
+      "kind": "ContactGrip",
+      "maximum_upright_tilt_degrees": 0.0,
+      "profile_id": "three_fingertip_grip",
+      "required_distinct_contacts": 3,
+      "upright_angular_damping": 0.0
+    },
+    {
+      "break_force_n": 120.0,
+      "break_torque_nm": 40.0,
+      "enabled_in_production": true,
+      "kind": "ContactGrip",
+      "maximum_upright_tilt_degrees": 0.0,
+      "profile_id": "opposing_contact_grip",
+      "required_distinct_contacts": 2,
+      "upright_angular_damping": 0.0
+    },
+    {
+      "break_force_n": 0.0,
+      "break_torque_nm": 0.0,
+      "enabled_in_production": true,
+      "kind": "SpotUprightDamping",
+      "maximum_upright_tilt_degrees": 20.0,
+      "profile_id": "spot_upright_damping",
+      "required_distinct_contacts": 2,
+      "upright_angular_damping": 50.0
+    }
+  ],
+  "bridge": {
+    "disconnect_after_seconds": 2.0,
+    "host": "127.0.0.1",
+    "max_message_bytes": 1048576,
+    "stale_after_seconds": 0.25
+  },
+  "physics_profiles": [
+    {
+      "calibrated": false,
+      "default_contact_offset_m": 0.005,
+      "maximum_depenetration_velocity_mps": 3.0,
+      "physics_hz": 120,
+      "profile_id": "arm_120hz",
+      "solver_iterations": 12,
+      "solver_velocity_iterations": 4
+    },
+    {
+      "calibrated": false,
+      "default_contact_offset_m": 0.005,
+      "maximum_depenetration_velocity_mps": 2.0,
+      "physics_hz": 120,
+      "profile_id": "tray_120hz",
+      "solver_iterations": 10,
+      "solver_velocity_iterations": 4
+    },
+    {
+      "calibrated": false,
+      "default_contact_offset_m": 0.003,
+      "maximum_depenetration_velocity_mps": 4.0,
+      "physics_hz": 250,
+      "profile_id": "spot_250hz",
+      "solver_iterations": 16,
+      "solver_velocity_iterations": 6
+    }
+  ],
+  "robot_assets": [
+    {
+      "license_paths": [
+        "Unity_XRPlayground/Assets/_Project/Features/Robots/KinovaJaco2/USD/Props/LICENSE"
+      ],
+      "provenance": "Kinova Jaco2 source mirrored from the NVIDIA Isaac distribution; underlying Kinova asset copyright 2018.",
+      "redistribution_license": "BSD-3-Clause",
+      "redistribution_verified": true,
+      "robot_id": "kinova_jaco2_n7s300"
+    },
+    {
+      "license_paths": [
+        "deployment/licenses/Universal_Robots_ROS2_Description-ae333289.LICENSE.txt",
+        "deployment/licenses/Robotiq-45196f65.LICENSE.txt"
+      ],
+      "provenance": "UR10e from UniversalRobots/Universal_Robots_ROS2_Description commit ae333289875f9ba5a9ea6649a54036efb5ccabee (tag 4.3.1); Robotiq 2F-85 from ros-industrial-attic/robotiq commit 45196f6558fe8ba9d89bc8a105396c68c3e7e892.",
+      "redistribution_license": "BSD-3-Clause AND BSD-2-Clause",
+      "redistribution_verified": true,
+      "robot_id": "ur10e_robotiq_2f85"
+    },
+    {
+      "license_paths": [],
+      "provenance": "Existing project-local A2D_physics.usd; original redistribution terms have not been recorded.",
+      "redistribution_license": "UNVERIFIED",
+      "redistribution_verified": false,
+      "robot_id": "agibot_a2d"
+    },
+    {
+      "license_paths": [],
+      "provenance": "XRPlayground project-authored procedural tray and ball geometry.",
+      "redistribution_license": "project-authored",
+      "redistribution_verified": true,
+      "robot_id": "balance_tray_2dof"
+    },
+    {
+      "license_paths": [
+        "deployment/licenses/RAI-Spot-Description-156d1802.LICENSE.txt"
+      ],
+      "provenance": "Spot Xacro, meshes, and model metadata from RAI-Opensource/spot_description commit 156d1802bfb117f219dbfce7597d283d5fabc968; physics truth is overlaid from the actual Isaac articulation during export.",
+      "redistribution_license": "MIT AND BSD-3-Clause",
+      "redistribution_verified": true,
+      "robot_id": "spot"
+    }
+  ],
+  "runtime": {
+    "default_inference_backend": "cpu",
+    "maximum_active_offline_stations": 1,
+    "minimum_render_hz": 72,
+    "platform": "windows_pcvr",
+    "target_render_hz": 90
+  },
+  "schema_version": 3,
   "stations": [
     {
-      "id": "ball_catch",
-      "task_ids": ["Template-Xrplayground-Ball-Catch-Direct-v0", "Template-Xrplayground-Ball-Catch-Wrap-v0", "Template-Xrplayground-Ball-Catch-Throw-A-v0", "Template-Xrplayground-Ball-Catch-Throw-B-v0", "Template-Xrplayground-Ball-Catch-Throw-v0"],
-      "policy_task_id": "Template-Xrplayground-Ball-Catch-Direct-v0",
-      "policy_folder": "BallCatch",
-      "bridge_script": "scripts/bridge/run_xr_bridge.py",
+      "adapter_id": "ball_catch",
+      "assist_profile_id": "three_fingertip_grip",
+      "bridge_payloads": [
+        "robot_state",
+        "objects_state",
+        "session_status"
+      ],
+      "display_name": "Ball Catch",
+      "offline_bindings": {
+        "contact_links": [
+          "j2n7s300_link_finger_tip_1",
+          "j2n7s300_link_finger_tip_2",
+          "j2n7s300_link_finger_tip_3"
+        ],
+        "end_effector_link": "j2n7s300_end_effector",
+        "robot_position_isaac": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "root_link": "j2n7s300_link_base"
+      },
+      "physics_profile_id": "arm_120hz",
+      "policies": [
+        {
+          "action_dim": 8,
+          "observation_dim": 30,
+          "physics_hz": 120,
+          "policy_hz": 60,
+          "policy_id": "ball_catch.throw",
+          "source_task_id": "Template-Xrplayground-Ball-Catch-Throw-B-v0",
+          "unity_folder": "BallCatch"
+        }
+      ],
+      "policy_ids": [
+        "ball_catch.throw"
+      ],
       "port": 9090,
-      "obs_dim": 30,
-      "action_dim": 8,
-      "required_topics": ["/xr/heartbeat", "/xr/robot_state", "/xr/ball_state", "/xr/session_status"]
+      "robot_id": "kinova_jaco2_n7s300",
+      "station_id": "ball_catch"
     },
     {
-      "id": "conveyor_color",
-      "task_ids": ["Template-Xrplayground-Conveyor-Color-Direct-v0"],
-      "policy_task_id": "Template-Xrplayground-Conveyor-Color-Direct-v0",
-      "policy_folder": "Conveyor",
-      "bridge_script": "scripts/bridge/run_xr_bridge_conveyor.py",
+      "adapter_id": "conveyor_color",
+      "assist_profile_id": "opposing_contact_grip",
+      "bridge_payloads": [
+        "robot_state",
+        "objects_state",
+        "session_status"
+      ],
+      "display_name": "Conveyor Color",
+      "offline_bindings": {
+        "contact_links": [
+          "left_inner_finger",
+          "right_inner_finger"
+        ],
+        "end_effector_link": "wrist_3_link",
+        "robot_position_isaac": [
+          -0.22,
+          -0.1,
+          0.0
+        ],
+        "root_link": "base_link"
+      },
+      "physics_profile_id": "arm_120hz",
+      "policies": [
+        {
+          "action_dim": 7,
+          "observation_dim": 66,
+          "physics_hz": 120,
+          "policy_hz": 60,
+          "policy_id": "conveyor_color.sort",
+          "source_task_id": "Template-Xrplayground-Conveyor-Color-Direct-v0",
+          "unity_folder": "Conveyor"
+        }
+      ],
+      "policy_ids": [
+        "conveyor_color.sort"
+      ],
       "port": 9091,
-      "obs_dim": 66,
-      "action_dim": 7,
-      "required_topics": ["/xr/heartbeat", "/xr/conveyor/robot_state", "/xr/conveyor/objects_state", "/xr/session_status"]
+      "robot_id": "ur10e_robotiq_2f85",
+      "station_id": "conveyor_color"
     },
     {
-      "id": "pick_place_table",
-      "task_ids": ["Template-Xrplayground-Pick-Place-Table-Direct-v0"],
-      "policy_task_id": "Template-Xrplayground-Pick-Place-Table-Direct-v0",
-      "policy_folder": "PickPlace",
-      "bridge_script": "scripts/bridge/run_xr_bridge_pick_place.py",
+      "adapter_id": "pick_place_table",
+      "assist_profile_id": "opposing_contact_grip",
+      "bridge_payloads": [
+        "robot_state",
+        "objects_state",
+        "session_status"
+      ],
+      "display_name": "Pick and Place",
+      "offline_bindings": {
+        "contact_links": [
+          "right_Left_Pad_Link",
+          "right_Right_Pad_Link"
+        ],
+        "end_effector_link": "right_gripper_center",
+        "robot_position_isaac": [
+          -0.78,
+          0.0,
+          0.0
+        ],
+        "root_link": "base_link"
+      },
+      "physics_profile_id": "arm_120hz",
+      "policies": [
+        {
+          "action_dim": 8,
+          "observation_dim": 30,
+          "physics_hz": 120,
+          "policy_hz": 60,
+          "policy_id": "pick_place_table.place",
+          "source_task_id": "Template-Xrplayground-Pick-Place-Table-Direct-v0",
+          "unity_folder": "PickPlace"
+        }
+      ],
+      "policy_ids": [
+        "pick_place_table.place"
+      ],
       "port": 9092,
-      "obs_dim": 30,
-      "action_dim": 8,
-      "required_topics": ["/xr/heartbeat", "/xr/pick_place/robot_state", "/xr/pick_place/objects_state", "/xr/session_status"]
+      "robot_id": "agibot_a2d",
+      "station_id": "pick_place_table"
     },
     {
-      "id": "balance_bot",
-      "task_ids": ["Template-Xrplayground-Balance-Bot-Direct-v0"],
-      "policy_task_id": "Template-Xrplayground-Balance-Bot-Direct-v0",
-      "policy_folder": "BalanceBot",
-      "bridge_script": "scripts/bridge/run_xr_bridge_balance_bot.py",
+      "adapter_id": "balance_bot",
+      "assist_profile_id": "none",
+      "bridge_payloads": [
+        "robot_state",
+        "objects_state",
+        "session_status"
+      ],
+      "display_name": "Balance Bot",
+      "offline_bindings": {
+        "contact_links": [],
+        "end_effector_link": "tray_link",
+        "robot_position_isaac": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "root_link": "tray_link"
+      },
+      "physics_profile_id": "tray_120hz",
+      "policies": [
+        {
+          "action_dim": 2,
+          "observation_dim": 20,
+          "physics_hz": 120,
+          "policy_hz": 60,
+          "policy_id": "balance_bot.two_ball",
+          "source_task_id": "Template-Xrplayground-Balance-Bot-Direct-v0",
+          "unity_folder": "BalanceBot"
+        }
+      ],
+      "policy_ids": [
+        "balance_bot.two_ball"
+      ],
       "port": 9093,
-      "obs_dim": 20,
-      "action_dim": 2,
-      "required_topics": ["/xr/heartbeat", "/xr/balance_bot/robot_state", "/xr/balance_bot/balls_state", "/xr/session_status"]
+      "robot_id": "balance_tray_2dof",
+      "station_id": "balance_bot"
     },
     {
-      "id": "spot_loco",
-      "task_ids": ["Template-Xrplayground-Spot-Loco-Stand-v0", "Template-Xrplayground-Spot-Loco-Walk-v0", "Template-Xrplayground-Spot-Loco-Walk-Play-v0"],
-      "policy_task_id": "Template-Xrplayground-Spot-Loco-Walk-v0",
-      "policy_folder": "SpotLoco",
-      "bridge_script": "scripts/bridge/run_xr_bridge_spot.py",
+      "adapter_id": "spot_loco",
+      "assist_profile_id": "spot_upright_damping",
+      "bridge_payloads": [
+        "robot_state",
+        "session_status"
+      ],
+      "display_name": "Spot Locomotion",
+      "offline_bindings": {
+        "contact_links": [
+          "fl_foot",
+          "fr_foot",
+          "hl_foot",
+          "hr_foot"
+        ],
+        "end_effector_link": "",
+        "robot_position_isaac": [
+          0.0,
+          0.0,
+          0.5
+        ],
+        "root_link": "body"
+      },
+      "physics_profile_id": "spot_250hz",
+      "policies": [
+        {
+          "action_dim": 12,
+          "observation_dim": 48,
+          "physics_hz": 250,
+          "policy_hz": 50,
+          "policy_id": "spot.locomotion",
+          "source_task_id": "Template-Xrplayground-Spot-Loco-Walk-v0",
+          "unity_folder": "SpotLoco"
+        }
+      ],
+      "policy_ids": [
+        "spot.locomotion"
+      ],
       "port": 9094,
-      "obs_dim": 48,
-      "action_dim": 12,
-      "required_topics": ["/xr/heartbeat", "/xr/spot/robot_state", "/xr/session_status"]
+      "robot_id": "spot",
+      "station_id": "spot_loco"
     },
     {
-      "id": "spot_follow",
-      "task_ids": ["Template-Xrplayground-Spot-Follow-v0", "Template-Xrplayground-Spot-Follow-Play-v0"],
-      "policy_task_id": "Template-Xrplayground-Spot-Follow-v0",
-      "policy_folder": "SpotFollow",
-      "bridge_script": "scripts/bridge/run_xr_bridge_spot.py",
+      "adapter_id": "spot_follow",
+      "assist_profile_id": "spot_upright_damping",
+      "bridge_payloads": [
+        "robot_state",
+        "session_status"
+      ],
+      "display_name": "Spot Follow",
+      "offline_bindings": {
+        "contact_links": [
+          "fl_foot",
+          "fr_foot",
+          "hl_foot",
+          "hr_foot"
+        ],
+        "end_effector_link": "",
+        "robot_position_isaac": [
+          0.0,
+          0.0,
+          0.5
+        ],
+        "root_link": "body"
+      },
+      "physics_profile_id": "spot_250hz",
+      "policies": [
+        {
+          "action_dim": 3,
+          "observation_dim": 10,
+          "physics_hz": 250,
+          "policy_hz": 5,
+          "policy_id": "spot.follow",
+          "source_task_id": "Template-Xrplayground-Spot-Follow-v0",
+          "unity_folder": "SpotFollow"
+        },
+        {
+          "action_dim": 12,
+          "observation_dim": 48,
+          "physics_hz": 250,
+          "policy_hz": 50,
+          "policy_id": "spot.locomotion",
+          "source_task_id": "Template-Xrplayground-Spot-Loco-Walk-v0",
+          "unity_folder": "SpotLoco"
+        }
+      ],
+      "policy_ids": [
+        "spot.follow",
+        "spot.locomotion"
+      ],
       "port": 9094,
-      "obs_dim": 9,
-      "action_dim": 3,
-      "required_topics": ["/xr/heartbeat", "/xr/spot/robot_state", "/xr/session_status"]
+      "robot_id": "spot",
+      "station_id": "spot_follow"
     }
   ]
 }

@@ -19,7 +19,10 @@ from isaaclab.sim import SimulationCfg
 from isaaclab.utils.configclass import configclass
 
 import isaaclab_tasks.manager_based.navigation.mdp as mdp
-from XRPlayground.tasks.manager_based.spot_loco.flat_env_cfg import SpotLocoWalkEnvCfg
+from XRPlayground.tasks.manager_based.spot_loco.flat_env_cfg import (
+    SPOT_POLICY_DECIMATION,
+    SpotLocoWalkEnvCfg,
+)
 
 LOW_LEVEL_ENV_CFG = SpotLocoWalkEnvCfg()
 
@@ -70,7 +73,7 @@ class ActionsCfg:
     pre_trained_policy_action: mdp.PreTrainedPolicyActionCfg = mdp.PreTrainedPolicyActionCfg(
         asset_name="robot",
         policy_path=_loco_policy_path(),
-        low_level_decimation=4,
+        low_level_decimation=SPOT_POLICY_DECIMATION,
         low_level_actions=LOW_LEVEL_ENV_CFG.actions.joint_pos,
         low_level_observations=LOW_LEVEL_ENV_CFG.observations.policy,
     )
@@ -147,8 +150,13 @@ class SpotFollowEnvCfg(ManagerBasedRLEnvCfg):
 
     def __post_init__(self):
         self.sim.dt = LOW_LEVEL_ENV_CFG.sim.dt
-        self.sim.render_interval = LOW_LEVEL_ENV_CFG.decimation
+        # 250 Hz physics, 50 Hz locomotion and 5 Hz navigation policy.
         self.decimation = LOW_LEVEL_ENV_CFG.decimation * 10
+        # Rendering belongs to the 5 Hz high-level environment step. The
+        # low-level policy and contact sensors retain their independent 50/250
+        # Hz update periods below, so rendering ten times per navigation step
+        # only wastes training time (especially in headless runs).
+        self.sim.render_interval = self.decimation
         self.episode_length_s = max(self.commands.pose_command.resampling_time_range[1] * 2.0, 12.0)
         self.scene.num_envs = 64
         if self.scene.height_scanner is not None:

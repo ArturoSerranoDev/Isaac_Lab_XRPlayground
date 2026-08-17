@@ -163,7 +163,7 @@ Soft Throw handoff → **Throw-A / Throw-B** pipeline:
 | Rolling `throw_rolling` gate + drift ramp | Done |
 | Throw-A success truncation after sustained latch | Done |
 | Pipeline script `train_ball_catch_throw_pipeline.py` | Done |
-| Throw-A full train | **In progress** (resume wrap `model_5449`) |
-| Throw-B + Unity | Pending A gate (`throw_rolling` ≥ ~0.65–0.75) |
+| Throw-A full train | **Done** `2026-08-16_19-32-35` — last100 `throw_rolling` ≈ 0.46 (peak ≈ 0.57); below 0.65 gate but usable |
+| Throw-B + Unity | **FAIL** `2026-08-16_21-29-16` from A `model_8250.pt` (~3500 iters). Peak `throw_rolling` ≈ 0.64 @ ~8436; last100 ≈ 0.35; final ≈ 0.07. Unity **not** copied (gate ≥ ~0.8) |
 
 Spot Follow was stopped for GPU: resume `xrplayground_spot_follow/2026-08-16_00-26-37` `model_1200.pt` (see `logs/spot_follow_resume_2026-08-16.txt`).

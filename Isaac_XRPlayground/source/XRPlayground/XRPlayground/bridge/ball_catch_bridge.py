@@ -71,11 +71,14 @@ class BallCatchBridgeAdapter:
         origin = _as_tensor(self.env.scene.env_origins)[i]
 
         joint_pos = _as_tensor(robot.data.joint_pos)[i]
+        joint_vel = _as_tensor(robot.data.joint_vel)[i]
         names: list[str] = []
         positions: list[float] = []
+        velocities: list[float] = []
         for name, jid in self._joint_pairs:
             names.append(name)
             positions.append(float(joint_pos[jid].item()))
+            velocities.append(float(joint_vel[jid].item()))
 
         # Link (actor) frames. Prefer body_link_* ; fall back to body_* shorthands.
         data = robot.data
@@ -103,13 +106,16 @@ class BallCatchBridgeAdapter:
         return make_envelope(
             TOPIC_ROBOT_STATE,
             {
-                "joint_names": names,
-                "joint_positions": positions,
+                "joints": [
+                    {"name": name, "position": position, "velocity": velocity}
+                    for name, position, velocity in zip(names, positions, velocities, strict=True)
+                ],
                 "ee": ee,
                 "links": links,
             },
+            station_id="ball_catch",
             frame_id="isaac_env",
-            stamp_s=stamp_s,
+            sim_time_s=stamp_s,
         )
 
     def build_ball_state_envelope(self, stamp_s: float | None = None) -> dict[str, Any]:
@@ -127,15 +133,22 @@ class BallCatchBridgeAdapter:
         return make_envelope(
             TOPIC_BALL_STATE,
             {
-                **_pose_dict(pos_local, quat),
-                "linear_velocity": [float(v) for v in lin_w.tolist()],
-                "angular_velocity": [float(v) for v in ang_w.tolist()],
-                "grasped": False,
-                "throw_event": False,
+                "objects": [
+                    {
+                        "id": "ball",
+                        "active": True,
+                        **_pose_dict(pos_local, quat),
+                        "linear_velocity": [float(v) for v in lin_w.tolist()],
+                        "angular_velocity": [float(v) for v in ang_w.tolist()],
+                        "grasped": False,
+                        "throw_event": False,
+                    }
+                ],
                 "source": "isaac",
             },
+            station_id="ball_catch",
             frame_id="isaac_env",
-            stamp_s=stamp_s,
+            sim_time_s=stamp_s,
         )
 
     def apply_ball_state(self, data: dict[str, Any]) -> None:

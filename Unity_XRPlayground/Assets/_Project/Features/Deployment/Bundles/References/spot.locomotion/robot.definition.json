@@ -1,0 +1,2790 @@
+{
+  "definition_sha256": "da13fffb49550be124d27012c3f8540c1daec6d0eeea5d941195b2a28af6ad0b",
+  "fixed_joints": [
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "child_link": "fl_foot",
+      "name": "fl_ank",
+      "parent_anchor_position": [
+        0.0,
+        -0.33649998903274536,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "fl_lleg"
+    },
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "child_link": "fr_foot",
+      "name": "fr_ank",
+      "parent_anchor_position": [
+        0.0,
+        -0.33649998903274536,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "fr_lleg"
+    },
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "child_link": "hl_foot",
+      "name": "hl_ank",
+      "parent_anchor_position": [
+        0.0,
+        -0.33649998903274536,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "hl_lleg"
+    },
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "child_link": "hr_foot",
+      "name": "hr_ank",
+      "parent_anchor_position": [
+        0.0,
+        -0.33649998903274536,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "hr_lleg"
+    }
+  ],
+  "joints": [
+    {
+      "actuator_delay_max_steps": 4,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "spot_hip",
+      "actuator_is_implicit": false,
+      "actuator_model": "DelayedPDActuator",
+      "actuator_nominal_delay_steps": 2,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "fl_hip",
+      "damping": 1.5,
+      "default_position": 0.10000000149011612,
+      "effort_limit_curve": [],
+      "force_limit": 45.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -0.7853979468345642,
+      "max_velocity": 100.0,
+      "name": "fl_hx",
+      "parent_anchor_position": [
+        0.29785001277923584,
+        0.0,
+        0.054999999701976776
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "body",
+      "position_unit": "radian",
+      "stiffness": 60.0,
+      "upper_limit": 0.7853979468345642
+    },
+    {
+      "actuator_delay_max_steps": 4,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "spot_hip",
+      "actuator_is_implicit": false,
+      "actuator_model": "DelayedPDActuator",
+      "actuator_nominal_delay_steps": 2,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "fr_hip",
+      "damping": 1.5,
+      "default_position": -0.10000000149011612,
+      "effort_limit_curve": [],
+      "force_limit": 45.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -0.7853979468345642,
+      "max_velocity": 100.0,
+      "name": "fr_hx",
+      "parent_anchor_position": [
+        0.29785001277923584,
+        0.0,
+        -0.054999999701976776
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "body",
+      "position_unit": "radian",
+      "stiffness": 60.0,
+      "upper_limit": 0.7853979468345642
+    },
+    {
+      "actuator_delay_max_steps": 4,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "spot_hip",
+      "actuator_is_implicit": false,
+      "actuator_model": "DelayedPDActuator",
+      "actuator_nominal_delay_steps": 2,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "hl_hip",
+      "damping": 1.5,
+      "default_position": 0.10000000149011612,
+      "effort_limit_curve": [],
+      "force_limit": 45.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -0.7853979468345642,
+      "max_velocity": 100.0,
+      "name": "hl_hx",
+      "parent_anchor_position": [
+        -0.29785001277923584,
+        0.0,
+        0.054999999701976776
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "body",
+      "position_unit": "radian",
+      "stiffness": 60.0,
+      "upper_limit": 0.7853979468345642
+    },
+    {
+      "actuator_delay_max_steps": 4,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "spot_hip",
+      "actuator_is_implicit": false,
+      "actuator_model": "DelayedPDActuator",
+      "actuator_nominal_delay_steps": 2,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "hr_hip",
+      "damping": 1.5,
+      "default_position": -0.10000000149011612,
+      "effort_limit_curve": [],
+      "force_limit": 45.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -0.7853979468345642,
+      "max_velocity": 100.0,
+      "name": "hr_hx",
+      "parent_anchor_position": [
+        -0.29785001277923584,
+        0.0,
+        -0.054999999701976776
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "body",
+      "position_unit": "radian",
+      "stiffness": 60.0,
+      "upper_limit": 0.7853979468345642
+    },
+    {
+      "actuator_delay_max_steps": 4,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "spot_hip",
+      "actuator_is_implicit": false,
+      "actuator_model": "DelayedPDActuator",
+      "actuator_nominal_delay_steps": 2,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "child_link": "fl_uleg",
+      "damping": 1.5,
+      "default_position": 0.8999999761581421,
+      "effort_limit_curve": [],
+      "force_limit": 45.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -0.8988449573516846,
+      "max_velocity": 100.0,
+      "name": "fl_hy",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        0.11094500124454498
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "fl_hip",
+      "position_unit": "radian",
+      "stiffness": 60.0,
+      "upper_limit": 2.295107841491699
+    },
+    {
+      "actuator_delay_max_steps": 4,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "spot_hip",
+      "actuator_is_implicit": false,
+      "actuator_model": "DelayedPDActuator",
+      "actuator_nominal_delay_steps": 2,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "child_link": "fr_uleg",
+      "damping": 1.5,
+      "default_position": 0.8999999761581421,
+      "effort_limit_curve": [],
+      "force_limit": 45.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -0.8988449573516846,
+      "max_velocity": 100.0,
+      "name": "fr_hy",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        -0.11094500124454498
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "fr_hip",
+      "position_unit": "radian",
+      "stiffness": 60.0,
+      "upper_limit": 2.295107841491699
+    },
+    {
+      "actuator_delay_max_steps": 4,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "spot_hip",
+      "actuator_is_implicit": false,
+      "actuator_model": "DelayedPDActuator",
+      "actuator_nominal_delay_steps": 2,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "child_link": "hl_uleg",
+      "damping": 1.5,
+      "default_position": 1.100000023841858,
+      "effort_limit_curve": [],
+      "force_limit": 45.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -0.8988449573516846,
+      "max_velocity": 100.0,
+      "name": "hl_hy",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        0.11094500124454498
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "hl_hip",
+      "position_unit": "radian",
+      "stiffness": 60.0,
+      "upper_limit": 2.295107841491699
+    },
+    {
+      "actuator_delay_max_steps": 4,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "spot_hip",
+      "actuator_is_implicit": false,
+      "actuator_model": "DelayedPDActuator",
+      "actuator_nominal_delay_steps": 2,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "child_link": "hr_uleg",
+      "damping": 1.5,
+      "default_position": 1.100000023841858,
+      "effort_limit_curve": [],
+      "force_limit": 45.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -0.8988449573516846,
+      "max_velocity": 100.0,
+      "name": "hr_hy",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        -0.11094500124454498
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "hr_hip",
+      "position_unit": "radian",
+      "stiffness": 60.0,
+      "upper_limit": 2.295107841491699
+    },
+    {
+      "actuator_delay_max_steps": 4,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "spot_knee",
+      "actuator_is_implicit": false,
+      "actuator_model": "RemotizedPDActuator",
+      "actuator_nominal_delay_steps": 2,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "child_link": "fl_lleg",
+      "damping": 1.5,
+      "default_position": -1.5,
+      "effort_limit_curve": [
+        {
+          "max_effort": 37.165077,
+          "position": -2.7929
+        },
+        {
+          "max_effort": 39.435162,
+          "position": -2.767442
+        },
+        {
+          "max_effort": 41.690054,
+          "position": -2.741984
+        },
+        {
+          "max_effort": 43.928996,
+          "position": -2.716526
+        },
+        {
+          "max_effort": 46.151304,
+          "position": -2.691068
+        },
+        {
+          "max_effort": 48.356134,
+          "position": -2.66561
+        },
+        {
+          "max_effort": 50.542751,
+          "position": -2.640152
+        },
+        {
+          "max_effort": 52.710331,
+          "position": -2.614694
+        },
+        {
+          "max_effort": 54.858078,
+          "position": -2.589236
+        },
+        {
+          "max_effort": 56.985128,
+          "position": -2.563778
+        },
+        {
+          "max_effort": 59.090595,
+          "position": -2.53832
+        },
+        {
+          "max_effort": 61.173609,
+          "position": -2.512862
+        },
+        {
+          "max_effort": 63.233231,
+          "position": -2.487404
+        },
+        {
+          "max_effort": 65.268557,
+          "position": -2.461946
+        },
+        {
+          "max_effort": 67.278557,
+          "position": -2.436488
+        },
+        {
+          "max_effort": 69.26231,
+          "position": -2.41103
+        },
+        {
+          "max_effort": 71.218735,
+          "position": -2.385572
+        },
+        {
+          "max_effort": 73.146824,
+          "position": -2.360114
+        },
+        {
+          "max_effort": 75.045502,
+          "position": -2.334656
+        },
+        {
+          "max_effort": 76.913641,
+          "position": -2.309198
+        },
+        {
+          "max_effort": 78.750154,
+          "position": -2.28374
+        },
+        {
+          "max_effort": 80.553881,
+          "position": -2.258282
+        },
+        {
+          "max_effort": 82.323664,
+          "position": -2.232824
+        },
+        {
+          "max_effort": 84.05829,
+          "position": -2.207366
+        },
+        {
+          "max_effort": 85.756542,
+          "position": -2.181908
+        },
+        {
+          "max_effort": 87.4172,
+          "position": -2.15645
+        },
+        {
+          "max_effort": 89.038971,
+          "position": -2.130992
+        },
+        {
+          "max_effort": 90.620607,
+          "position": -2.105534
+        },
+        {
+          "max_effort": 92.160793,
+          "position": -2.080076
+        },
+        {
+          "max_effort": 93.658218,
+          "position": -2.054618
+        },
+        {
+          "max_effort": 95.111538,
+          "position": -2.02916
+        },
+        {
+          "max_effort": 96.519402,
+          "position": -2.003702
+        },
+        {
+          "max_effort": 97.880505,
+          "position": -1.978244
+        },
+        {
+          "max_effort": 99.193417,
+          "position": -1.952786
+        },
+        {
+          "max_effort": 100.456764,
+          "position": -1.927328
+        },
+        {
+          "max_effort": 101.669186,
+          "position": -1.90187
+        },
+        {
+          "max_effort": 102.829296,
+          "position": -1.876412
+        },
+        {
+          "max_effort": 103.935677,
+          "position": -1.850954
+        },
+        {
+          "max_effort": 104.986988,
+          "position": -1.825496
+        },
+        {
+          "max_effort": 105.981812,
+          "position": -1.800038
+        },
+        {
+          "max_effort": 106.918785,
+          "position": -1.77458
+        },
+        {
+          "max_effort": 107.796478,
+          "position": -1.749122
+        },
+        {
+          "max_effort": 108.613632,
+          "position": -1.723664
+        },
+        {
+          "max_effort": 109.368851,
+          "position": -1.698206
+        },
+        {
+          "max_effort": 110.060806,
+          "position": -1.672748
+        },
+        {
+          "max_effort": 110.688194,
+          "position": -1.64729
+        },
+        {
+          "max_effort": 111.249767,
+          "position": -1.621832
+        },
+        {
+          "max_effort": 111.744221,
+          "position": -1.596374
+        },
+        {
+          "max_effort": 112.170376,
+          "position": -1.570916
+        },
+        {
+          "max_effort": 112.526997,
+          "position": -1.545458
+        },
+        {
+          "max_effort": 112.812984,
+          "position": -1.52
+        },
+        {
+          "max_effort": 113.027172,
+          "position": -1.494542
+        },
+        {
+          "max_effort": 113.16853,
+          "position": -1.469084
+        },
+        {
+          "max_effort": 113.236015,
+          "position": -1.443626
+        },
+        {
+          "max_effort": 113.228657,
+          "position": -1.418168
+        },
+        {
+          "max_effort": 113.145515,
+          "position": -1.39271
+        },
+        {
+          "max_effort": 112.985744,
+          "position": -1.367252
+        },
+        {
+          "max_effort": 112.748531,
+          "position": -1.341794
+        },
+        {
+          "max_effort": 112.433109,
+          "position": -1.316336
+        },
+        {
+          "max_effort": 112.038826,
+          "position": -1.290878
+        },
+        {
+          "max_effort": 111.565041,
+          "position": -1.26542
+        },
+        {
+          "max_effort": 111.011215,
+          "position": -1.239962
+        },
+        {
+          "max_effort": 110.376869,
+          "position": -1.214504
+        },
+        {
+          "max_effort": 109.661613,
+          "position": -1.189046
+        },
+        {
+          "max_effort": 108.865128,
+          "position": -1.163588
+        },
+        {
+          "max_effort": 107.987183,
+          "position": -1.13813
+        },
+        {
+          "max_effort": 107.027561,
+          "position": -1.112672
+        },
+        {
+          "max_effort": 105.986229,
+          "position": -1.087214
+        },
+        {
+          "max_effort": 104.86322,
+          "position": -1.061756
+        },
+        {
+          "max_effort": 103.658581,
+          "position": -1.036298
+        },
+        {
+          "max_effort": 102.372505,
+          "position": -1.01084
+        },
+        {
+          "max_effort": 101.005291,
+          "position": -0.985382
+        },
+        {
+          "max_effort": 99.55727,
+          "position": -0.959924
+        },
+        {
+          "max_effort": 98.028923,
+          "position": -0.934466
+        },
+        {
+          "max_effort": 96.420799,
+          "position": -0.909008
+        },
+        {
+          "max_effort": 94.73354,
+          "position": -0.88355
+        },
+        {
+          "max_effort": 92.967882,
+          "position": -0.858092
+        },
+        {
+          "max_effort": 91.124662,
+          "position": -0.832634
+        },
+        {
+          "max_effort": 89.204767,
+          "position": -0.807176
+        },
+        {
+          "max_effort": 87.209255,
+          "position": -0.781718
+        },
+        {
+          "max_effort": 85.139231,
+          "position": -0.75626
+        },
+        {
+          "max_effort": 82.995924,
+          "position": -0.730802
+        },
+        {
+          "max_effort": 80.780594,
+          "position": -0.705344
+        },
+        {
+          "max_effort": 78.494694,
+          "position": -0.679886
+        },
+        {
+          "max_effort": 76.139643,
+          "position": -0.654428
+        },
+        {
+          "max_effort": 73.717049,
+          "position": -0.62897
+        },
+        {
+          "max_effort": 71.228605,
+          "position": -0.603512
+        },
+        {
+          "max_effort": 68.676006,
+          "position": -0.578054
+        },
+        {
+          "max_effort": 66.061146,
+          "position": -0.552596
+        },
+        {
+          "max_effort": 63.3859,
+          "position": -0.527138
+        },
+        {
+          "max_effort": 60.652325,
+          "position": -0.50168
+        },
+        {
+          "max_effort": 57.862421,
+          "position": -0.476222
+        },
+        {
+          "max_effort": 55.018473,
+          "position": -0.450764
+        },
+        {
+          "max_effort": 52.122648,
+          "position": -0.425306
+        },
+        {
+          "max_effort": 49.177254,
+          "position": -0.399848
+        },
+        {
+          "max_effort": 46.184715,
+          "position": -0.37439
+        },
+        {
+          "max_effort": 43.147428,
+          "position": -0.348932
+        },
+        {
+          "max_effort": 40.067954,
+          "position": -0.323474
+        },
+        {
+          "max_effort": 36.948864,
+          "position": -0.298016
+        },
+        {
+          "max_effort": 33.792821,
+          "position": -0.272558
+        },
+        {
+          "max_effort": 30.6025,
+          "position": -0.2471
+        }
+      ],
+      "force_limit": 113.236015,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -2.7928998470306396,
+      "max_velocity": 100.0,
+      "name": "fl_kn",
+      "parent_anchor_position": [
+        0.02500000037252903,
+        -0.320499986410141,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "fl_uleg",
+      "position_unit": "radian",
+      "stiffness": 60.0,
+      "upper_limit": -0.24709998071193695
+    },
+    {
+      "actuator_delay_max_steps": 4,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "spot_knee",
+      "actuator_is_implicit": false,
+      "actuator_model": "RemotizedPDActuator",
+      "actuator_nominal_delay_steps": 2,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "child_link": "fr_lleg",
+      "damping": 1.5,
+      "default_position": -1.5,
+      "effort_limit_curve": [
+        {
+          "max_effort": 37.165077,
+          "position": -2.7929
+        },
+        {
+          "max_effort": 39.435162,
+          "position": -2.767442
+        },
+        {
+          "max_effort": 41.690054,
+          "position": -2.741984
+        },
+        {
+          "max_effort": 43.928996,
+          "position": -2.716526
+        },
+        {
+          "max_effort": 46.151304,
+          "position": -2.691068
+        },
+        {
+          "max_effort": 48.356134,
+          "position": -2.66561
+        },
+        {
+          "max_effort": 50.542751,
+          "position": -2.640152
+        },
+        {
+          "max_effort": 52.710331,
+          "position": -2.614694
+        },
+        {
+          "max_effort": 54.858078,
+          "position": -2.589236
+        },
+        {
+          "max_effort": 56.985128,
+          "position": -2.563778
+        },
+        {
+          "max_effort": 59.090595,
+          "position": -2.53832
+        },
+        {
+          "max_effort": 61.173609,
+          "position": -2.512862
+        },
+        {
+          "max_effort": 63.233231,
+          "position": -2.487404
+        },
+        {
+          "max_effort": 65.268557,
+          "position": -2.461946
+        },
+        {
+          "max_effort": 67.278557,
+          "position": -2.436488
+        },
+        {
+          "max_effort": 69.26231,
+          "position": -2.41103
+        },
+        {
+          "max_effort": 71.218735,
+          "position": -2.385572
+        },
+        {
+          "max_effort": 73.146824,
+          "position": -2.360114
+        },
+        {
+          "max_effort": 75.045502,
+          "position": -2.334656
+        },
+        {
+          "max_effort": 76.913641,
+          "position": -2.309198
+        },
+        {
+          "max_effort": 78.750154,
+          "position": -2.28374
+        },
+        {
+          "max_effort": 80.553881,
+          "position": -2.258282
+        },
+        {
+          "max_effort": 82.323664,
+          "position": -2.232824
+        },
+        {
+          "max_effort": 84.05829,
+          "position": -2.207366
+        },
+        {
+          "max_effort": 85.756542,
+          "position": -2.181908
+        },
+        {
+          "max_effort": 87.4172,
+          "position": -2.15645
+        },
+        {
+          "max_effort": 89.038971,
+          "position": -2.130992
+        },
+        {
+          "max_effort": 90.620607,
+          "position": -2.105534
+        },
+        {
+          "max_effort": 92.160793,
+          "position": -2.080076
+        },
+        {
+          "max_effort": 93.658218,
+          "position": -2.054618
+        },
+        {
+          "max_effort": 95.111538,
+          "position": -2.02916
+        },
+        {
+          "max_effort": 96.519402,
+          "position": -2.003702
+        },
+        {
+          "max_effort": 97.880505,
+          "position": -1.978244
+        },
+        {
+          "max_effort": 99.193417,
+          "position": -1.952786
+        },
+        {
+          "max_effort": 100.456764,
+          "position": -1.927328
+        },
+        {
+          "max_effort": 101.669186,
+          "position": -1.90187
+        },
+        {
+          "max_effort": 102.829296,
+          "position": -1.876412
+        },
+        {
+          "max_effort": 103.935677,
+          "position": -1.850954
+        },
+        {
+          "max_effort": 104.986988,
+          "position": -1.825496
+        },
+        {
+          "max_effort": 105.981812,
+          "position": -1.800038
+        },
+        {
+          "max_effort": 106.918785,
+          "position": -1.77458
+        },
+        {
+          "max_effort": 107.796478,
+          "position": -1.749122
+        },
+        {
+          "max_effort": 108.613632,
+          "position": -1.723664
+        },
+        {
+          "max_effort": 109.368851,
+          "position": -1.698206
+        },
+        {
+          "max_effort": 110.060806,
+          "position": -1.672748
+        },
+        {
+          "max_effort": 110.688194,
+          "position": -1.64729
+        },
+        {
+          "max_effort": 111.249767,
+          "position": -1.621832
+        },
+        {
+          "max_effort": 111.744221,
+          "position": -1.596374
+        },
+        {
+          "max_effort": 112.170376,
+          "position": -1.570916
+        },
+        {
+          "max_effort": 112.526997,
+          "position": -1.545458
+        },
+        {
+          "max_effort": 112.812984,
+          "position": -1.52
+        },
+        {
+          "max_effort": 113.027172,
+          "position": -1.494542
+        },
+        {
+          "max_effort": 113.16853,
+          "position": -1.469084
+        },
+        {
+          "max_effort": 113.236015,
+          "position": -1.443626
+        },
+        {
+          "max_effort": 113.228657,
+          "position": -1.418168
+        },
+        {
+          "max_effort": 113.145515,
+          "position": -1.39271
+        },
+        {
+          "max_effort": 112.985744,
+          "position": -1.367252
+        },
+        {
+          "max_effort": 112.748531,
+          "position": -1.341794
+        },
+        {
+          "max_effort": 112.433109,
+          "position": -1.316336
+        },
+        {
+          "max_effort": 112.038826,
+          "position": -1.290878
+        },
+        {
+          "max_effort": 111.565041,
+          "position": -1.26542
+        },
+        {
+          "max_effort": 111.011215,
+          "position": -1.239962
+        },
+        {
+          "max_effort": 110.376869,
+          "position": -1.214504
+        },
+        {
+          "max_effort": 109.661613,
+          "position": -1.189046
+        },
+        {
+          "max_effort": 108.865128,
+          "position": -1.163588
+        },
+        {
+          "max_effort": 107.987183,
+          "position": -1.13813
+        },
+        {
+          "max_effort": 107.027561,
+          "position": -1.112672
+        },
+        {
+          "max_effort": 105.986229,
+          "position": -1.087214
+        },
+        {
+          "max_effort": 104.86322,
+          "position": -1.061756
+        },
+        {
+          "max_effort": 103.658581,
+          "position": -1.036298
+        },
+        {
+          "max_effort": 102.372505,
+          "position": -1.01084
+        },
+        {
+          "max_effort": 101.005291,
+          "position": -0.985382
+        },
+        {
+          "max_effort": 99.55727,
+          "position": -0.959924
+        },
+        {
+          "max_effort": 98.028923,
+          "position": -0.934466
+        },
+        {
+          "max_effort": 96.420799,
+          "position": -0.909008
+        },
+        {
+          "max_effort": 94.73354,
+          "position": -0.88355
+        },
+        {
+          "max_effort": 92.967882,
+          "position": -0.858092
+        },
+        {
+          "max_effort": 91.124662,
+          "position": -0.832634
+        },
+        {
+          "max_effort": 89.204767,
+          "position": -0.807176
+        },
+        {
+          "max_effort": 87.209255,
+          "position": -0.781718
+        },
+        {
+          "max_effort": 85.139231,
+          "position": -0.75626
+        },
+        {
+          "max_effort": 82.995924,
+          "position": -0.730802
+        },
+        {
+          "max_effort": 80.780594,
+          "position": -0.705344
+        },
+        {
+          "max_effort": 78.494694,
+          "position": -0.679886
+        },
+        {
+          "max_effort": 76.139643,
+          "position": -0.654428
+        },
+        {
+          "max_effort": 73.717049,
+          "position": -0.62897
+        },
+        {
+          "max_effort": 71.228605,
+          "position": -0.603512
+        },
+        {
+          "max_effort": 68.676006,
+          "position": -0.578054
+        },
+        {
+          "max_effort": 66.061146,
+          "position": -0.552596
+        },
+        {
+          "max_effort": 63.3859,
+          "position": -0.527138
+        },
+        {
+          "max_effort": 60.652325,
+          "position": -0.50168
+        },
+        {
+          "max_effort": 57.862421,
+          "position": -0.476222
+        },
+        {
+          "max_effort": 55.018473,
+          "position": -0.450764
+        },
+        {
+          "max_effort": 52.122648,
+          "position": -0.425306
+        },
+        {
+          "max_effort": 49.177254,
+          "position": -0.399848
+        },
+        {
+          "max_effort": 46.184715,
+          "position": -0.37439
+        },
+        {
+          "max_effort": 43.147428,
+          "position": -0.348932
+        },
+        {
+          "max_effort": 40.067954,
+          "position": -0.323474
+        },
+        {
+          "max_effort": 36.948864,
+          "position": -0.298016
+        },
+        {
+          "max_effort": 33.792821,
+          "position": -0.272558
+        },
+        {
+          "max_effort": 30.6025,
+          "position": -0.2471
+        }
+      ],
+      "force_limit": 113.236015,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -2.7928998470306396,
+      "max_velocity": 100.0,
+      "name": "fr_kn",
+      "parent_anchor_position": [
+        0.02500000037252903,
+        -0.320499986410141,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "fr_uleg",
+      "position_unit": "radian",
+      "stiffness": 60.0,
+      "upper_limit": -0.24709998071193695
+    },
+    {
+      "actuator_delay_max_steps": 4,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "spot_knee",
+      "actuator_is_implicit": false,
+      "actuator_model": "RemotizedPDActuator",
+      "actuator_nominal_delay_steps": 2,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "child_link": "hl_lleg",
+      "damping": 1.5,
+      "default_position": -1.5,
+      "effort_limit_curve": [
+        {
+          "max_effort": 37.165077,
+          "position": -2.7929
+        },
+        {
+          "max_effort": 39.435162,
+          "position": -2.767442
+        },
+        {
+          "max_effort": 41.690054,
+          "position": -2.741984
+        },
+        {
+          "max_effort": 43.928996,
+          "position": -2.716526
+        },
+        {
+          "max_effort": 46.151304,
+          "position": -2.691068
+        },
+        {
+          "max_effort": 48.356134,
+          "position": -2.66561
+        },
+        {
+          "max_effort": 50.542751,
+          "position": -2.640152
+        },
+        {
+          "max_effort": 52.710331,
+          "position": -2.614694
+        },
+        {
+          "max_effort": 54.858078,
+          "position": -2.589236
+        },
+        {
+          "max_effort": 56.985128,
+          "position": -2.563778
+        },
+        {
+          "max_effort": 59.090595,
+          "position": -2.53832
+        },
+        {
+          "max_effort": 61.173609,
+          "position": -2.512862
+        },
+        {
+          "max_effort": 63.233231,
+          "position": -2.487404
+        },
+        {
+          "max_effort": 65.268557,
+          "position": -2.461946
+        },
+        {
+          "max_effort": 67.278557,
+          "position": -2.436488
+        },
+        {
+          "max_effort": 69.26231,
+          "position": -2.41103
+        },
+        {
+          "max_effort": 71.218735,
+          "position": -2.385572
+        },
+        {
+          "max_effort": 73.146824,
+          "position": -2.360114
+        },
+        {
+          "max_effort": 75.045502,
+          "position": -2.334656
+        },
+        {
+          "max_effort": 76.913641,
+          "position": -2.309198
+        },
+        {
+          "max_effort": 78.750154,
+          "position": -2.28374
+        },
+        {
+          "max_effort": 80.553881,
+          "position": -2.258282
+        },
+        {
+          "max_effort": 82.323664,
+          "position": -2.232824
+        },
+        {
+          "max_effort": 84.05829,
+          "position": -2.207366
+        },
+        {
+          "max_effort": 85.756542,
+          "position": -2.181908
+        },
+        {
+          "max_effort": 87.4172,
+          "position": -2.15645
+        },
+        {
+          "max_effort": 89.038971,
+          "position": -2.130992
+        },
+        {
+          "max_effort": 90.620607,
+          "position": -2.105534
+        },
+        {
+          "max_effort": 92.160793,
+          "position": -2.080076
+        },
+        {
+          "max_effort": 93.658218,
+          "position": -2.054618
+        },
+        {
+          "max_effort": 95.111538,
+          "position": -2.02916
+        },
+        {
+          "max_effort": 96.519402,
+          "position": -2.003702
+        },
+        {
+          "max_effort": 97.880505,
+          "position": -1.978244
+        },
+        {
+          "max_effort": 99.193417,
+          "position": -1.952786
+        },
+        {
+          "max_effort": 100.456764,
+          "position": -1.927328
+        },
+        {
+          "max_effort": 101.669186,
+          "position": -1.90187
+        },
+        {
+          "max_effort": 102.829296,
+          "position": -1.876412
+        },
+        {
+          "max_effort": 103.935677,
+          "position": -1.850954
+        },
+        {
+          "max_effort": 104.986988,
+          "position": -1.825496
+        },
+        {
+          "max_effort": 105.981812,
+          "position": -1.800038
+        },
+        {
+          "max_effort": 106.918785,
+          "position": -1.77458
+        },
+        {
+          "max_effort": 107.796478,
+          "position": -1.749122
+        },
+        {
+          "max_effort": 108.613632,
+          "position": -1.723664
+        },
+        {
+          "max_effort": 109.368851,
+          "position": -1.698206
+        },
+        {
+          "max_effort": 110.060806,
+          "position": -1.672748
+        },
+        {
+          "max_effort": 110.688194,
+          "position": -1.64729
+        },
+        {
+          "max_effort": 111.249767,
+          "position": -1.621832
+        },
+        {
+          "max_effort": 111.744221,
+          "position": -1.596374
+        },
+        {
+          "max_effort": 112.170376,
+          "position": -1.570916
+        },
+        {
+          "max_effort": 112.526997,
+          "position": -1.545458
+        },
+        {
+          "max_effort": 112.812984,
+          "position": -1.52
+        },
+        {
+          "max_effort": 113.027172,
+          "position": -1.494542
+        },
+        {
+          "max_effort": 113.16853,
+          "position": -1.469084
+        },
+        {
+          "max_effort": 113.236015,
+          "position": -1.443626
+        },
+        {
+          "max_effort": 113.228657,
+          "position": -1.418168
+        },
+        {
+          "max_effort": 113.145515,
+          "position": -1.39271
+        },
+        {
+          "max_effort": 112.985744,
+          "position": -1.367252
+        },
+        {
+          "max_effort": 112.748531,
+          "position": -1.341794
+        },
+        {
+          "max_effort": 112.433109,
+          "position": -1.316336
+        },
+        {
+          "max_effort": 112.038826,
+          "position": -1.290878
+        },
+        {
+          "max_effort": 111.565041,
+          "position": -1.26542
+        },
+        {
+          "max_effort": 111.011215,
+          "position": -1.239962
+        },
+        {
+          "max_effort": 110.376869,
+          "position": -1.214504
+        },
+        {
+          "max_effort": 109.661613,
+          "position": -1.189046
+        },
+        {
+          "max_effort": 108.865128,
+          "position": -1.163588
+        },
+        {
+          "max_effort": 107.987183,
+          "position": -1.13813
+        },
+        {
+          "max_effort": 107.027561,
+          "position": -1.112672
+        },
+        {
+          "max_effort": 105.986229,
+          "position": -1.087214
+        },
+        {
+          "max_effort": 104.86322,
+          "position": -1.061756
+        },
+        {
+          "max_effort": 103.658581,
+          "position": -1.036298
+        },
+        {
+          "max_effort": 102.372505,
+          "position": -1.01084
+        },
+        {
+          "max_effort": 101.005291,
+          "position": -0.985382
+        },
+        {
+          "max_effort": 99.55727,
+          "position": -0.959924
+        },
+        {
+          "max_effort": 98.028923,
+          "position": -0.934466
+        },
+        {
+          "max_effort": 96.420799,
+          "position": -0.909008
+        },
+        {
+          "max_effort": 94.73354,
+          "position": -0.88355
+        },
+        {
+          "max_effort": 92.967882,
+          "position": -0.858092
+        },
+        {
+          "max_effort": 91.124662,
+          "position": -0.832634
+        },
+        {
+          "max_effort": 89.204767,
+          "position": -0.807176
+        },
+        {
+          "max_effort": 87.209255,
+          "position": -0.781718
+        },
+        {
+          "max_effort": 85.139231,
+          "position": -0.75626
+        },
+        {
+          "max_effort": 82.995924,
+          "position": -0.730802
+        },
+        {
+          "max_effort": 80.780594,
+          "position": -0.705344
+        },
+        {
+          "max_effort": 78.494694,
+          "position": -0.679886
+        },
+        {
+          "max_effort": 76.139643,
+          "position": -0.654428
+        },
+        {
+          "max_effort": 73.717049,
+          "position": -0.62897
+        },
+        {
+          "max_effort": 71.228605,
+          "position": -0.603512
+        },
+        {
+          "max_effort": 68.676006,
+          "position": -0.578054
+        },
+        {
+          "max_effort": 66.061146,
+          "position": -0.552596
+        },
+        {
+          "max_effort": 63.3859,
+          "position": -0.527138
+        },
+        {
+          "max_effort": 60.652325,
+          "position": -0.50168
+        },
+        {
+          "max_effort": 57.862421,
+          "position": -0.476222
+        },
+        {
+          "max_effort": 55.018473,
+          "position": -0.450764
+        },
+        {
+          "max_effort": 52.122648,
+          "position": -0.425306
+        },
+        {
+          "max_effort": 49.177254,
+          "position": -0.399848
+        },
+        {
+          "max_effort": 46.184715,
+          "position": -0.37439
+        },
+        {
+          "max_effort": 43.147428,
+          "position": -0.348932
+        },
+        {
+          "max_effort": 40.067954,
+          "position": -0.323474
+        },
+        {
+          "max_effort": 36.948864,
+          "position": -0.298016
+        },
+        {
+          "max_effort": 33.792821,
+          "position": -0.272558
+        },
+        {
+          "max_effort": 30.6025,
+          "position": -0.2471
+        }
+      ],
+      "force_limit": 113.236015,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -2.7928998470306396,
+      "max_velocity": 100.0,
+      "name": "hl_kn",
+      "parent_anchor_position": [
+        0.02500000037252903,
+        -0.320499986410141,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "hl_uleg",
+      "position_unit": "radian",
+      "stiffness": 60.0,
+      "upper_limit": -0.24709998071193695
+    },
+    {
+      "actuator_delay_max_steps": 4,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "spot_knee",
+      "actuator_is_implicit": false,
+      "actuator_model": "RemotizedPDActuator",
+      "actuator_nominal_delay_steps": 2,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "child_link": "hr_lleg",
+      "damping": 1.5,
+      "default_position": -1.5,
+      "effort_limit_curve": [
+        {
+          "max_effort": 37.165077,
+          "position": -2.7929
+        },
+        {
+          "max_effort": 39.435162,
+          "position": -2.767442
+        },
+        {
+          "max_effort": 41.690054,
+          "position": -2.741984
+        },
+        {
+          "max_effort": 43.928996,
+          "position": -2.716526
+        },
+        {
+          "max_effort": 46.151304,
+          "position": -2.691068
+        },
+        {
+          "max_effort": 48.356134,
+          "position": -2.66561
+        },
+        {
+          "max_effort": 50.542751,
+          "position": -2.640152
+        },
+        {
+          "max_effort": 52.710331,
+          "position": -2.614694
+        },
+        {
+          "max_effort": 54.858078,
+          "position": -2.589236
+        },
+        {
+          "max_effort": 56.985128,
+          "position": -2.563778
+        },
+        {
+          "max_effort": 59.090595,
+          "position": -2.53832
+        },
+        {
+          "max_effort": 61.173609,
+          "position": -2.512862
+        },
+        {
+          "max_effort": 63.233231,
+          "position": -2.487404
+        },
+        {
+          "max_effort": 65.268557,
+          "position": -2.461946
+        },
+        {
+          "max_effort": 67.278557,
+          "position": -2.436488
+        },
+        {
+          "max_effort": 69.26231,
+          "position": -2.41103
+        },
+        {
+          "max_effort": 71.218735,
+          "position": -2.385572
+        },
+        {
+          "max_effort": 73.146824,
+          "position": -2.360114
+        },
+        {
+          "max_effort": 75.045502,
+          "position": -2.334656
+        },
+        {
+          "max_effort": 76.913641,
+          "position": -2.309198
+        },
+        {
+          "max_effort": 78.750154,
+          "position": -2.28374
+        },
+        {
+          "max_effort": 80.553881,
+          "position": -2.258282
+        },
+        {
+          "max_effort": 82.323664,
+          "position": -2.232824
+        },
+        {
+          "max_effort": 84.05829,
+          "position": -2.207366
+        },
+        {
+          "max_effort": 85.756542,
+          "position": -2.181908
+        },
+        {
+          "max_effort": 87.4172,
+          "position": -2.15645
+        },
+        {
+          "max_effort": 89.038971,
+          "position": -2.130992
+        },
+        {
+          "max_effort": 90.620607,
+          "position": -2.105534
+        },
+        {
+          "max_effort": 92.160793,
+          "position": -2.080076
+        },
+        {
+          "max_effort": 93.658218,
+          "position": -2.054618
+        },
+        {
+          "max_effort": 95.111538,
+          "position": -2.02916
+        },
+        {
+          "max_effort": 96.519402,
+          "position": -2.003702
+        },
+        {
+          "max_effort": 97.880505,
+          "position": -1.978244
+        },
+        {
+          "max_effort": 99.193417,
+          "position": -1.952786
+        },
+        {
+          "max_effort": 100.456764,
+          "position": -1.927328
+        },
+        {
+          "max_effort": 101.669186,
+          "position": -1.90187
+        },
+        {
+          "max_effort": 102.829296,
+          "position": -1.876412
+        },
+        {
+          "max_effort": 103.935677,
+          "position": -1.850954
+        },
+        {
+          "max_effort": 104.986988,
+          "position": -1.825496
+        },
+        {
+          "max_effort": 105.981812,
+          "position": -1.800038
+        },
+        {
+          "max_effort": 106.918785,
+          "position": -1.77458
+        },
+        {
+          "max_effort": 107.796478,
+          "position": -1.749122
+        },
+        {
+          "max_effort": 108.613632,
+          "position": -1.723664
+        },
+        {
+          "max_effort": 109.368851,
+          "position": -1.698206
+        },
+        {
+          "max_effort": 110.060806,
+          "position": -1.672748
+        },
+        {
+          "max_effort": 110.688194,
+          "position": -1.64729
+        },
+        {
+          "max_effort": 111.249767,
+          "position": -1.621832
+        },
+        {
+          "max_effort": 111.744221,
+          "position": -1.596374
+        },
+        {
+          "max_effort": 112.170376,
+          "position": -1.570916
+        },
+        {
+          "max_effort": 112.526997,
+          "position": -1.545458
+        },
+        {
+          "max_effort": 112.812984,
+          "position": -1.52
+        },
+        {
+          "max_effort": 113.027172,
+          "position": -1.494542
+        },
+        {
+          "max_effort": 113.16853,
+          "position": -1.469084
+        },
+        {
+          "max_effort": 113.236015,
+          "position": -1.443626
+        },
+        {
+          "max_effort": 113.228657,
+          "position": -1.418168
+        },
+        {
+          "max_effort": 113.145515,
+          "position": -1.39271
+        },
+        {
+          "max_effort": 112.985744,
+          "position": -1.367252
+        },
+        {
+          "max_effort": 112.748531,
+          "position": -1.341794
+        },
+        {
+          "max_effort": 112.433109,
+          "position": -1.316336
+        },
+        {
+          "max_effort": 112.038826,
+          "position": -1.290878
+        },
+        {
+          "max_effort": 111.565041,
+          "position": -1.26542
+        },
+        {
+          "max_effort": 111.011215,
+          "position": -1.239962
+        },
+        {
+          "max_effort": 110.376869,
+          "position": -1.214504
+        },
+        {
+          "max_effort": 109.661613,
+          "position": -1.189046
+        },
+        {
+          "max_effort": 108.865128,
+          "position": -1.163588
+        },
+        {
+          "max_effort": 107.987183,
+          "position": -1.13813
+        },
+        {
+          "max_effort": 107.027561,
+          "position": -1.112672
+        },
+        {
+          "max_effort": 105.986229,
+          "position": -1.087214
+        },
+        {
+          "max_effort": 104.86322,
+          "position": -1.061756
+        },
+        {
+          "max_effort": 103.658581,
+          "position": -1.036298
+        },
+        {
+          "max_effort": 102.372505,
+          "position": -1.01084
+        },
+        {
+          "max_effort": 101.005291,
+          "position": -0.985382
+        },
+        {
+          "max_effort": 99.55727,
+          "position": -0.959924
+        },
+        {
+          "max_effort": 98.028923,
+          "position": -0.934466
+        },
+        {
+          "max_effort": 96.420799,
+          "position": -0.909008
+        },
+        {
+          "max_effort": 94.73354,
+          "position": -0.88355
+        },
+        {
+          "max_effort": 92.967882,
+          "position": -0.858092
+        },
+        {
+          "max_effort": 91.124662,
+          "position": -0.832634
+        },
+        {
+          "max_effort": 89.204767,
+          "position": -0.807176
+        },
+        {
+          "max_effort": 87.209255,
+          "position": -0.781718
+        },
+        {
+          "max_effort": 85.139231,
+          "position": -0.75626
+        },
+        {
+          "max_effort": 82.995924,
+          "position": -0.730802
+        },
+        {
+          "max_effort": 80.780594,
+          "position": -0.705344
+        },
+        {
+          "max_effort": 78.494694,
+          "position": -0.679886
+        },
+        {
+          "max_effort": 76.139643,
+          "position": -0.654428
+        },
+        {
+          "max_effort": 73.717049,
+          "position": -0.62897
+        },
+        {
+          "max_effort": 71.228605,
+          "position": -0.603512
+        },
+        {
+          "max_effort": 68.676006,
+          "position": -0.578054
+        },
+        {
+          "max_effort": 66.061146,
+          "position": -0.552596
+        },
+        {
+          "max_effort": 63.3859,
+          "position": -0.527138
+        },
+        {
+          "max_effort": 60.652325,
+          "position": -0.50168
+        },
+        {
+          "max_effort": 57.862421,
+          "position": -0.476222
+        },
+        {
+          "max_effort": 55.018473,
+          "position": -0.450764
+        },
+        {
+          "max_effort": 52.122648,
+          "position": -0.425306
+        },
+        {
+          "max_effort": 49.177254,
+          "position": -0.399848
+        },
+        {
+          "max_effort": 46.184715,
+          "position": -0.37439
+        },
+        {
+          "max_effort": 43.147428,
+          "position": -0.348932
+        },
+        {
+          "max_effort": 40.067954,
+          "position": -0.323474
+        },
+        {
+          "max_effort": 36.948864,
+          "position": -0.298016
+        },
+        {
+          "max_effort": 33.792821,
+          "position": -0.272558
+        },
+        {
+          "max_effort": 30.6025,
+          "position": -0.2471
+        }
+      ],
+      "force_limit": 113.236015,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -2.7928998470306396,
+      "max_velocity": 100.0,
+      "name": "hr_kn",
+      "parent_anchor_position": [
+        0.02500000037252903,
+        -0.320499986410141,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "hr_uleg",
+      "position_unit": "radian",
+      "stiffness": 60.0,
+      "upper_limit": -0.24709998071193695
+    }
+  ],
+  "links": [
+    {
+      "center_of_mass": [
+        0.0,
+        -0.004961720202118158,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.0706140324473381,
+        0.4756147861480713,
+        0.49312734603881836
+      ],
+      "inertia_tensor_rotation": [
+        0.7071067811865475,
+        -0.0,
+        0.0,
+        0.7071067811865476
+      ],
+      "mass": 14.468234062194824,
+      "name": "body",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        -0.015867389738559723,
+        9.030000001075678e-06,
+        0.008558420464396477
+      ],
+      "collision_enabled": false,
+      "collision_shape_count": 0,
+      "contact_offset": -1.0,
+      "dynamic_friction": -1.0,
+      "inertia_tensor": [
+        0.0011499588910733973,
+        0.0016612655778693918,
+        0.0017290361794120989
+      ],
+      "inertia_tensor_rotation": [
+        -0.697244499168841,
+        -0.13412838993389015,
+        -0.13561108761158774,
+        0.6909915457582217
+      ],
+      "mass": 1.1368833780288696,
+      "name": "fl_hip",
+      "rest_offset": -1.0,
+      "restitution": -1.0,
+      "static_friction": -1.0
+    },
+    {
+      "center_of_mass": [
+        -0.015867389738559723,
+        9.030000001075678e-06,
+        -0.008558420464396477
+      ],
+      "collision_enabled": false,
+      "collision_shape_count": 0,
+      "contact_offset": -1.0,
+      "dynamic_friction": -1.0,
+      "inertia_tensor": [
+        0.0011499588910733973,
+        0.0016612655778693918,
+        0.0017290361794120989
+      ],
+      "inertia_tensor_rotation": [
+        0.697244499168841,
+        0.13412838993389015,
+        -0.13561108761158774,
+        0.6909915457582217
+      ],
+      "mass": 1.1368833780288696,
+      "name": "fr_hip",
+      "rest_offset": -1.0,
+      "restitution": -1.0,
+      "static_friction": -1.0
+    },
+    {
+      "center_of_mass": [
+        0.015867389738559723,
+        9.030000001075678e-06,
+        0.008558420464396477
+      ],
+      "collision_enabled": false,
+      "collision_shape_count": 0,
+      "contact_offset": -1.0,
+      "dynamic_friction": -1.0,
+      "inertia_tensor": [
+        0.0011499588910733973,
+        0.0016612655778693918,
+        0.0017290361794120989
+      ],
+      "inertia_tensor_rotation": [
+        -0.697244499168841,
+        0.13412838993389015,
+        0.13561108761158774,
+        0.6909915457582217
+      ],
+      "mass": 1.1368833780288696,
+      "name": "hl_hip",
+      "rest_offset": -1.0,
+      "restitution": -1.0,
+      "static_friction": -1.0
+    },
+    {
+      "center_of_mass": [
+        0.015867389738559723,
+        9.030000001075678e-06,
+        -0.008558420464396477
+      ],
+      "collision_enabled": false,
+      "collision_shape_count": 0,
+      "contact_offset": -1.0,
+      "dynamic_friction": -1.0,
+      "inertia_tensor": [
+        0.0011499588910733973,
+        0.0016612655778693918,
+        0.0017290361794120989
+      ],
+      "inertia_tensor_rotation": [
+        0.697244499168841,
+        -0.13412838993389015,
+        0.13561108761158774,
+        0.6909915457582217
+      ],
+      "mass": 1.1368833780288696,
+      "name": "hr_hip",
+      "rest_offset": -1.0,
+      "restitution": -1.0,
+      "static_friction": -1.0
+    },
+    {
+      "center_of_mass": [
+        0.002144420053809881,
+        -0.07881204038858414,
+        -0.011101840063929558
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.002986656876074591,
+        0.026025377571140283,
+        0.026939424187593784
+      ],
+      "inertia_tensor_rotation": [
+        0.4713033513492956,
+        -0.5061331977838794,
+        -0.4819254214297086,
+        0.5380057855523347
+      ],
+      "mass": 2.2562036514282227,
+      "name": "fl_uleg",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.002144420053809881,
+        -0.07881204038858414,
+        0.011101840063929558
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.002986656876074591,
+        0.026025377571140283,
+        0.026939424187593784
+      ],
+      "inertia_tensor_rotation": [
+        0.5380057855523347,
+        -0.4819254214297086,
+        -0.5061331977838794,
+        0.4713033513492956
+      ],
+      "mass": 2.2562036514282227,
+      "name": "fr_uleg",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.002144420053809881,
+        -0.07881204038858414,
+        -0.011101840063929558
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.002986656876074591,
+        0.026025377571140283,
+        0.026939424187593784
+      ],
+      "inertia_tensor_rotation": [
+        0.4713033513492956,
+        -0.5061331977838794,
+        -0.4819254214297086,
+        0.5380057855523347
+      ],
+      "mass": 2.2562036514282227,
+      "name": "hl_uleg",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.002144420053809881,
+        -0.07881204038858414,
+        0.011101840063929558
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.002986656876074591,
+        0.026025377571140283,
+        0.026939424187593784
+      ],
+      "inertia_tensor_rotation": [
+        0.5380057855523347,
+        -0.4819254214297086,
+        -0.5061331977838794,
+        0.4713033513492956
+      ],
+      "mass": 2.2562036514282227,
+      "name": "hr_uleg",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.005973599851131439,
+        -0.17466427385807037,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.00014465584056829578,
+        0.007014195832443372,
+        0.007099459879100323
+      ],
+      "inertia_tensor_rotation": [
+        0.7104956291294684,
+        -0.7037016136033233,
+        0.0,
+        0.0
+      ],
+      "mass": 0.33000001311302185,
+      "name": "fl_lleg",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.005973599851131439,
+        -0.17466427385807037,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.00014465584056829578,
+        0.007014195832443372,
+        0.007099459879100323
+      ],
+      "inertia_tensor_rotation": [
+        0.7104956291294684,
+        -0.7037016136033233,
+        0.0,
+        0.0
+      ],
+      "mass": 0.33000001311302185,
+      "name": "fr_lleg",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.005973599851131439,
+        -0.17466427385807037,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.00014465584056829578,
+        0.007014195832443372,
+        0.007099459879100323
+      ],
+      "inertia_tensor_rotation": [
+        0.7104956291294684,
+        -0.7037016136033233,
+        0.0,
+        0.0
+      ],
+      "mass": 0.33000001311302185,
+      "name": "hl_lleg",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.005973599851131439,
+        -0.17466427385807037,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.00014465584056829578,
+        0.007014195832443372,
+        0.007099459879100323
+      ],
+      "inertia_tensor_rotation": [
+        0.7104956291294684,
+        -0.7037016136033233,
+        0.0,
+        0.0
+      ],
+      "mass": 0.33000001311302185,
+      "name": "hr_lleg",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        4.90000096053933e-10,
+        4.90000096053933e-10,
+        4.90000096053933e-10
+      ],
+      "inertia_tensor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mass": 9.999999974752427e-07,
+      "name": "fl_foot",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        4.90000096053933e-10,
+        4.90000096053933e-10,
+        4.90000096053933e-10
+      ],
+      "inertia_tensor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mass": 9.999999974752427e-07,
+      "name": "fr_foot",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        4.90000096053933e-10,
+        4.90000096053933e-10,
+        4.90000096053933e-10
+      ],
+      "inertia_tensor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mass": 9.999999974752427e-07,
+      "name": "hl_foot",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        4.90000096053933e-10,
+        4.90000096053933e-10,
+        4.90000096053933e-10
+      ],
+      "inertia_tensor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mass": 9.999999974752427e-07,
+      "name": "hr_foot",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    }
+  ],
+  "provenance": "Spot Xacro, meshes, and model metadata from RAI-Opensource/spot_description commit 156d1802bfb117f219dbfce7597d283d5fabc968; physics truth is overlaid from the actual Isaac articulation during export.",
+  "redistribution_license": "MIT AND BSD-3-Clause",
+  "robot_id": "spot",
+  "schema_version": 6,
+  "source_asset": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.0/Isaac/Robots/BostonDynamics/spot/spot.usd",
+  "source_sha256": ""
+}

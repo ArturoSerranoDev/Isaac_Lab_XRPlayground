@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import json
 import os
 import sys
 import time
@@ -81,7 +82,7 @@ from XRPlayground.bridge.names import (
     TOPIC_SESSION_COMMAND,
     TOPIC_SESSION_STATUS,
 )
-from XRPlayground.bridge.protocol import make_envelope
+from XRPlayground.bridge.protocol import make_envelope, message_type_from_topic
 from XRPlayground.bridge.tcp_server import RosTcpServer
 
 
@@ -209,9 +210,9 @@ def main():
                 # --- ingest Unity messages ---
                 pending_throw: dict[str, Any] | None = None
                 for msg in server.pop_messages():
-                    topic = msg.get("topic")
-                    data = msg.get("data") or {}
-                    if topic == TOPIC_SESSION_COMMAND:
+                    topic = msg.get("message_type")
+                    data = msg.get("payload") or {}
+                    if topic == message_type_from_topic(TOPIC_SESSION_COMMAND):
                         mode = data.get("mode")
                         if mode:
                             session.set_mode(str(mode))
@@ -228,10 +229,42 @@ def main():
                                     states = step_env.state()
                                 else:
                                     gym_env.reset()
-                    elif topic == TOPIC_BALL_STATE:
+                        command = str(data.get("command") or "")
+                        if command == "reset":
+                            if not mode:
+                                if runner is not None:
+                                    obs, _ = step_env.reset()
+                                    states = step_env.state()
+                                else:
+                                    gym_env.reset()
+                            adapter.reset_robot_hold()
+                        elif command == "launch_ball":
+                            try:
+                                parameters = json.loads(data.get("parameters_json") or "{}")
+                                position = parameters["position"]
+                                velocity = parameters["velocity"]
+                                if len(position) != 3 or len(velocity) != 3:
+                                    raise ValueError("position and velocity must contain three values")
+                                adapter.apply_ball_state(
+                                    {
+                                        "position": position,
+                                        "orientation_xyzw": [0.0, 0.0, 0.0, 1.0],
+                                        "linear_velocity": velocity,
+                                        "angular_velocity": [0.0, 0.0, 0.0],
+                                        "grasped": False,
+                                    }
+                                )
+                            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
+                                print(f"[XR Bridge] rejected launch_ball command: {exc}")
+                    elif topic == message_type_from_topic(TOPIC_BALL_STATE):
                         # Ignore our own echo / Isaac-sourced packets from other tools
                         if str(data.get("source", "unity")).lower() == "isaac":
                             continue
+                        if data.get("objects"):
+                            data = next(
+                                (item for item in data["objects"] if item.get("id") == "ball"),
+                                data["objects"][0],
+                            )
                         if session.mode == MODE_MIRROR:
                             continue  # Isaac owns the ball in mirror mode
                         grasped = bool(data.get("grasped", False))
@@ -247,7 +280,7 @@ def main():
                             if released and not grasped:
                                 pending_throw = data
                         # catching: Isaac physics owns the ball
-                    elif topic == TOPIC_HEARTBEAT:
+                    elif topic == message_type_from_topic(TOPIC_HEARTBEAT):
                         pass
 
                 if pending_throw is not None:
@@ -313,16 +346,17 @@ def main():
 
                 now = time.perf_counter()
                 if now - last_publish >= publish_period:
-                    envelope = adapter.build_robot_state_envelope(stamp_s=now)
+                    sim_time_s = float(base_env.episode_length_buf[0].item()) * step_dt
+                    envelope = adapter.build_robot_state_envelope(stamp_s=sim_time_s)
                     server.broadcast(envelope)
                     # Stream Isaac ball so Unity can visualize (mirror + post-throw catch)
                     try:
-                        server.broadcast(adapter.build_ball_state_envelope(stamp_s=now))
+                        server.broadcast(adapter.build_ball_state_envelope(stamp_s=sim_time_s))
                     except Exception as exc:  # noqa: BLE001
                         print(f"[XR Bridge] ball publish failed: {exc}")
                     last_publish = now
                     if args_cli.log_robot:
-                        ee = envelope["data"]["ee"]["position"]
+                        ee = envelope["payload"]["ee"]["position"]
                         print(
                             f"[XR Bridge] {session.mode}/{session.phase} "
                             f"ee=({ee[0]:.3f},{ee[1]:.3f},{ee[2]:.3f})"
@@ -336,7 +370,8 @@ def main():
                                 "role": "isaac",
                                 "sim_time": float(base_env.episode_length_buf[0].item()) * step_dt,
                             },
-                            stamp_s=now,
+                            station_id="ball_catch",
+                            sim_time_s=float(base_env.episode_length_buf[0].item()) * step_dt,
                         )
                     )
                     last_heartbeat = now
@@ -351,7 +386,8 @@ def main():
                                 "policy_loaded": session.policy_loaded,
                                 "clients": server.client_count(),
                             },
-                            stamp_s=now,
+                            station_id="ball_catch",
+                            sim_time_s=float(base_env.episode_length_buf[0].item()) * step_dt,
                         )
                     )
                     last_status = now

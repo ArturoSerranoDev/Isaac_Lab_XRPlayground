@@ -49,6 +49,7 @@ parser.add_argument(
 )
 parser.add_argument("--host", type=str, default="127.0.0.1")
 parser.add_argument("--port", type=int, default=9094)
+parser.add_argument("--station-id", choices=["spot_loco", "spot_follow"], default="spot_loco")
 parser.add_argument("--publish_hz", type=float, default=60.0)
 parser.add_argument("--log_robot", action="store_true")
 parser.add_argument("--mode", type=str, default="mirror", choices=["mirror"])
@@ -69,7 +70,7 @@ from XRPlayground.bridge.names_spot import (
     TOPIC_SESSION_COMMAND,
     TOPIC_SESSION_STATUS,
 )
-from XRPlayground.bridge.protocol import make_envelope
+from XRPlayground.bridge.protocol import make_envelope, message_type_from_topic
 from XRPlayground.bridge.spot_bridge import SpotBridgeAdapter
 from XRPlayground.bridge.tcp_server import RosTcpServer
 
@@ -120,7 +121,15 @@ def _load_policy(gym_env, agent_cfg):
     if args_cli.action_mode != "policy":
         return gym_env, None, None
 
-    checkpoint = Path(args_cli.checkpoint) if args_cli.checkpoint else DEFAULT_LOCO_CHECKPOINT
+    checkpoint = Path(args_cli.checkpoint) if args_cli.checkpoint else None
+    if checkpoint is None and args_cli.station_id == "spot_loco":
+        checkpoint = DEFAULT_LOCO_CHECKPOINT
+    if checkpoint is None:
+        print(
+            "[XR Spot Bridge] Spot Follow has no implicit checkpoint; pass --checkpoint "
+            "with a compatible 10 -> 3 high-level policy. Falling back to zero actions."
+        )
+        return gym_env, None, None
     if not checkpoint.is_file():
         print(f"[XR Spot Bridge] Checkpoint not found: {checkpoint}")
         return gym_env, None, None
@@ -152,7 +161,7 @@ def main():
 
         gym_env = gym.make(args_cli.task, cfg=env_cfg)
         base_env = gym_env.unwrapped
-        adapter = SpotBridgeAdapter(base_env, env_id=0)
+        adapter = SpotBridgeAdapter(base_env, env_id=0, station_id=args_cli.station_id)
         session = SessionState(args_cli.mode)
         step_env, policy, obs = _load_policy(gym_env, agent_cfg)
         session.policy_loaded = policy is not None
@@ -181,9 +190,9 @@ def main():
                     continue
 
                 for msg in server.pop_messages():
-                    topic = msg.get("topic")
-                    data = msg.get("data") or {}
-                    if topic == TOPIC_SESSION_COMMAND:
+                    topic = msg.get("message_type")
+                    data = msg.get("payload") or {}
+                    if topic == message_type_from_topic(TOPIC_SESSION_COMMAND):
                         mode = data.get("mode")
                         if mode:
                             session.set_mode(str(mode))
@@ -191,7 +200,7 @@ def main():
                                 obs = step_env.get_observations()
                             else:
                                 gym_env.reset()
-                    elif topic == TOPIC_PLAYER_POSE:
+                    elif topic == message_type_from_topic(TOPIC_PLAYER_POSE):
                         adapter.handle_player_pose(data)
 
                 t0 = time.perf_counter()
@@ -213,7 +222,8 @@ def main():
                 now = time.perf_counter()
                 if now - last_publish >= publish_period:
                     try:
-                        server.broadcast(adapter.build_robot_state_envelope(stamp_s=now))
+                        sim_time_s = float(base_env.episode_length_buf[0].item()) * step_dt
+                        server.broadcast(adapter.build_robot_state_envelope(stamp_s=sim_time_s))
                     except Exception as exc:  # noqa: BLE001
                         print(f"[XR Spot Bridge] publish failed: {exc}")
                     last_publish = now
@@ -229,7 +239,8 @@ def main():
                                 "role": "isaac_spot",
                                 "sim_time": float(base_env.episode_length_buf[0].item()) * step_dt,
                             },
-                            stamp_s=now,
+                            station_id=args_cli.station_id,
+                            sim_time_s=float(base_env.episode_length_buf[0].item()) * step_dt,
                         )
                     )
                     last_heartbeat = now
@@ -243,10 +254,11 @@ def main():
                                 "phase": session.phase,
                                 "policy_loaded": session.policy_loaded,
                                 "clients": server.client_count(),
-                                "task": "spot_follow",
+                                "task": args_cli.station_id,
                                 "player_pose_ok": adapter.player_pose_isaac is not None,
                             },
-                            stamp_s=now,
+                            station_id=args_cli.station_id,
+                            sim_time_s=float(base_env.episode_length_buf[0].item()) * step_dt,
                         )
                     )
                     last_status = now

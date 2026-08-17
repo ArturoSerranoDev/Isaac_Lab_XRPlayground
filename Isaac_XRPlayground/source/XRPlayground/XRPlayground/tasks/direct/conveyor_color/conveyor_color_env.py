@@ -16,6 +16,8 @@ from isaaclab.assets import Articulation, RigidObject
 from isaaclab.envs import DirectRLEnv
 from isaaclab.sim.spawners.from_files import GroundPlaneCfg, spawn_ground_plane
 
+from XRPlayground.deployment.descriptors import direct_descriptors
+
 from .conveyor_color_env_cfg import COLOR_RGB, ConveyorColorEnvCfg
 
 
@@ -25,6 +27,10 @@ def _as_tensor(data) -> torch.Tensor:
 
 class ConveyorColorEnv(DirectRLEnv):
     cfg: ConveyorColorEnvCfg
+
+    def get_deployment_descriptors(self) -> dict:
+        """Return the ordered IO contract used by this environment and Unity."""
+        return direct_descriptors("conveyor_color.sort", self.cfg, self)
 
     def __init__(self, cfg: ConveyorColorEnvCfg, render_mode: str | None = None, **kwargs):
         super().__init__(cfg, render_mode, **kwargs)

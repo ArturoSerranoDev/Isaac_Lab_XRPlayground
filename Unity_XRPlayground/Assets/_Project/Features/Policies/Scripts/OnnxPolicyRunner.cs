@@ -206,7 +206,7 @@ namespace XRPlayground.Policies
                 return false;
             }
             for (int i = 0; i < expectedActionDim; i++)
-                actionsOut[i] = Mathf.Clamp(data[i], -1f, 1f);
+                actionsOut[i] = data[i];
 
             if (captureActivations)
                 CaptureSnapshot(obs, actionsOut);

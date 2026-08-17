@@ -1,0 +1,21 @@
+{
+  "name": "XRPlayground.Deployment.PlayModeTests",
+  "rootNamespace": "XRPlayground.Deployment.Tests",
+  "references": [
+    "XRPlayground.Deployment"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

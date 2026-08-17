@@ -101,13 +101,16 @@ class ConveyorColorBridgeAdapter:
         i = self.env_id
         origin = _as_tensor(self.env.scene.env_origins)[i]
         joint_pos = _as_tensor(robot.data.joint_pos)[i]
+        joint_vel = _as_tensor(robot.data.joint_vel)[i]
         names: list[str] = []
         positions: list[float] = []
+        velocities: list[float] = []
         for name, jid in self._joint_pairs:
             if jid < 0 or jid >= joint_pos.shape[0]:
                 continue
             names.append(name)
             positions.append(float(joint_pos[jid].item()))
+            velocities.append(float(joint_vel[jid].item()))
 
         data = robot.data
         # Prefer body_pos_w (same index space as find_bodies); fall back to body_link_*.
@@ -135,15 +138,18 @@ class ConveyorColorBridgeAdapter:
         return make_envelope(
             TOPIC_ROBOT_STATE,
             {
-                "joint_names": names,
-                "joint_positions": positions,
+                "joints": [
+                    {"name": name, "position": position, "velocity": velocity}
+                    for name, position, velocity in zip(names, positions, velocities, strict=True)
+                ],
                 "ee": ee,
                 "links": links,
                 "target_color": int(self.env._target_color[i].item()),
                 "target_color_name": COLOR_NAMES[int(self.env._target_color[i].item()) % len(COLOR_NAMES)],
             },
+            station_id="conveyor_color",
             frame_id="isaac_env",
-            stamp_s=stamp_s,
+            sim_time_s=stamp_s,
         )
 
     def build_objects_state_envelope(self, stamp_s: float | None = None) -> dict[str, Any]:
@@ -159,7 +165,7 @@ class ConveyorColorBridgeAdapter:
             ang = _as_tensor(obj.data.root_ang_vel_w)[i]
             objects.append(
                 {
-                    "id": slot,
+                    "id": f"object_{slot}",
                     "active": active,
                     "color": color,
                     "color_name": COLOR_NAMES[color % len(COLOR_NAMES)],
@@ -176,8 +182,9 @@ class ConveyorColorBridgeAdapter:
                 "target_color": int(self.env._target_color[i].item()),
                 "source": "isaac",
             },
+            station_id="conveyor_color",
             frame_id="isaac_env",
-            stamp_s=stamp_s,
+            sim_time_s=stamp_s,
         )
 
     def apply_spawn(self, data: dict[str, Any]) -> int | None:

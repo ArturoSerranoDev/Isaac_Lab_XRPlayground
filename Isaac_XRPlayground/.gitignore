@@ -66,8 +66,7 @@ _build
 # Teleop Recorded Dataset
 /datasets/
 
-# Tests
-/tests/
+# Deployment tests are project source and must remain versioned.
 
 # Docker history
 .isaac-lab-docker-history

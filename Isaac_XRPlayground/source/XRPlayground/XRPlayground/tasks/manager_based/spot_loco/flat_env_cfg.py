@@ -14,6 +14,22 @@ from isaaclab_tasks.manager_based.locomotion.velocity.config.spot.flat_env_cfg i
     SpotFlatEnvCfg_PLAY,
 )
 
+SPOT_PHYSICS_HZ = 250
+SPOT_POLICY_HZ = 50
+SPOT_SIM_DT = 1.0 / SPOT_PHYSICS_HZ
+SPOT_POLICY_DECIMATION = SPOT_PHYSICS_HZ // SPOT_POLICY_HZ
+
+
+def _apply_deployment_cadence(cfg) -> None:
+    """Keep Isaac training cadence identical to the Unity Spot physics profile."""
+    cfg.sim.dt = SPOT_SIM_DT
+    cfg.decimation = SPOT_POLICY_DECIMATION
+    cfg.sim.render_interval = SPOT_POLICY_DECIMATION
+    if cfg.scene.height_scanner is not None:
+        cfg.scene.height_scanner.update_period = cfg.decimation * cfg.sim.dt
+    if cfg.scene.contact_forces is not None:
+        cfg.scene.contact_forces.update_period = cfg.sim.dt
+
 
 
 @configclass
@@ -58,6 +74,7 @@ class SpotLocoStandEnvCfg(SpotFlatEnvCfg):
 
     def __post_init__(self):
         super().__post_init__()
+        _apply_deployment_cadence(self)
         self.scene.num_envs = 128
 
 
@@ -69,9 +86,14 @@ class SpotLocoWalkEnvCfg(SpotFlatEnvCfg):
 
     def __post_init__(self):
         super().__post_init__()
+        _apply_deployment_cadence(self)
         self.scene.num_envs = 128
 
 
 @configclass
 class SpotLocoWalkEnvCfg_PLAY(SpotFlatEnvCfg_PLAY):
     commands: SpotLocoWalkCommandsCfg = SpotLocoWalkCommandsCfg()
+
+    def __post_init__(self):
+        super().__post_init__()
+        _apply_deployment_cadence(self)

@@ -1,0 +1,552 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d4bed842a90a584da2b12a73b9d4422, type: 3}
+  m_Name: robot.definition
+  m_EditorClassIdentifier: XRPlayground.Deployment::XRPlayground.Deployment.RobotDefinition
+  robotId: kinova_jaco2_n7s300
+  sourceAsset: https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.0/Isaac/Robots/Kinova/Jaco2/J2N7S300/j2n7s300_instanceable.usd
+  sourceSha256: 
+  definitionSha256: afc0dcfc14c3cd51f27041afab0fbd438e02177b4cb6d94a6dfe21f4ce854f24
+  provenance: Kinova Jaco2 source mirrored from the NVIDIA Isaac distribution; underlying
+    Kinova asset copyright 2018.
+  redistributionLicense: BSD-3-Clause
+  links:
+  - name: j2n7s300_link_base
+    mass: 0.46784002
+    centerOfMass: {x: 0, y: 0.1255, z: 0}
+    inertiaTensor: {x: 0.00037427203, y: 0.0009512708, z: 0.0009512708}
+    inertiaTensorRotation: {x: 0.70710677, y: 0.70710677, z: 0, w: -0}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: j2n7s300_link_1
+    mass: 0.7477
+    centerOfMass: {x: 0, y: -0.0605, z: -0.002}
+    inertiaTensor: {x: 0.00059816, y: 0.0015203173, z: 0.0015203173}
+    inertiaTensorRotation: {x: 0.70710677, y: 0.70710677, z: 0, w: -0}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: j2n7s300_link_2
+    mass: 0.8447
+    centerOfMass: {x: 0, y: 0, z: -0.10356321}
+    inertiaTensor: {x: 0.000380115, y: 0.0024707376, z: 0.0024707376}
+    inertiaTensorRotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: j2n7s300_link_3
+    mass: 0.8447
+    centerOfMass: {x: 0, y: -0.10224474, z: 0}
+    inertiaTensor: {x: 0.000380115, y: 0.0024707376, z: 0.0024707376}
+    inertiaTensorRotation: {x: 0.70710677, y: 0.70710677, z: 0, w: -0}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: j2n7s300_link_4
+    mass: 0.6763
+    centerOfMass: {x: 0, y: -0.0086, z: 0.081}
+    inertiaTensor: {x: 0.000304335, y: 0.0014202243, z: 0.0014202243}
+    inertiaTensorRotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: j2n7s300_link_5
+    mass: 0.426367
+    centerOfMass: {x: 0, y: -0.0642, z: -0.037}
+    inertiaTensor: {x: 0.000077349694, y: 0.000077349694, z: 0.0001428}
+    inertiaTensorRotation: {x: 0.70710677, y: -0, z: 0, w: 0.70710677}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: j2n7s300_link_6
+    mass: 0.426367
+    centerOfMass: {x: 0, y: -0.0642, z: -0.037}
+    inertiaTensor: {x: 0.000077349694, y: 0.000077349694, z: 0.0001428}
+    inertiaTensorRotation: {x: 0.70710677, y: -0, z: 0, w: 0.70710677}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: j2n7s300_link_7
+    mass: 0.99000007
+    centerOfMass: {x: 0, y: -0.06, z: 0}
+    inertiaTensor: {x: 0.0003453236, y: 0.0003453236, z: 0.0005816}
+    inertiaTensorRotation: {x: 0.70710677, y: -0, z: 0, w: 0.70710677}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: j2n7s300_end_effector
+    mass: 0.0000001
+    centerOfMass: {x: 0, y: 0, z: 0}
+    inertiaTensor: {x: 4e-10, y: 4e-10, z: 4e-10}
+    inertiaTensorRotation: {x: 0, y: 0, z: 0, w: 1}
+    collisionShapeCount: 0
+    collisionEnabled: 0
+    staticFriction: -1
+    dynamicFriction: -1
+    restitution: -1
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: j2n7s300_link_finger_1
+    mass: 0.01
+    centerOfMass: {x: 0.022, y: 0, z: 0}
+    inertiaTensor: {x: 0.00000008, y: 0.0000007899968, z: 0.0000007899968}
+    inertiaTensorRotation: {x: 0.70710677, y: 0.70710677, z: 0, w: -0}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: j2n7s300_link_finger_2
+    mass: 0.01
+    centerOfMass: {x: 0.022, y: 0, z: 0}
+    inertiaTensor: {x: 0.00000008, y: 0.0000007899968, z: 0.0000007899968}
+    inertiaTensorRotation: {x: 0.70710677, y: 0.70710677, z: 0, w: -0}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: j2n7s300_link_finger_3
+    mass: 0.01
+    centerOfMass: {x: 0.022, y: 0, z: 0}
+    inertiaTensor: {x: 0.00000008, y: 0.0000007899968, z: 0.0000007899968}
+    inertiaTensorRotation: {x: 0.70710677, y: 0.70710677, z: 0, w: -0}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: j2n7s300_link_finger_tip_1
+    mass: 0.01
+    centerOfMass: {x: 0.022, y: 0, z: 0}
+    inertiaTensor: {x: 0.00000008, y: 0.0000007899968, z: 0.0000007899968}
+    inertiaTensorRotation: {x: 0.70710677, y: 0.70710677, z: 0, w: -0}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: j2n7s300_link_finger_tip_2
+    mass: 0.01
+    centerOfMass: {x: 0.022, y: 0, z: 0}
+    inertiaTensor: {x: 0.00000008, y: 0.0000007899968, z: 0.0000007899968}
+    inertiaTensorRotation: {x: 0.70710677, y: 0.70710677, z: 0, w: -0}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  - name: j2n7s300_link_finger_tip_3
+    mass: 0.01
+    centerOfMass: {x: 0.022, y: 0, z: 0}
+    inertiaTensor: {x: 0.00000008, y: 0.0000007899968, z: 0.0000007899968}
+    inertiaTensorRotation: {x: 0.70710677, y: 0.70710677, z: 0, w: -0}
+    collisionShapeCount: 1
+    collisionEnabled: 1
+    staticFriction: 0.5
+    dynamicFriction: 0.5
+    restitution: 0
+    contactOffset: -1
+    restOffset: -1
+    collisionShapes: []
+  joints:
+  - name: j2n7s300_joint_1
+    parentLink: j2n7s300_link_base
+    childLink: j2n7s300_link_1
+    jointType: 2
+    positionUnit: radian
+    limitMode: continuous
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: 0, y: 0.15675, z: 0}
+    parentAnchorRotation: {x: 0, y: 0, z: 0.7071068, w: -0.7071067}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: -0.70710677, w: -0.70710677}
+    lowerLimit: -3.4028235e+38
+    upperLimit: 3.4028235e+38
+    defaultPosition: 0
+    stiffness: 280
+    damping: 12
+    forceLimit: 220
+    maxVelocity: 3.5
+    actuatorGroup: arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: j2n7s300_joint_2
+    parentLink: j2n7s300_link_1
+    childLink: j2n7s300_link_2
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: 0, y: -0.11875, z: 0.0016}
+    parentAnchorRotation: {x: 0.5, y: 0.49999994, z: -0.49999994, w: 0.5}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: -0.70710677, w: -0.70710677}
+    lowerLimit: 0.5235988
+    upperLimit: 5.759586
+    defaultPosition: 2.35
+    stiffness: 280
+    damping: 12
+    forceLimit: 220
+    maxVelocity: 3.5
+    actuatorGroup: arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: j2n7s300_joint_3
+    parentLink: j2n7s300_link_2
+    childLink: j2n7s300_link_3
+    jointType: 2
+    positionUnit: radian
+    limitMode: continuous
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: 0, y: 0, z: -0.205}
+    parentAnchorRotation: {x: 0.49999994, y: 0.5, z: 0.5, w: -0.49999994}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: -0.70710677, w: -0.70710677}
+    lowerLimit: -3.4028235e+38
+    upperLimit: 3.4028235e+38
+    defaultPosition: 0.25
+    stiffness: 280
+    damping: 12
+    forceLimit: 140
+    maxVelocity: 3.5
+    actuatorGroup: arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: j2n7s300_joint_4
+    parentLink: j2n7s300_link_3
+    childLink: j2n7s300_link_4
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: 0, y: -0.205, z: 0}
+    parentAnchorRotation: {x: 0.49999994, y: 0.5, z: 0.5, w: -0.49999994}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: -0.70710677, w: -0.70710677}
+    lowerLimit: 0.5235988
+    upperLimit: 5.759586
+    defaultPosition: 1.65
+    stiffness: 280
+    damping: 12
+    forceLimit: 140
+    maxVelocity: 3.5
+    actuatorGroup: arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: j2n7s300_joint_5
+    parentLink: j2n7s300_link_4
+    childLink: j2n7s300_link_5
+    jointType: 2
+    positionUnit: radian
+    limitMode: continuous
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: 0, y: -0.0114, z: 0.2073}
+    parentAnchorRotation: {x: 0.5, y: 0.49999994, z: -0.49999994, w: 0.5}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: -0.70710677, w: -0.70710677}
+    lowerLimit: -3.4028235e+38
+    upperLimit: 3.4028235e+38
+    defaultPosition: 1.4
+    stiffness: 120
+    damping: 6
+    forceLimit: 80
+    maxVelocity: 3.5
+    actuatorGroup: arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: j2n7s300_joint_6
+    parentLink: j2n7s300_link_5
+    childLink: j2n7s300_link_6
+    jointType: 2
+    positionUnit: radian
+    limitMode: continuous
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: 0, y: -0.06414, z: -0.03703}
+    parentAnchorRotation: {x: 0.6123724, y: 0.6123724, z: 0.3535534, w: -0.35355335}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: -0.70710677, w: -0.70710677}
+    lowerLimit: -3.4028235e+38
+    upperLimit: 3.4028235e+38
+    defaultPosition: 0.35
+    stiffness: 120
+    damping: 6
+    forceLimit: 80
+    maxVelocity: 3.5
+    actuatorGroup: arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: j2n7s300_joint_7
+    parentLink: j2n7s300_link_6
+    childLink: j2n7s300_link_7
+    jointType: 2
+    positionUnit: radian
+    limitMode: continuous
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: 0, y: -0.06414, z: -0.03703}
+    parentAnchorRotation: {x: 0.6123724, y: 0.6123724, z: 0.3535534, w: -0.35355335}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: -0.70710677, w: -0.70710677}
+    lowerLimit: -3.4028235e+38
+    upperLimit: 3.4028235e+38
+    defaultPosition: 0
+    stiffness: 120
+    damping: 6
+    forceLimit: 80
+    maxVelocity: 3.5
+    actuatorGroup: arm
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: j2n7s300_joint_finger_1
+    parentLink: j2n7s300_link_7
+    childLink: j2n7s300_link_finger_1
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: 0.00279, y: -0.11467, z: 0.03126}
+    parentAnchorRotation: {x: -0.007039517, y: 0.88909936, z: -0.44531745, w: 0.10556966}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: -0.70710677, w: -0.70710677}
+    lowerLimit: 0
+    upperLimit: 1.51
+    defaultPosition: 0.04
+    stiffness: 120
+    damping: 6
+    forceLimit: 28
+    maxVelocity: 6
+    actuatorGroup: gripper
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: j2n7s300_joint_finger_2
+    parentLink: j2n7s300_link_7
+    childLink: j2n7s300_link_finger_2
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: 0.02226, y: -0.11482, z: -0.02707}
+    parentAnchorRotation: {x: -0.44274136, y: 0.08258179, z: -0.04099393, w: -0.8918967}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: -0.70710677, w: -0.70710677}
+    lowerLimit: 0
+    upperLimit: 1.51
+    defaultPosition: 0.04
+    stiffness: 120
+    damping: 6
+    forceLimit: 28
+    maxVelocity: 6
+    actuatorGroup: gripper
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: j2n7s300_joint_finger_3
+    parentLink: j2n7s300_link_7
+    childLink: j2n7s300_link_finger_3
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: -0.02226, y: -0.11482, z: -0.02707}
+    parentAnchorRotation: {x: -0.44274136, y: -0.08258179, z: 0.04099393, w: -0.8918967}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: -0.70710677, w: -0.70710677}
+    lowerLimit: 0
+    upperLimit: 1.51
+    defaultPosition: 0.04
+    stiffness: 120
+    damping: 6
+    forceLimit: 28
+    maxVelocity: 6
+    actuatorGroup: gripper
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: j2n7s300_joint_finger_tip_1
+    parentLink: j2n7s300_link_finger_1
+    childLink: j2n7s300_link_finger_tip_1
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: 0.044, y: 0, z: -0.003}
+    parentAnchorRotation: {x: 0, y: 0, z: -0.70710677, w: -0.70710677}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: -0.70710677, w: -0.70710677}
+    lowerLimit: 0
+    upperLimit: 1.9999999
+    defaultPosition: 0.04
+    stiffness: 120
+    damping: 6
+    forceLimit: 28
+    maxVelocity: 6
+    actuatorGroup: gripper
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: j2n7s300_joint_finger_tip_2
+    parentLink: j2n7s300_link_finger_2
+    childLink: j2n7s300_link_finger_tip_2
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: 0.044, y: 0, z: -0.003}
+    parentAnchorRotation: {x: 0, y: 0, z: -0.70710677, w: -0.70710677}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: -0.70710677, w: -0.70710677}
+    lowerLimit: 0
+    upperLimit: 1.9999999
+    defaultPosition: 0.04
+    stiffness: 120
+    damping: 6
+    forceLimit: 28
+    maxVelocity: 6
+    actuatorGroup: gripper
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  - name: j2n7s300_joint_finger_tip_3
+    parentLink: j2n7s300_link_finger_3
+    childLink: j2n7s300_link_finger_tip_3
+    jointType: 2
+    positionUnit: radian
+    limitMode: limited
+    axis: {x: 1, y: 0, z: 0}
+    parentAnchorPosition: {x: 0.044, y: 0, z: -0.003}
+    parentAnchorRotation: {x: 0, y: 0, z: -0.70710677, w: -0.70710677}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: -0.70710677, w: -0.70710677}
+    lowerLimit: 0
+    upperLimit: 1.9999999
+    defaultPosition: 0.04
+    stiffness: 120
+    damping: 6
+    forceLimit: 28
+    maxVelocity: 6
+    actuatorGroup: gripper
+    actuatorModel: ImplicitActuator
+    actuatorIsImplicit: 1
+    actuatorDelayMinSteps: 0
+    actuatorDelayMaxSteps: 0
+    actuatorNominalDelaySteps: 0
+    effortLimitCurve: []
+  fixedJoints:
+  - name: j2n7s300_joint_end_effector
+    parentLink: j2n7s300_link_7
+    childLink: j2n7s300_end_effector
+    parentAnchorPosition: {x: 0, y: -0.16, z: 0}
+    parentAnchorRotation: {x: 0.5, y: 0.49999994, z: 0.49999994, w: 0.5}
+    anchorPosition: {x: 0, y: 0, z: 0}
+    anchorRotation: {x: 0, y: 0, z: 0.70710677, w: -0.70710677}
+  auxiliaryJoints: []

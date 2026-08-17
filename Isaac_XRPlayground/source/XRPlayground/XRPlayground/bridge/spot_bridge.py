@@ -35,9 +35,12 @@ def _pose_dict(pos: torch.Tensor, quat_wxyz: torch.Tensor) -> dict[str, list[flo
 class SpotBridgeAdapter:
     """Publish Spot link/joint state; track latest Unity HMD pose in Isaac env frame."""
 
-    def __init__(self, env, env_id: int = 0):
+    def __init__(self, env, env_id: int = 0, station_id: str = "spot_loco"):
         self.env = env
         self.env_id = int(env_id)
+        if station_id not in {"spot_loco", "spot_follow"}:
+            raise ValueError(f"Unsupported Spot station_id '{station_id}'")
+        self.station_id = station_id
         self._link_ids: dict[str, int] = {}
         self._joint_pairs: list[tuple[str, int]] = []
         self._base_id: int | None = None
@@ -117,13 +120,16 @@ class SpotBridgeAdapter:
         i = self.env_id
         origin = _as_tensor(self.env.scene.env_origins)[i]
         joint_pos = _as_tensor(robot.data.joint_pos)[i]
+        joint_vel = _as_tensor(robot.data.joint_vel)[i]
         names: list[str] = []
         positions: list[float] = []
+        velocities: list[float] = []
         for name, jid in self._joint_pairs:
             if jid < 0 or jid >= joint_pos.shape[0]:
                 continue
             names.append(name)
             positions.append(float(joint_pos[jid].item()))
+            velocities.append(float(joint_vel[jid].item()))
 
         data = robot.data
         if hasattr(data, "body_pos_w"):
@@ -148,15 +154,23 @@ class SpotBridgeAdapter:
             ee = {"position": [0.0, 0.0, 0.5], "orientation_xyzw": [0.0, 0.0, 0.0, 1.0]}
 
         payload: dict[str, Any] = {
-            "joint_names": names,
-            "joint_positions": positions,
+            "joints": [
+                {"name": name, "position": position, "velocity": velocity}
+                for name, position, velocity in zip(names, positions, velocities, strict=True)
+            ],
             "ee": ee,
             "links": links,
         }
         if self.player_pose_isaac is not None:
             payload["player"] = self.player_pose_isaac
 
-        return make_envelope(TOPIC_ROBOT_STATE, payload, frame_id="isaac_env", stamp_s=stamp_s)
+        return make_envelope(
+            TOPIC_ROBOT_STATE,
+            payload,
+            station_id=self.station_id,
+            frame_id="isaac_env",
+            sim_time_s=stamp_s,
+        )
 
     def build_player_ack_envelope(self, stamp_s: float | None = None) -> dict[str, Any] | None:
         if self.player_pose_isaac is None:
@@ -164,6 +178,7 @@ class SpotBridgeAdapter:
         return make_envelope(
             TOPIC_PLAYER_POSE,
             {**self.player_pose_isaac, "source": "isaac_echo"},
+            station_id=self.station_id,
             frame_id="isaac_env",
-            stamp_s=stamp_s,
+            sim_time_s=stamp_s,
         )

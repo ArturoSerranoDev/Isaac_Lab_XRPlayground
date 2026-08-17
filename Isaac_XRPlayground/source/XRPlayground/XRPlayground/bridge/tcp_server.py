@@ -11,7 +11,7 @@ import threading
 from collections import deque
 from typing import Any, Callable
 
-from .protocol import MAX_MESSAGE_BYTES, encode_message, try_decode_buffer
+from .protocol import MAX_MESSAGE_BYTES, SequenceGate, encode_message, try_decode_buffer
 
 
 class RosTcpServer:
@@ -33,6 +33,7 @@ class RosTcpServer:
         self._buffers: dict[socket.socket, bytearray] = {}
         self._lock = threading.Lock()
         self._inbox: deque[dict[str, Any]] = deque(maxlen=256)
+        self._sequence_gate = SequenceGate()
         self._running = False
         self._thread: threading.Thread | None = None
 
@@ -166,6 +167,8 @@ class RosTcpServer:
                 self._buffers[conn] = buf
                 if msg is None:
                     break
+                if not self._sequence_gate.accept(msg):
+                    continue
                 self._inbox.append(msg)
                 if self.on_message is not None:
                     self.on_message(msg)

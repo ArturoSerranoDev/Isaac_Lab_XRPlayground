@@ -1,0 +1,4335 @@
+{
+  "auxiliary_joints": [
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "left_Left_2_Link",
+      "joint_type": "RevoluteJoint",
+      "name": "left_Left_2_Joint",
+      "parent_anchor_position": [
+        -0.017000000923871994,
+        0.12200000137090683,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        -0.7071055173873901,
+        -2.5597241801733617e-06,
+        -2.559715085226344e-06,
+        0.7071080803871155
+      ],
+      "parent_link": "left_base_link",
+      "source_joint_type": "PhysicsRevoluteJoint",
+      "source_prim_path": "/World/envs/env_0/Robot/left_base_link/left_Left_2_Joint",
+      "topology_role": "loop_closure"
+    },
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "left_Right_2_Link",
+      "joint_type": "RevoluteJoint",
+      "name": "left_Right_2_Joint",
+      "parent_anchor_position": [
+        0.017000000923871994,
+        0.12200000137090683,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.7071080803871155,
+        0.0,
+        0.0,
+        -0.7071055173873901
+      ],
+      "parent_link": "left_base_link",
+      "source_joint_type": "PhysicsRevoluteJoint",
+      "source_prim_path": "/World/envs/env_0/Robot/left_base_link/left_Right_2_Joint",
+      "topology_role": "loop_closure"
+    },
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "right_Left_2_Link",
+      "joint_type": "RevoluteJoint",
+      "name": "right_Left_2_Joint",
+      "parent_anchor_position": [
+        -0.017000000923871994,
+        0.12200000137090683,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        -0.7071055173873901,
+        -2.5597241801733617e-06,
+        -2.559715085226344e-06,
+        0.7071080803871155
+      ],
+      "parent_link": "right_base_link",
+      "source_joint_type": "PhysicsRevoluteJoint",
+      "source_prim_path": "/World/envs/env_0/Robot/right_base_link/right_Left_2_Joint",
+      "topology_role": "loop_closure"
+    },
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "right_Right_2_Link",
+      "joint_type": "RevoluteJoint",
+      "name": "right_Right_2_Joint",
+      "parent_anchor_position": [
+        0.017000000923871994,
+        0.12200000137090683,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.7071080803871155,
+        0.0,
+        0.0,
+        -0.7071055173873901
+      ],
+      "parent_link": "right_base_link",
+      "source_joint_type": "PhysicsRevoluteJoint",
+      "source_prim_path": "/World/envs/env_0/Robot/right_base_link/right_Right_2_Joint",
+      "topology_role": "loop_closure"
+    }
+  ],
+  "definition_sha256": "65d2f12bddb18d8b67dae0430010d2b36baeaf906372a393ffe665a4e2e09c07",
+  "fixed_joints": [
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "child_link": "link_arm",
+      "name": "joint_arm_mount",
+      "parent_anchor_position": [
+        0.3050000071525574,
+        0.0,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        -0.5,
+        -0.5,
+        0.500001847743988,
+        -0.49999821186065674
+      ],
+      "parent_link": "link_pitch_body"
+    },
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "child_link": "base_link_l",
+      "name": "joint_left_arm_mount",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        0.02500000037252903
+      ],
+      "parent_anchor_rotation": [
+        -0.7071080803871155,
+        0.0,
+        0.0,
+        -0.7071055173873901
+      ],
+      "parent_link": "link_arm"
+    },
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "child_link": "base_link_r",
+      "name": "joint_right_arm_mount",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        -0.02500000037252903
+      ],
+      "parent_anchor_rotation": [
+        8.963237405623659e-07,
+        0.7071080803871155,
+        -0.7071055173873901,
+        -8.963205004874908e-07
+      ],
+      "parent_link": "link_arm"
+    },
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "child_link": "left_base_link",
+      "name": "Joint_hand_l",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "parent_link": "Link7_l"
+    },
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "child_link": "right_base_link",
+      "name": "Joint_hand_r",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "parent_link": "Link7_r"
+    },
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "child_link": "gripper_center",
+      "name": "gripper_center_joint",
+      "parent_anchor_position": [
+        0.0,
+        0.23000000417232513,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        -0.7071067690849304,
+        0.0,
+        -0.7071067690849304
+      ],
+      "parent_link": "left_base_link"
+    },
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "child_link": "right_gripper_center",
+      "name": "right_gripper_center_joint",
+      "parent_anchor_position": [
+        0.0,
+        0.22699999809265137,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        -0.7071067690849304,
+        0.0,
+        -0.7071067690849304
+      ],
+      "parent_link": "right_base_link"
+    },
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "child_link": "left_Right_Pad_Link",
+      "name": "left_Right_Pad_Joint",
+      "parent_anchor_position": [
+        -0.02205600030720234,
+        0.0,
+        0.04430599883198738
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "parent_link": "left_Right_Support_Link"
+    },
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "child_link": "left_Left_Pad_Link",
+      "name": "left_Left_Pad_Joint",
+      "parent_anchor_position": [
+        -0.02205600030720234,
+        0.0,
+        0.04430599883198738
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "parent_link": "left_Left_Support_Link"
+    },
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "child_link": "right_Right_Pad_Link",
+      "name": "right_Right_Pad_Joint",
+      "parent_anchor_position": [
+        -0.02205600030720234,
+        0.0,
+        0.04430599883198738
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "parent_link": "right_Right_Support_Link"
+    },
+    {
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "child_link": "right_Left_Pad_Link",
+      "name": "right_Left_Pad_Joint",
+      "parent_anchor_position": [
+        -0.02205600030720234,
+        0.0,
+        0.04430599883198738
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.7071067690849304,
+        -0.7071067690849304
+      ],
+      "parent_link": "right_Left_Support_Link"
+    }
+  ],
+  "joints": [
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "body",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "link_up_down_body",
+      "damping": 500.0,
+      "default_position": 0.19949999451637268,
+      "effort_limit_curve": [],
+      "force_limit": 10000.0,
+      "joint_type": "PrismaticJoint",
+      "limit_mode": "limited",
+      "lower_limit": 0.0,
+      "max_velocity": 2.609999895095825,
+      "name": "joint_lift_body",
+      "parent_anchor_position": [
+        0.0,
+        0.6485000252723694,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "base_link",
+      "position_unit": "meter",
+      "stiffness": 10000000.0,
+      "upper_limit": 0.5
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "body",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "link_pitch_body",
+      "damping": 500.0,
+      "default_position": 0.6025000214576721,
+      "effort_limit_curve": [],
+      "force_limit": 10000.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": 0.0,
+      "max_velocity": 2.609999895095825,
+      "name": "joint_body_pitch",
+      "parent_anchor_position": [
+        0.13099999725818634,
+        0.0,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        -0.500001847743988,
+        0.5,
+        0.49999821186065674,
+        -0.5
+      ],
+      "parent_link": "link_up_down_body",
+      "position_unit": "radian",
+      "stiffness": 10000000.0,
+      "upper_limit": 1.0471975803375244
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "head",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        1.627323513275769e-06,
+        -0.4410000443458557,
+        -1.5999081597328768e-06
+      ],
+      "anchor_rotation": [
+        0.4999999701976776,
+        0.5,
+        0.5000017881393433,
+        0.49999821186065674
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "link_yaw_head",
+      "damping": 40.0,
+      "default_position": 0.0,
+      "effort_limit_curve": [],
+      "force_limit": 50.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "continuous",
+      "lower_limit": -3.4028234663852886e+38,
+      "max_velocity": 1.0,
+      "name": "joint_head_yaw",
+      "parent_anchor_position": [
+        0.0,
+        -3.531278324224105e-14,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        -1.241475100499656e-08,
+        1.7387419504188983e-08,
+        4.22172909964047e-08,
+        -1.0
+      ],
+      "parent_link": "link_pitch_body",
+      "position_unit": "radian",
+      "stiffness": 800.0,
+      "upper_limit": 3.4028234663852886e+38
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "head",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.050238002091646194,
+        2.185204834859178e-07,
+        -0.060065023601055145
+      ],
+      "anchor_rotation": [
+        0.7071080803871155,
+        -1.171283800201553e-13,
+        5.142103241687415e-14,
+        0.7071055173873901
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "child_link": "link_pitch_head",
+      "damping": 40.0,
+      "default_position": 0.670799970626831,
+      "effort_limit_curve": [],
+      "force_limit": 50.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -1.0471975803375244,
+      "max_velocity": 1.0,
+      "name": "joint_head_pitch",
+      "parent_anchor_position": [
+        -2.7755575615628914e-17,
+        0.0,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        -1.0587911840678754e-22,
+        8.993795833946161e-18,
+        -4.235164736271502e-22,
+        -1.0
+      ],
+      "parent_link": "link_yaw_head",
+      "position_unit": "radian",
+      "stiffness": 800.0,
+      "upper_limit": 1.0471975803375244
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "left_arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "Link1_l",
+      "damping": 80.0,
+      "default_position": -1.0816999673843384,
+      "effort_limit_curve": [],
+      "force_limit": 2000.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -3.1399998664855957,
+      "max_velocity": 1.5700000524520874,
+      "name": "left_arm_joint1",
+      "parent_anchor_position": [
+        0.0,
+        0.18799999356269836,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        1.0,
+        -3.6199901387590216e-06,
+        0.0
+      ],
+      "parent_link": "base_link_l",
+      "position_unit": "radian",
+      "stiffness": 80000.0,
+      "upper_limit": 3.1399998664855957
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "right_arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "Link1_r",
+      "damping": 0.0,
+      "default_position": 1.0816999673843384,
+      "effort_limit_curve": [],
+      "force_limit": 2000.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -3.1399998664855957,
+      "max_velocity": 1.5700000524520874,
+      "name": "right_arm_joint1",
+      "parent_anchor_position": [
+        0.0,
+        0.18799999356269836,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        -0.0,
+        -1.0,
+        -3.6199901387590216e-06,
+        0.0
+      ],
+      "parent_link": "base_link_r",
+      "position_unit": "radian",
+      "stiffness": 10000000.0,
+      "upper_limit": 3.1399998664855957
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "left_arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "Link2_l",
+      "damping": 80.0,
+      "default_position": 0.5906999707221985,
+      "effort_limit_curve": [],
+      "force_limit": 1000.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -2.356194496154785,
+      "max_velocity": 1.5700000524520874,
+      "name": "left_arm_joint2",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.5,
+        -0.5,
+        0.49999821186065674,
+        0.500001847743988
+      ],
+      "parent_link": "Link1_l",
+      "position_unit": "radian",
+      "stiffness": 80000.0,
+      "upper_limit": 2.356194496154785
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "right_arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "Link2_r",
+      "damping": 0.0,
+      "default_position": -0.5906999707221985,
+      "effort_limit_curve": [],
+      "force_limit": 1000.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -2.356194496154785,
+      "max_velocity": 1.5700000524520874,
+      "name": "right_arm_joint2",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.5,
+        0.5,
+        0.49999821186065674,
+        -0.500001847743988
+      ],
+      "parent_link": "Link1_r",
+      "position_unit": "radian",
+      "stiffness": 20000.0,
+      "upper_limit": 2.356194496154785
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "left_arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "Link3_l",
+      "damping": 80.0,
+      "default_position": 0.3441999852657318,
+      "effort_limit_curve": [],
+      "force_limit": 1000.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -3.1399998664855957,
+      "max_velocity": 1.5700000524520874,
+      "name": "left_arm_joint3",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        0.3050000071525574
+      ],
+      "parent_anchor_rotation": [
+        0.500001847743988,
+        0.5,
+        0.49999821186065674,
+        0.5
+      ],
+      "parent_link": "Link2_l",
+      "position_unit": "radian",
+      "stiffness": 80000.0,
+      "upper_limit": 3.1399998664855957
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "right_arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "Link3_r",
+      "damping": 0.0,
+      "default_position": -0.3441999852657318,
+      "effort_limit_curve": [],
+      "force_limit": 1000.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -3.1399998664855957,
+      "max_velocity": 1.5700000524520874,
+      "name": "right_arm_joint3",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        -0.3050000071525574
+      ],
+      "parent_anchor_rotation": [
+        0.5,
+        -0.500001847743988,
+        0.5,
+        -0.49999821186065674
+      ],
+      "parent_link": "Link2_r",
+      "position_unit": "radian",
+      "stiffness": 20000.0,
+      "upper_limit": 3.1399998664855957
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "left_arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "Link4_l",
+      "damping": 80.0,
+      "default_position": -1.2819000482559204,
+      "effort_limit_curve": [],
+      "force_limit": 1000.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -2.356194496154785,
+      "max_velocity": 1.5700000524520874,
+      "name": "left_arm_joint4",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        -0.7071080803871155,
+        0.7071055173873901,
+        -0.0
+      ],
+      "parent_link": "Link3_l",
+      "position_unit": "radian",
+      "stiffness": 80000.0,
+      "upper_limit": 2.356194496154785
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "right_arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "Link4_r",
+      "damping": 0.0,
+      "default_position": 1.2819000482559204,
+      "effort_limit_curve": [],
+      "force_limit": 1000.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -2.356194496154785,
+      "max_velocity": 1.5700000524520874,
+      "name": "right_arm_joint4",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.7071055173873901,
+        -2.5597241801733617e-06,
+        -2.559715085226344e-06,
+        -0.7071080803871155
+      ],
+      "parent_link": "Link3_r",
+      "position_unit": "radian",
+      "stiffness": 20000.0,
+      "upper_limit": 2.356194496154785
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "left_arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "Link5_l",
+      "damping": 80.0,
+      "default_position": 0.692799985408783,
+      "effort_limit_curve": [],
+      "force_limit": 1000.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -3.1399998664855957,
+      "max_velocity": 1.5700000524520874,
+      "name": "left_arm_joint5",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        0.19750000536441803
+      ],
+      "parent_anchor_rotation": [
+        -2.5597241801733617e-06,
+        -0.7071055173873901,
+        -0.7071080803871155,
+        2.559715085226344e-06
+      ],
+      "parent_link": "Link4_l",
+      "position_unit": "radian",
+      "stiffness": 80000.0,
+      "upper_limit": 3.1399998664855957
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "right_arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "Link5_r",
+      "damping": 0.0,
+      "default_position": -0.692799985408783,
+      "effort_limit_curve": [],
+      "force_limit": 1000.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -3.1399998664855957,
+      "max_velocity": 1.5700000524520874,
+      "name": "right_arm_joint5",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        0.19750000536441803
+      ],
+      "parent_anchor_rotation": [
+        -2.5597241801733617e-06,
+        -0.7071055173873901,
+        -0.7071080803871155,
+        2.559715085226344e-06
+      ],
+      "parent_link": "Link4_r",
+      "position_unit": "radian",
+      "stiffness": 20000.0,
+      "upper_limit": 3.1399998664855957
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "left_arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "Link6_l",
+      "damping": 80.0,
+      "default_position": 1.472499966621399,
+      "effort_limit_curve": [],
+      "force_limit": 1000.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -2.356194496154785,
+      "max_velocity": 1.5700000524520874,
+      "name": "left_arm_joint6",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        -0.7071055173873901,
+        2.5597241801733617e-06,
+        -2.559715085226344e-06,
+        -0.7071080803871155
+      ],
+      "parent_link": "Link5_l",
+      "position_unit": "radian",
+      "stiffness": 80000.0,
+      "upper_limit": 2.356194496154785
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "right_arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "Link6_r",
+      "damping": 0.0,
+      "default_position": -0.699999988079071,
+      "effort_limit_curve": [],
+      "force_limit": 1000.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -2.356194496154785,
+      "max_velocity": 1.5700000524520874,
+      "name": "right_arm_joint6",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        -0.7071055173873901,
+        2.5597241801733617e-06,
+        -2.559715085226344e-06,
+        -0.7071080803871155
+      ],
+      "parent_link": "Link5_r",
+      "position_unit": "radian",
+      "stiffness": 20000.0,
+      "upper_limit": 2.356194496154785
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "left_arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "Link7_l",
+      "damping": 80.0,
+      "default_position": -0.1598999947309494,
+      "effort_limit_curve": [],
+      "force_limit": 1000.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -6.279999732971191,
+      "max_velocity": 1.5700000524520874,
+      "name": "left_arm_joint7",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        -0.1809999942779541
+      ],
+      "parent_anchor_rotation": [
+        2.5597241801733617e-06,
+        -0.7071055173873901,
+        0.7071080803871155,
+        2.559715085226344e-06
+      ],
+      "parent_link": "Link6_l",
+      "position_unit": "radian",
+      "stiffness": 80000.0,
+      "upper_limit": 6.279999732971191
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "right_arm",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "Link7_r",
+      "damping": 0.0,
+      "default_position": 0.0,
+      "effort_limit_curve": [],
+      "force_limit": 1000.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -3.1399998664855957,
+      "max_velocity": 1.5700000524520874,
+      "name": "right_arm_joint7",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        -0.1809999942779541
+      ],
+      "parent_anchor_rotation": [
+        2.5597241801733617e-06,
+        0.7071055173873901,
+        -0.7071080803871155,
+        2.559715085226344e-06
+      ],
+      "parent_link": "Link6_r",
+      "position_unit": "radian",
+      "stiffness": 20000.0,
+      "upper_limit": 3.1399998664855957
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "left_gripper_passive",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "left_Right_01_Link",
+      "damping": 0.0,
+      "default_position": 0.0,
+      "effort_limit_curve": [],
+      "force_limit": 10.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -0.9999999403953552,
+      "max_velocity": 10.0,
+      "name": "left_Right_1_Joint",
+      "parent_anchor_position": [
+        0.03255299851298332,
+        0.1064400002360344,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.7071080803871155,
+        0.0,
+        0.0,
+        -0.7071055173873901
+      ],
+      "parent_link": "left_base_link",
+      "position_unit": "radian",
+      "stiffness": 0.0,
+      "upper_limit": 0.9999999403953552
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "left_gripper",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "left_Left_01_Link",
+      "damping": 0.10000000149011612,
+      "default_position": 0.9940000176429749,
+      "effort_limit_curve": [],
+      "force_limit": 10.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": 0.0,
+      "max_velocity": 2.0,
+      "name": "left_hand_joint1",
+      "parent_anchor_position": [
+        -0.03255299851298332,
+        0.1064400002360344,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        -0.7071055173873901,
+        -2.5597241801733617e-06,
+        -2.559715085226344e-06,
+        0.7071080803871155
+      ],
+      "parent_link": "left_base_link",
+      "position_unit": "radian",
+      "stiffness": 20.0,
+      "upper_limit": 0.9999999403953552
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "right_gripper_passive",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "right_Right_01_Link",
+      "damping": 0.0,
+      "default_position": 0.0,
+      "effort_limit_curve": [],
+      "force_limit": 100.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -0.9999999403953552,
+      "max_velocity": 10.0,
+      "name": "right_Right_1_Joint",
+      "parent_anchor_position": [
+        0.03255299851298332,
+        0.1064400002360344,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.7071080803871155,
+        0.0,
+        0.0,
+        -0.7071055173873901
+      ],
+      "parent_link": "right_base_link",
+      "position_unit": "radian",
+      "stiffness": 0.0,
+      "upper_limit": 0.9999999403953552
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "right_gripper",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "right_Left_01_Link",
+      "damping": 0.10000000149011612,
+      "default_position": 0.9940000176429749,
+      "effort_limit_curve": [],
+      "force_limit": 100.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": 0.0,
+      "max_velocity": 10.0,
+      "name": "right_hand_joint1",
+      "parent_anchor_position": [
+        -0.03255299851298332,
+        0.1064400002360344,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        -0.7071055173873901,
+        -2.5597241801733617e-06,
+        -2.559715085226344e-06,
+        0.7071080803871155
+      ],
+      "parent_link": "right_base_link",
+      "position_unit": "radian",
+      "stiffness": 20.0,
+      "upper_limit": 0.9999999403953552
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "left_gripper_passive",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "left_Right_00_Link",
+      "damping": 0.0,
+      "default_position": 0.0,
+      "effort_limit_curve": [],
+      "force_limit": 10.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -0.1745329201221466,
+      "max_velocity": 10.0,
+      "name": "left_Right_0_Joint",
+      "parent_anchor_position": [
+        0.019460000097751617,
+        0.0,
+        0.012900000438094139
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "parent_link": "left_Right_01_Link",
+      "position_unit": "radian",
+      "stiffness": 0.0,
+      "upper_limit": 0.1745329201221466
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "left_gripper_passive",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "left_Left_00_Link",
+      "damping": 0.0,
+      "default_position": 0.0,
+      "effort_limit_curve": [],
+      "force_limit": 10.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -0.1745329201221466,
+      "max_velocity": 10.0,
+      "name": "left_Left_0_Joint",
+      "parent_anchor_position": [
+        0.019460000097751617,
+        0.0,
+        0.012900000438094139
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "left_Left_01_Link",
+      "position_unit": "radian",
+      "stiffness": 0.0,
+      "upper_limit": 0.1745329201221466
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "right_gripper_passive",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "right_Right_00_Link",
+      "damping": 0.0,
+      "default_position": 0.0,
+      "effort_limit_curve": [],
+      "force_limit": 100.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -0.1745329201221466,
+      "max_velocity": 10.0,
+      "name": "right_Right_0_Joint",
+      "parent_anchor_position": [
+        0.019460000097751617,
+        0.0,
+        0.012900000438094139
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "right_Right_01_Link",
+      "position_unit": "radian",
+      "stiffness": 0.0,
+      "upper_limit": 0.1745329201221466
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "right_gripper_passive",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "right_Left_00_Link",
+      "damping": 0.0,
+      "default_position": 0.0,
+      "effort_limit_curve": [],
+      "force_limit": 100.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -0.1745329201221466,
+      "max_velocity": 10.0,
+      "name": "right_Left_0_Joint",
+      "parent_anchor_position": [
+        0.019460000097751617,
+        0.0,
+        0.012900000438094139
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        1.0,
+        -0.0
+      ],
+      "parent_link": "right_Left_01_Link",
+      "position_unit": "radian",
+      "stiffness": 0.0,
+      "upper_limit": 0.1745329201221466
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "left_gripper",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "left_Right_Support_Link",
+      "damping": 0.009999999776482582,
+      "default_position": 0.9940000176429749,
+      "effort_limit_curve": [],
+      "force_limit": 1.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": 0.0,
+      "max_velocity": 2.0,
+      "name": "left_Right_Support_Joint",
+      "parent_anchor_position": [
+        -0.028819754719734192,
+        7.152557373046875e-07,
+        0.04332888126373291
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "left_Right_00_Link",
+      "position_unit": "radian",
+      "stiffness": 2.0,
+      "upper_limit": 0.9999999403953552
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "left_gripper",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "left_Left_Support_Link",
+      "damping": 0.009999999776482582,
+      "default_position": 0.9940000176429749,
+      "effort_limit_curve": [],
+      "force_limit": 1.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": 0.0,
+      "max_velocity": 2.0,
+      "name": "left_Left_Support_Joint",
+      "parent_anchor_position": [
+        -0.028819404542446136,
+        -2.7745242547894122e-08,
+        0.04332902655005455
+      ],
+      "parent_anchor_rotation": [
+        -6.546234989441063e-19,
+        6.127626075817794e-14,
+        -2.071524104595851e-15,
+        -1.0
+      ],
+      "parent_link": "left_Left_00_Link",
+      "position_unit": "radian",
+      "stiffness": 2.0,
+      "upper_limit": 0.9999999403953552
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "right_gripper",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "right_Right_Support_Link",
+      "damping": 0.009999999776482582,
+      "default_position": 0.9940000176429749,
+      "effort_limit_curve": [],
+      "force_limit": 100.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": 0.0,
+      "max_velocity": 10.0,
+      "name": "right_Right_Support_Joint",
+      "parent_anchor_position": [
+        -0.028880000114440918,
+        0.0,
+        0.04340999945998192
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "right_Right_00_Link",
+      "position_unit": "radian",
+      "stiffness": 2.0,
+      "upper_limit": 0.9999999403953552
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "right_gripper",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "right_Left_Support_Link",
+      "damping": 0.009999999776482582,
+      "default_position": 0.9940000176429749,
+      "effort_limit_curve": [],
+      "force_limit": 100.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": 0.0,
+      "max_velocity": 10.0,
+      "name": "right_Left_Support_Joint",
+      "parent_anchor_position": [
+        -0.028880000114440918,
+        0.0,
+        0.04340999945998192
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "right_Left_00_Link",
+      "position_unit": "radian",
+      "stiffness": 2.0,
+      "upper_limit": 0.9999999403953552
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "left_gripper_passive",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        -0.0154178561642766,
+        0.0,
+        0.016108207404613495
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "left_Right_Support_Link",
+      "damping": 0.0,
+      "default_position": 0.0,
+      "effort_limit_curve": [],
+      "force_limit": 10.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "continuous",
+      "lower_limit": -3.4028234663852886e+38,
+      "max_velocity": 10.0,
+      "name": "left_Right_RevoluteJoint",
+      "parent_anchor_position": [
+        -0.009224548935890198,
+        2.384185791015625e-07,
+        0.056777238845825195
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "parent_link": "left_Right_2_Link",
+      "position_unit": "radian",
+      "stiffness": 0.0,
+      "upper_limit": 3.4028234663852886e+38
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "left_gripper_passive",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        -0.015468532219529152,
+        -3.3481478567409795e-07,
+        0.015786761417984962
+      ],
+      "anchor_rotation": [
+        -6.546234989441063e-19,
+        6.127626075817794e-14,
+        -2.071524104595851e-15,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "left_Left_Support_Link",
+      "damping": 0.0,
+      "default_position": 0.0,
+      "effort_limit_curve": [],
+      "force_limit": 10.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "continuous",
+      "lower_limit": -3.4028234663852886e+38,
+      "max_velocity": 10.0,
+      "name": "left_Left_RevoluteJoint",
+      "parent_anchor_position": [
+        -0.009274921379983425,
+        -2.0075034967703687e-07,
+        0.05645578354597092
+      ],
+      "parent_anchor_rotation": [
+        -6.546234989441063e-19,
+        6.127626075817794e-14,
+        -2.071524104595851e-15,
+        -1.0
+      ],
+      "parent_link": "left_Left_2_Link",
+      "position_unit": "radian",
+      "stiffness": 0.0,
+      "upper_limit": 3.4028234663852886e+38
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "right_gripper_passive",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        -0.015600068494677544,
+        -7.54518865164755e-08,
+        0.015421999618411064
+      ],
+      "anchor_rotation": [
+        -2.1316205839837753e-14,
+        -8.498458377930135e-16,
+        3.9602876371076096e-14,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "right_Right_Support_Link",
+      "damping": 0.0,
+      "default_position": 0.0,
+      "effort_limit_curve": [],
+      "force_limit": 100.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "continuous",
+      "lower_limit": -3.4028234663852886e+38,
+      "max_velocity": 10.0,
+      "name": "right_Right_RevoluteJoint",
+      "parent_anchor_position": [
+        -0.00946707185357809,
+        -9.654804955516738e-08,
+        0.05617193505167961
+      ],
+      "parent_anchor_rotation": [
+        -2.1316205839837753e-14,
+        -8.498458377930135e-16,
+        3.9602876371076096e-14,
+        -1.0
+      ],
+      "parent_link": "right_Right_2_Link",
+      "position_unit": "radian",
+      "stiffness": 0.0,
+      "upper_limit": 3.4028234663852886e+38
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "right_gripper_passive",
+      "actuator_is_implicit": true,
+      "actuator_model": "ImplicitActuator",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        -0.01527501828968525,
+        -7.010880409552556e-08,
+        0.015544294379651546
+      ],
+      "anchor_rotation": [
+        -5.575217180942108e-17,
+        1.1665192737545654e-13,
+        -6.708163484327873e-14,
+        -1.0
+      ],
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "child_link": "right_Left_Support_Link",
+      "damping": 0.0,
+      "default_position": 0.0,
+      "effort_limit_curve": [],
+      "force_limit": 100.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "continuous",
+      "lower_limit": -3.4028234663852886e+38,
+      "max_velocity": 10.0,
+      "name": "right_Left_RevoluteJoint",
+      "parent_anchor_position": [
+        -0.009142027236521244,
+        8.285289254672534e-08,
+        0.05629429221153259
+      ],
+      "parent_anchor_rotation": [
+        -5.575217180942108e-17,
+        1.1665192737545654e-13,
+        -6.708163484327873e-14,
+        -1.0
+      ],
+      "parent_link": "right_Left_2_Link",
+      "position_unit": "radian",
+      "stiffness": 0.0,
+      "upper_limit": 3.4028234663852886e+38
+    }
+  ],
+  "links": [
+    {
+      "center_of_mass": [
+        -0.01344869751483202,
+        -0.03200767561793327,
+        0.0015210394049063325
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            -0.014662505831133266,
+            0.21233191856971148,
+            -0.00018127292194153322
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/base_link/base_link_01",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        1.047535722895625,
+        10.408034954104771,
+        10.53733434371341
+      ],
+      "inertia_tensor_rotation": [
+        0.679623963263657,
+        0.733396776538008,
+        0.01425254943438439,
+        0.006107499985999729
+      ],
+      "mass": 23.208538055419922,
+      "name": "base_link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.03383515402674675,
+        0.0008384311222471297,
+        -0.002480440540239215
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/link_up_down_body/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.018176714582472,
+        0.022470582436645684,
+        0.03127613957787195
+      ],
+      "inertia_tensor_rotation": [
+        0.4667698986313386,
+        0.5174982077129697,
+        0.5335974319978055,
+        -0.479160982667518
+      ],
+      "mass": 3.262754440307617,
+      "name": "link_up_down_body",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.1937335580587387,
+        -0.0012401142157614231,
+        -0.00048418017104268074
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 2,
+      "collision_shapes": [
+        {
+          "local_position": [
+            -0.694838065416282,
+            1.4975532219439047,
+            0.6694606539820258
+          ],
+          "local_rotation": [
+            0.49999817113048595,
+            0.5000000208599478,
+            0.5000017871433736,
+            -0.5000000208596532
+          ],
+          "scale": [
+            1.0000000474974512e-05,
+            1.0000000474974644e-05,
+            1.0000000474974646e-05
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/link_pitch_body/Xform/brep_08/brep_7",
+          "type": "mesh"
+        },
+        {
+          "local_position": [
+            -0.694838065416282,
+            1.4975532219439047,
+            0.6694606539820258
+          ],
+          "local_rotation": [
+            0.49999817113048595,
+            0.5000000208599478,
+            0.5000017871433736,
+            -0.5000000208596532
+          ],
+          "scale": [
+            1.0000000474974512e-05,
+            1.0000000474974644e-05,
+            1.0000000474974646e-05
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/link_pitch_body/Xform/brep_02/brep_1",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.07391034424484541,
+        0.17523780581616658,
+        0.20671967687761705
+      ],
+      "inertia_tensor_rotation": [
+        0.004825431401600835,
+        0.0027051716161890357,
+        0.0027803404419384408,
+        0.9999808332989899
+      ],
+      "mass": 7.531991958618164,
+      "name": "link_pitch_body",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "collision_enabled": false,
+      "collision_shape_count": 0,
+      "collision_shapes": [],
+      "contact_offset": -1.0,
+      "dynamic_friction": -1.0,
+      "inertia_tensor": [
+        9.999999747378752e-06,
+        9.999999747378752e-06,
+        9.999999747378752e-06
+      ],
+      "inertia_tensor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mass": 9.999999974752427e-07,
+      "name": "link_arm",
+      "rest_offset": -1.0,
+      "restitution": -1.0,
+      "static_friction": -1.0
+    },
+    {
+      "center_of_mass": [
+        0.04460681229829788,
+        0.05283737555146217,
+        0.002417531330138445
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.9999999999991966,
+            0.0,
+            -1.2675908465707403e-06
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/link_yaw_head/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.0004273551258949498,
+        0.0030064955632772396,
+        0.0030487590040216197
+      ],
+      "inertia_tensor_rotation": [
+        -0.7048503119907481,
+        -0.03407135305851513,
+        0.014493027102896825,
+        0.7083891111195189
+      ],
+      "mass": 0.41434288024902344,
+      "name": "link_yaw_head",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.0002064099971903488,
+        0.03439600020647049,
+        -0.0005748799885623157
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/base_link_l/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.0003511488128441788,
+        0.0003670504273225586,
+        0.00038208189687500996
+      ],
+      "inertia_tensor_rotation": [
+        0.40232102710562523,
+        0.18087146527193795,
+        -0.5901436960222035,
+        0.6761314385859528
+      ],
+      "mass": 0.37595000863075256,
+      "name": "base_link_l",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.0002064099971903488,
+        0.03439600020647049,
+        -0.0005748799885623157
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/base_link_r/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.0003511488128441788,
+        0.0003670504273225586,
+        0.00038208189687500996
+      ],
+      "inertia_tensor_rotation": [
+        0.40232102710562523,
+        0.18087146527193795,
+        -0.5901436960222035,
+        0.6761314385859528
+      ],
+      "mass": 0.37595000863075256,
+      "name": "base_link_r",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.025700926780700684,
+        -3.773901335080154e-05,
+        0.0316254086792469
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            -0.06242733349634544,
+            -0.002927164332212941,
+            0.01812809352855016
+          ],
+          "local_rotation": [
+            -0.005030908798677187,
+            0.0005034497802444056,
+            0.9999833120290466,
+            -0.002795023863391378
+          ],
+          "scale": [
+            1.0000002123840388,
+            1.000000000000061,
+            1.0000002123839775
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/link_pitch_head/link_pitch_head_01",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.0033539466732716108,
+        0.005139578350083683,
+        0.005529122379825304
+      ],
+      "inertia_tensor_rotation": [
+        0.7310355347548296,
+        -0.027711252641331178,
+        0.056687555290947454,
+        0.6794156713514229
+      ],
+      "mass": 0.7070639729499817,
+      "name": "link_pitch_head",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        -0.0014596000546589494,
+        0.0170889999717474,
+        0.0004947599954903126
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/Link1_l/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.0004185564681937753,
+        0.0013175042107610529,
+        0.0013443692959885713
+      ],
+      "inertia_tensor_rotation": [
+        0.18914380570525327,
+        -0.19458835203028724,
+        -0.6870659252150623,
+        0.6740181068976122
+      ],
+      "mass": 0.4369400143623352,
+      "name": "Link1_l",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.001319300034083426,
+        0.0182109996676445,
+        0.0001609799946891144
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/Link1_r/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.00046656406529716756,
+        0.0014244591539109659,
+        0.0014513289480294165
+      ],
+      "inertia_tensor_rotation": [
+        0.700987448276047,
+        -0.6953807985863886,
+        -0.11198077920512486,
+        0.11190374169528934
+      ],
+      "mass": 0.484140008687973,
+      "name": "Link1_r",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        -0.00043012999230995774,
+        -0.006502099800854921,
+        0.08810099959373474
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/Link2_l/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.0004232417019222217,
+        0.0014779149892414467,
+        0.0015129105157406246
+      ],
+      "inertia_tensor_rotation": [
+        0.04291632401251277,
+        -0.7065225740423312,
+        0.009486736143440535,
+        0.7063243188077248
+      ],
+      "mass": 0.31992000341415405,
+      "name": "Link2_l",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.00012037000124109909,
+        -0.006266800221055746,
+        -0.08810199797153473
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/Link2_r/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.0004214810756790664,
+        0.0014816541315682955,
+        0.0015219565888416008
+      ],
+      "inertia_tensor_rotation": [
+        -0.7045387790428421,
+        0.0374149003498952,
+        0.7086784652646642,
+        0.0002587020464934695
+      ],
+      "mass": 0.31992998719215393,
+      "name": "Link2_r",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.000225929994485341,
+        0.034984998404979706,
+        0.0010417000157758594
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/Link3_l/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.00039283983024167594,
+        0.002275196672960293,
+        0.0023040090103664764
+      ],
+      "inertia_tensor_rotation": [
+        0.46336530453693925,
+        -0.4660137554758791,
+        -0.5322824325067228,
+        0.5336658002002596
+      ],
+      "mass": 0.35545000433921814,
+      "name": "Link3_l",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        -3.7545000850514043e-06,
+        -0.03584599867463112,
+        -0.00012548999802675098
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/Link3_r/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.0003810211428053988,
+        0.002222133311989504,
+        0.0022391333187043627
+      ],
+      "inertia_tensor_rotation": [
+        0.5301870501384504,
+        -0.529058549274323,
+        -0.46457790122153186,
+        0.47240461153743357
+      ],
+      "mass": 0.3493199944496155,
+      "name": "Link3_r",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        2.171299911424285e-06,
+        -0.005464499816298485,
+        0.071942999958992
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/Link4_l/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.00019088606078849558,
+        0.0005745632925682135,
+        0.0006108493539710965
+      ],
+      "inertia_tensor_rotation": [
+        0.7063785809715829,
+        -0.055760248360451195,
+        0.7041788592645544,
+        -0.04530153653271123
+      ],
+      "mass": 0.18479999899864197,
+      "name": "Link4_l",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        1.910199898702558e-06,
+        -0.005464599933475256,
+        0.071942999958992
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/Link4_r/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.00019274748829398844,
+        0.0005716946345183983,
+        0.0006107260462213269
+      ],
+      "inertia_tensor_rotation": [
+        0.045496912669347106,
+        0.7063176435328684,
+        0.0536352460206587,
+        0.7043924174464381
+      ],
+      "mass": 0.18479999899864197,
+      "name": "Link4_r",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        -7.671500270589604e-07,
+        -0.012879000045359135,
+        -6.779799878131598e-05
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/Link5_l/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.00013958611241047242,
+        0.00044495192702528533,
+        0.00044709883219456824
+      ],
+      "inertia_tensor_rotation": [
+        0.5873603602641907,
+        -0.5859432078593367,
+        -0.3889898216406587,
+        0.4004563434555615
+      ],
+      "mass": 0.17749999463558197,
+      "name": "Link5_l",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        4.014600108348532e-06,
+        -0.01287699956446886,
+        -6.779799878131598e-05
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/Link5_r/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.000140582627897624,
+        0.0004511486224713041,
+        0.0004530490129590653
+      ],
+      "inertia_tensor_rotation": [
+        0.534936052605846,
+        0.5288484074037275,
+        0.4677880132118933,
+        0.46404434734655076
+      ],
+      "mass": 0.17749999463558197,
+      "name": "Link5_r",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        2.2695999177813064e-06,
+        -0.0029116999357938766,
+        -0.10226999968290329
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/Link6_l/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.00012247221608242226,
+        0.0008885626553220971,
+        0.0009083186549139267
+      ],
+      "inertia_tensor_rotation": [
+        -0.7059317108318409,
+        0.02594283521946172,
+        0.7077305596308857,
+        0.010239331392209837
+      ],
+      "mass": 0.1782499998807907,
+      "name": "Link6_l",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        -2.4946000394265866e-06,
+        -0.002909800037741661,
+        -0.10226999968290329
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/Link6_r/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.00012171812170512203,
+        0.0008993523447674427,
+        0.0009186010914479546
+      ],
+      "inertia_tensor_rotation": [
+        -0.706125926272908,
+        0.030234516685772084,
+        0.7071490178209244,
+        0.020305586445787227
+      ],
+      "mass": 0.1782499998807907,
+      "name": "Link6_r",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        -0.00025628998992033303,
+        -0.017204999923706055,
+        9.063999641512055e-06
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/Link7_l/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        2.4321143069542023e-05,
+        2.49262276519694e-05,
+        2.5542072084411167e-05
+      ],
+      "inertia_tensor_rotation": [
+        -0.003974458075955838,
+        -0.1301146874409291,
+        0.2216298674868404,
+        0.9664029044000838
+      ],
+      "mass": 0.061580002307891846,
+      "name": "Link7_l",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.00022649999300483614,
+        -0.017204999923706055,
+        0.00012030999641865492
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/Link7_r/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        2.4205038941023135e-05,
+        2.4952964085228656e-05,
+        2.5417586652464123e-05
+      ],
+      "inertia_tensor_rotation": [
+        0.31931242929501175,
+        0.8661533351915636,
+        0.08524187386603,
+        0.37490238112614993
+      ],
+      "mass": 0.061580002307891846,
+      "name": "Link7_r",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        1.2398928674883791e-06,
+        0.05361869931221008,
+        3.275644075984019e-07
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/left_base_link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.0002998445307174878,
+        0.0006764561770213713,
+        0.0007167371837887786
+      ],
+      "inertia_tensor_rotation": [
+        0.7073422404244633,
+        -0.7065769608583128,
+        -0.014465482758513858,
+        0.014377173021649687
+      ],
+      "mass": 0.4431057572364807,
+      "name": "left_base_link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        1.2398928674883791e-06,
+        0.05361869931221008,
+        3.275644075984019e-07
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/right_base_link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.0002998445307174878,
+        0.0006764561770213713,
+        0.0007167371837887786
+      ],
+      "inertia_tensor_rotation": [
+        0.7073422404244633,
+        -0.7065769608583128,
+        -0.014465482758513858,
+        0.014377173021649687
+      ],
+      "mass": 0.4431057572364807,
+      "name": "right_base_link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "collision_enabled": false,
+      "collision_shape_count": 0,
+      "collision_shapes": [],
+      "contact_offset": -1.0,
+      "dynamic_friction": -1.0,
+      "inertia_tensor": [
+        9.999999747378752e-06,
+        9.999999747378752e-06,
+        9.999999747378752e-06
+      ],
+      "inertia_tensor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mass": 9.999999974752427e-07,
+      "name": "gripper_center",
+      "rest_offset": -1.0,
+      "restitution": -1.0,
+      "static_friction": -1.0
+    },
+    {
+      "center_of_mass": [
+        0.006563878618180752,
+        -9.40812205918462e-10,
+        0.024850260466337204
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/left_Right_01_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        1.282439227152728e-06,
+        5.734020540842479e-06,
+        6.311399510438402e-06
+      ],
+      "inertia_tensor_rotation": [
+        -0.4604701207090771,
+        -0.5365760218557458,
+        0.5372383514009901,
+        -0.45981343443572464
+      ],
+      "mass": 0.011289938353002071,
+      "name": "left_Right_01_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.006563878618180752,
+        -9.40816979877468e-10,
+        0.024850260466337204
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/left_Left_01_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        1.282439227152728e-06,
+        5.734020540842479e-06,
+        6.311399510438402e-06
+      ],
+      "inertia_tensor_rotation": [
+        -0.4604701207090771,
+        -0.5365760218557458,
+        0.5372383514009901,
+        -0.45981343443572464
+      ],
+      "mass": 0.011289938353002071,
+      "name": "left_Left_01_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.006563878618180752,
+        -9.40812205918462e-10,
+        0.024850260466337204
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/right_Right_01_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        1.282439227152728e-06,
+        5.734020540842479e-06,
+        6.311399510438402e-06
+      ],
+      "inertia_tensor_rotation": [
+        -0.4604701207090771,
+        -0.5365760218557458,
+        0.5372383514009901,
+        -0.45981343443572464
+      ],
+      "mass": 0.011289938353002071,
+      "name": "right_Right_01_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "collision_enabled": false,
+      "collision_shape_count": 0,
+      "collision_shapes": [],
+      "contact_offset": -1.0,
+      "dynamic_friction": -1.0,
+      "inertia_tensor": [
+        9.999999747378752e-06,
+        9.999999747378752e-06,
+        9.999999747378752e-06
+      ],
+      "inertia_tensor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mass": 9.999999974752427e-07,
+      "name": "right_gripper_center",
+      "rest_offset": -1.0,
+      "restitution": -1.0,
+      "static_friction": -1.0
+    },
+    {
+      "center_of_mass": [
+        0.006563878618180752,
+        -9.40816979877468e-10,
+        0.024850260466337204
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/right_Left_01_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        1.282439227152728e-06,
+        5.734020540842479e-06,
+        6.311399510438402e-06
+      ],
+      "inertia_tensor_rotation": [
+        -0.4604701207090771,
+        -0.5365760218557458,
+        0.5372383514009901,
+        -0.45981343443572464
+      ],
+      "mass": 0.011289938353002071,
+      "name": "right_Left_01_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.006563878618180752,
+        -9.40812205918462e-10,
+        0.024850260466337204
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/left_Right_00_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        2.8723121017940097e-06,
+        6.233415843558051e-06,
+        8.18079296979754e-06
+      ],
+      "inertia_tensor_rotation": [
+        0.7063818602945198,
+        0.02475927484302446,
+        -0.02617512808001689,
+        0.7069133669878479
+      ],
+      "mass": 0.011289938353002071,
+      "name": "left_Right_00_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.006563878618180752,
+        -9.40816979877468e-10,
+        0.024850260466337204
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/left_Left_00_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        2.845962896756356e-06,
+        6.2876661531132825e-06,
+        8.208696186443989e-06
+      ],
+      "inertia_tensor_rotation": [
+        0.7062465718341565,
+        0.028347549276144114,
+        -0.029753217879950354,
+        0.7067721996855326
+      ],
+      "mass": 0.011289938353002071,
+      "name": "left_Left_00_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.006563878618180752,
+        -9.40812205918462e-10,
+        0.024850260466337204
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/right_Right_00_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        2.8723121017940097e-06,
+        6.233415843558051e-06,
+        8.18079296979754e-06
+      ],
+      "inertia_tensor_rotation": [
+        0.7063818602945198,
+        0.02475927484302446,
+        -0.02617512808001689,
+        0.7069133669878479
+      ],
+      "mass": 0.011289938353002071,
+      "name": "right_Right_00_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        0.006563878618180752,
+        -9.40816979877468e-10,
+        0.024850260466337204
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/right_Left_00_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        2.845962896756356e-06,
+        6.2876661531132825e-06,
+        8.208696186443989e-06
+      ],
+      "inertia_tensor_rotation": [
+        0.7062465718341565,
+        0.028347549276144114,
+        -0.029753217879950354,
+        0.7067721996855326
+      ],
+      "mass": 0.011289938353002071,
+      "name": "right_Left_00_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        -0.011970095336437225,
+        -1.3662443052453455e-06,
+        0.023833803832530975
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/left_Right_Support_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        9.316180654625866e-07,
+        4.618311466556365e-06,
+        4.873156918809174e-06
+      ],
+      "inertia_tensor_rotation": [
+        0.608223534971369,
+        0.0033150902993497,
+        0.7937570961960706,
+        -0.0016774747750242826
+      ],
+      "mass": 0.014009209349751472,
+      "name": "left_Right_Support_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        -0.011970095336437225,
+        -1.3662443052453455e-06,
+        0.023833803832530975
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/left_Left_Support_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        9.316178617654959e-07,
+        4.61831237616143e-06,
+        4.873158145577433e-06
+      ],
+      "inertia_tensor_rotation": [
+        0.6082234907859401,
+        0.0033150799108676026,
+        0.7937571301170673,
+        -0.001677465250718522
+      ],
+      "mass": 0.014009209349751472,
+      "name": "left_Left_Support_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        -0.011970095336437225,
+        -1.3662443052453455e-06,
+        0.023833803832530975
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/right_Right_Support_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        9.316180654625866e-07,
+        4.618311466556365e-06,
+        4.873156918809174e-06
+      ],
+      "inertia_tensor_rotation": [
+        0.608223534971369,
+        0.0033150902993497,
+        0.7937570961960706,
+        -0.0016774747750242826
+      ],
+      "mass": 0.014009209349751472,
+      "name": "right_Right_Support_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        -0.011970095336437225,
+        -1.3662443052453455e-06,
+        0.023833803832530975
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/right_Left_Support_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        9.316178617654959e-07,
+        4.61831237616143e-06,
+        4.873158145577433e-06
+      ],
+      "inertia_tensor_rotation": [
+        0.6082234907859401,
+        0.0033150799108676026,
+        0.7937571301170673,
+        -0.001677465250718522
+      ],
+      "mass": 0.014009209349751472,
+      "name": "right_Left_Support_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        5.434571903606411e-09,
+        -1.216460411498853e-16,
+        0.002090177731588483
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/left_Right_Pad_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        1.4359241250058225e-07,
+        4.141579334802104e-07,
+        5.527685486395344e-07
+      ],
+      "inertia_tensor_rotation": [
+        0.0003582769778112625,
+        -0.7070779414147197,
+        -0.0008333443870975196,
+        0.7071350379803437
+      ],
+      "mass": 0.003324114019051194,
+      "name": "left_Right_Pad_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        -0.004389529582113028,
+        -2.5513589207548648e-05,
+        0.024881571531295776
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/left_Right_2_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        3.97308546034568e-07,
+        2.826199815922269e-06,
+        3.0974831407050163e-06
+      ],
+      "inertia_tensor_rotation": [
+        0.7621335913012219,
+        -0.0006628943279733421,
+        -0.6474194504605107,
+        6.889718590195075e-05
+      ],
+      "mass": 0.008039558306336403,
+      "name": "left_Right_2_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        1.466888166490321e-09,
+        -8.17280120888605e-17,
+        0.002090177731588483
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/left_Left_Pad_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        1.435924125005703e-07,
+        4.141579334802104e-07,
+        5.527685486395465e-07
+      ],
+      "inertia_tensor_rotation": [
+        0.00035827697750106754,
+        -0.7070779413502639,
+        -0.0008333443873199906,
+        0.7071350380447942
+      ],
+      "mass": 0.003324114019051194,
+      "name": "left_Left_Pad_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        -0.004389529582113028,
+        -2.5513589207548648e-05,
+        0.024881571531295776
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/left_Left_2_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        3.97308546034568e-07,
+        2.826199815922269e-06,
+        3.0974831407050163e-06
+      ],
+      "inertia_tensor_rotation": [
+        0.7621335913012219,
+        -0.0006628943279733421,
+        -0.6474194504605107,
+        6.889718590195075e-05
+      ],
+      "mass": 0.008039558306336403,
+      "name": "left_Left_2_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        5.434571903606411e-09,
+        -1.216460411498853e-16,
+        0.002090177731588483
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/right_Right_Pad_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        1.4359241250058225e-07,
+        4.141579334802104e-07,
+        5.527685486395344e-07
+      ],
+      "inertia_tensor_rotation": [
+        0.0003582769778112625,
+        -0.7070779414147197,
+        -0.0008333443870975196,
+        0.7071350379803437
+      ],
+      "mass": 0.003324114019051194,
+      "name": "right_Right_Pad_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        -0.004389529582113028,
+        -2.5513589207548648e-05,
+        0.024881571531295776
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/right_Right_2_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        3.97308546034568e-07,
+        2.826199815922269e-06,
+        3.0974831407050163e-06
+      ],
+      "inertia_tensor_rotation": [
+        0.7621335913012219,
+        -0.0006628943279733421,
+        -0.6474194504605107,
+        6.889718590195075e-05
+      ],
+      "mass": 0.008039558306336403,
+      "name": "right_Right_2_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        1.466888166490321e-09,
+        -8.17280120888605e-17,
+        0.002090177731588483
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/right_Left_Pad_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        1.435924125005703e-07,
+        4.141579334802104e-07,
+        5.527685486395465e-07
+      ],
+      "inertia_tensor_rotation": [
+        0.00035827697750106754,
+        -0.7070779413502639,
+        -0.0008333443873199906,
+        0.7071350380447942
+      ],
+      "mass": 0.003324114019051194,
+      "name": "right_Left_Pad_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    },
+    {
+      "center_of_mass": [
+        -0.004389529582113028,
+        -2.5513589207548648e-05,
+        0.024881571531295776
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "collision_shapes": [
+        {
+          "local_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "local_rotation": [
+            0.0,
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "source_prim_path": "/World/envs/env_0/Robot/right_Left_2_Link/collisions",
+          "type": "mesh"
+        }
+      ],
+      "contact_offset": -1.0,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        3.97308546034568e-07,
+        2.826199815922269e-06,
+        3.0974831407050163e-06
+      ],
+      "inertia_tensor_rotation": [
+        0.7621335913012219,
+        -0.0006628943279733421,
+        -0.6474194504605107,
+        6.889718590195075e-05
+      ],
+      "mass": 0.008039558306336403,
+      "name": "right_Left_2_Link",
+      "rest_offset": -1.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    }
+  ],
+  "provenance": "Existing project-local A2D_physics.usd; original redistribution terms have not been recorded.",
+  "redistribution_license": "UNVERIFIED",
+  "robot_id": "agibot_a2d",
+  "schema_version": 6,
+  "source_asset": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.0/Isaac/IsaacLab/Robots/Agibot/A2D/A2D_physics.usd",
+  "source_sha256": ""
+}

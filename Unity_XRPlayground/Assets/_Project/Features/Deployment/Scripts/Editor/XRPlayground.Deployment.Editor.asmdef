@@ -1,0 +1,19 @@
+{
+  "name": "XRPlayground.Deployment.Editor",
+  "rootNamespace": "XRPlayground.Deployment.Editor",
+  "references": [
+    "XRPlayground.Deployment",
+    "Unity.InferenceEngine"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

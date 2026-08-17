@@ -84,13 +84,16 @@ class PickPlaceBridgeAdapter:
         i = self.env_id
         origin = _as_tensor(self.env.scene.env_origins)[i]
         joint_pos = _as_tensor(robot.data.joint_pos)[i]
+        joint_vel = _as_tensor(robot.data.joint_vel)[i]
         names: list[str] = []
         positions: list[float] = []
+        velocities: list[float] = []
         for name, jid in self._joint_pairs:
             if jid < 0 or jid >= joint_pos.shape[0]:
                 continue
             names.append(name)
             positions.append(float(joint_pos[jid].item()))
+            velocities.append(float(joint_vel[jid].item()))
 
         data = robot.data
         if hasattr(data, "body_pos_w"):
@@ -117,13 +120,16 @@ class PickPlaceBridgeAdapter:
         return make_envelope(
             TOPIC_ROBOT_STATE,
             {
-                "joint_names": names,
-                "joint_positions": positions,
+                "joints": [
+                    {"name": name, "position": position, "velocity": velocity}
+                    for name, position, velocity in zip(names, positions, velocities, strict=True)
+                ],
                 "ee": ee,
                 "links": links,
             },
+            station_id="pick_place_table",
             frame_id="isaac_env",
-            stamp_s=stamp_s,
+            sim_time_s=stamp_s,
         )
 
     def build_objects_state_envelope(self, stamp_s: float | None = None) -> dict[str, Any]:
@@ -138,7 +144,7 @@ class PickPlaceBridgeAdapter:
             lin = _as_tensor(obj.data.root_lin_vel_w)[i]
             objects.append(
                 {
-                    "id": slot,
+                    "id": f"piece_{slot}",
                     "active": active,
                     "color": color if active else -1,
                     "color_name": COLOR_NAMES[color % len(COLOR_NAMES)] if active else "none",
@@ -152,8 +158,9 @@ class PickPlaceBridgeAdapter:
         return make_envelope(
             TOPIC_OBJECTS_STATE,
             {"objects": objects, "source": "isaac"},
+            station_id="pick_place_table",
             frame_id="isaac_env",
-            stamp_s=stamp_s,
+            sim_time_s=stamp_s,
         )
 
     def handle_spawn(self, payload: dict[str, Any]) -> dict[str, Any] | None:

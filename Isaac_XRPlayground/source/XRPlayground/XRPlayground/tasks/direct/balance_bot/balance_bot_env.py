@@ -17,6 +17,8 @@ from isaaclab.envs import DirectRLEnv
 from isaaclab.sim.spawners.from_files import GroundPlaneCfg, spawn_ground_plane
 from isaaclab.utils.math import quat_from_euler_xyz, sample_uniform
 
+from XRPlayground.deployment.descriptors import direct_descriptors
+
 from .balance_bot_env_cfg import BalanceBotEnvCfg
 
 
@@ -26,6 +28,10 @@ def _as_tensor(data) -> torch.Tensor:
 
 class BalanceBotEnv(DirectRLEnv):
     cfg: BalanceBotEnvCfg
+
+    def get_deployment_descriptors(self) -> dict:
+        """Return the ordered IO contract used by this environment and Unity."""
+        return direct_descriptors("balance_bot.two_ball", self.cfg, self)
 
     def __init__(self, cfg: BalanceBotEnvCfg, render_mode: str | None = None, **kwargs):
         super().__init__(cfg, render_mode, **kwargs)

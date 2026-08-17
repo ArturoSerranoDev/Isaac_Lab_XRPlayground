@@ -1,0 +1,193 @@
+{
+  "definition_sha256": "8a03f4fab225e062403222a197a45df33fbfe4cf1a0a51df0f651c7f095c4036",
+  "fixed_joints": [],
+  "joints": [
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "procedural_tray",
+      "actuator_is_implicit": true,
+      "actuator_model": "UnityKinematicTarget",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "child_link": "roll_link",
+      "damping": 0.0,
+      "default_position": 0.0,
+      "effort_limit_curve": [],
+      "force_limit": 100.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -0.35,
+      "max_velocity": 2.0,
+      "name": "roll_joint",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parent_link": "tray_root",
+      "position_unit": "radian",
+      "stiffness": 0.0,
+      "upper_limit": 0.35
+    },
+    {
+      "actuator_delay_max_steps": 0,
+      "actuator_delay_min_steps": 0,
+      "actuator_group": "procedural_tray",
+      "actuator_is_implicit": true,
+      "actuator_model": "UnityKinematicTarget",
+      "actuator_nominal_delay_steps": 0,
+      "anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "child_link": "tray",
+      "damping": 0.0,
+      "default_position": 0.0,
+      "effort_limit_curve": [],
+      "force_limit": 100.0,
+      "joint_type": "RevoluteJoint",
+      "limit_mode": "limited",
+      "lower_limit": -0.35,
+      "max_velocity": 2.0,
+      "name": "pitch_joint",
+      "parent_anchor_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parent_anchor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parent_link": "roll_link",
+      "position_unit": "radian",
+      "stiffness": 0.0,
+      "upper_limit": 0.35
+    }
+  ],
+  "links": [
+    {
+      "center_of_mass": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "collision_enabled": false,
+      "collision_shape_count": 0,
+      "contact_offset": -1.0,
+      "dynamic_friction": -1.0,
+      "inertia_tensor": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "inertia_tensor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mass": 5.0,
+      "name": "tray_root",
+      "rest_offset": -1.0,
+      "restitution": -1.0,
+      "static_friction": -1.0
+    },
+    {
+      "center_of_mass": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "collision_enabled": false,
+      "collision_shape_count": 0,
+      "contact_offset": -1.0,
+      "dynamic_friction": -1.0,
+      "inertia_tensor": [
+        0.05,
+        0.05,
+        0.05
+      ],
+      "inertia_tensor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mass": 1.0,
+      "name": "roll_link",
+      "rest_offset": -1.0,
+      "restitution": -1.0,
+      "static_friction": -1.0
+    },
+    {
+      "center_of_mass": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "collision_enabled": true,
+      "collision_shape_count": 1,
+      "contact_offset": 0.005,
+      "dynamic_friction": 0.5,
+      "inertia_tensor": [
+        0.1,
+        0.1,
+        0.1
+      ],
+      "inertia_tensor_rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "mass": 2.0,
+      "name": "tray",
+      "rest_offset": 0.0,
+      "restitution": 0.0,
+      "static_friction": 0.5
+    }
+  ],
+  "provenance": "XRPlayground project-authored procedural tray and ball geometry.",
+  "redistribution_license": "project-authored",
+  "robot_id": "balance_tray_2dof",
+  "schema_version": 6,
+  "source_asset": "procedural://balance_tray_2dof",
+  "source_sha256": ""
+}

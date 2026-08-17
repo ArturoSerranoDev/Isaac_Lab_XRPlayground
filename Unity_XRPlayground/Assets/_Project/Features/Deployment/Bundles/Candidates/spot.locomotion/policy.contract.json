@@ -1,0 +1,454 @@
+{
+  "actions": [
+    {
+      "action_type": "JointAction",
+      "clip": null,
+      "dtype": "float32",
+      "extras": {
+        "description": "Joint action term that applies the processed actions to the articulation's joints as position commands."
+      },
+      "frame": "none",
+      "full_path": "isaaclab.envs.mdp.actions.joint_actions.JointPositionAction",
+      "history": 1,
+      "integration": "absolute",
+      "joint_names": [
+        "fl_hx",
+        "fr_hx",
+        "hl_hx",
+        "hr_hx",
+        "fl_hy",
+        "fr_hy",
+        "hl_hy",
+        "hr_hy",
+        "fl_kn",
+        "fr_kn",
+        "hl_kn",
+        "hr_kn"
+      ],
+      "mdp_type": "Action",
+      "name": "joint_position_action",
+      "names": [
+        "fl_hx",
+        "fr_hx",
+        "hl_hx",
+        "hr_hx",
+        "fl_hy",
+        "fr_hy",
+        "hl_hy",
+        "hr_hy",
+        "fl_kn",
+        "fr_kn",
+        "hl_kn",
+        "hr_kn"
+      ],
+      "offset": 0.0,
+      "offset_values": [
+        0.10000000149011612,
+        -0.10000000149011612,
+        0.10000000149011612,
+        -0.10000000149011612,
+        0.8999999761581421,
+        0.8999999761581421,
+        1.100000023841858,
+        1.100000023841858,
+        -1.5,
+        -1.5,
+        -1.5,
+        -1.5
+      ],
+      "scale": 0.2,
+      "shape": [
+        12
+      ],
+      "target_type": "joint_position",
+      "units": "rad"
+    }
+  ],
+  "adapter_id": "spot_loco",
+  "assist_profile_id": "spot_upright_damping",
+  "checkpoint": "model_2498.pt",
+  "checkpoint_sha256": "2c73c639af540808f4be6e826ddd470dd1901f1ce510f1f3d3e3c14cca1b3587",
+  "config_sha256": "28d299ce8f1b1049ef3ed14c5cfa01a3bba9eb24ab1a2b5fabfceb5b028fbce1",
+  "dependencies": [],
+  "evaluation": {
+    "minimum_isaac_score": 0.9,
+    "minimum_unity_relative_score": 0.8,
+    "observation_limit": 0.0001,
+    "primary_metric": "locomotion_score",
+    "python_unity_limit": 0.0001,
+    "ready": false,
+    "seeded_scenarios": 100,
+    "task_thresholds": [
+      {
+        "comparison": "min",
+        "metric": "ten_second_stand_rate",
+        "value": 0.9
+      },
+      {
+        "comparison": "min",
+        "metric": "command_tracking_score",
+        "value": 0.75
+      },
+      {
+        "comparison": "min",
+        "metric": "foot_contact_valid_rate",
+        "value": 0.8
+      },
+      {
+        "comparison": "max",
+        "metric": "fall_rate",
+        "value": 0.1
+      }
+    ],
+    "torch_onnx_limit": 1e-05,
+    "torch_onnx_max_abs_error": 9.5367431640625e-07
+  },
+  "frame": {
+    "deployment": "unity_lh_y_up",
+    "never_extrapolate_authoritative_state": true,
+    "position_mapping": [
+      "x",
+      "z",
+      "y"
+    ],
+    "quaternion_xyzw_mapping": [
+      "x",
+      "z",
+      "y",
+      "-w"
+    ],
+    "source": "isaac_rh_z_up"
+  },
+  "model_sha256": "76079616df7f8f13ce970cc5ed912afbd36bea9b7f2798cd0a0ac0f874def6d5",
+  "normalization_embedded": true,
+  "observations": [
+    {
+      "dtype": "float32",
+      "extras": {
+        "axes": [
+          "X",
+          "Y",
+          "Z"
+        ],
+        "description": "Root linear velocity in the asset's root frame.",
+        "modifiers": null,
+        "units": "m/s"
+      },
+      "frame": "robot_base",
+      "full_path": "isaaclab.envs.mdp.observations.base_lin_vel",
+      "history": 1,
+      "mdp_type": "Observation",
+      "name": "base_lin_vel",
+      "observation_type": "RootState",
+      "offset": 0.0,
+      "overloads": {
+        "clip": null,
+        "flatten_history_dim": true,
+        "history_length": 0,
+        "scale": null
+      },
+      "scale": 1.0,
+      "shape": [
+        3
+      ],
+      "units": "m/s"
+    },
+    {
+      "dtype": "float32",
+      "extras": {
+        "axes": [
+          "X",
+          "Y",
+          "Z"
+        ],
+        "description": "Root angular velocity in the asset's root frame.",
+        "modifiers": null,
+        "units": "rad/s"
+      },
+      "frame": "robot_base",
+      "full_path": "isaaclab.envs.mdp.observations.base_ang_vel",
+      "history": 1,
+      "mdp_type": "Observation",
+      "name": "base_ang_vel",
+      "observation_type": "RootState",
+      "offset": 0.0,
+      "overloads": {
+        "clip": null,
+        "flatten_history_dim": true,
+        "history_length": 0,
+        "scale": null
+      },
+      "scale": 1.0,
+      "shape": [
+        3
+      ],
+      "units": "rad/s"
+    },
+    {
+      "dtype": "float32",
+      "extras": {
+        "axes": [
+          "X",
+          "Y",
+          "Z"
+        ],
+        "description": "Gravity projection on the asset's root frame.",
+        "modifiers": null,
+        "units": "m/s^2"
+      },
+      "frame": "robot_base",
+      "full_path": "isaaclab.envs.mdp.observations.projected_gravity",
+      "history": 1,
+      "mdp_type": "Observation",
+      "name": "projected_gravity",
+      "observation_type": "RootState",
+      "offset": 0.0,
+      "overloads": {
+        "clip": null,
+        "flatten_history_dim": true,
+        "history_length": 0,
+        "scale": null
+      },
+      "scale": 1.0,
+      "shape": [
+        3
+      ],
+      "units": "m/s^2"
+    },
+    {
+      "dtype": "float32",
+      "extras": {
+        "description": "The generated command from command term in the command manager with the given name.",
+        "modifiers": null
+      },
+      "frame": "robot_base",
+      "full_path": "isaaclab.envs.mdp.observations.generated_commands",
+      "history": 1,
+      "mdp_type": "Observation",
+      "name": "generated_commands",
+      "observation_type": "Command",
+      "offset": 0.0,
+      "overloads": {
+        "clip": null,
+        "flatten_history_dim": true,
+        "history_length": 0,
+        "scale": null
+      },
+      "scale": 1.0,
+      "shape": [
+        3
+      ],
+      "units": "unitless"
+    },
+    {
+      "dtype": "float32",
+      "extras": {
+        "description": "The joint positions of the asset w.r.t. the default joint positions. Note: Only the joints configured in :attr:`asset_cfg.joint_ids` will have their positions returned.",
+        "modifiers": null,
+        "units": "rad"
+      },
+      "frame": "none",
+      "full_path": "isaaclab.envs.mdp.observations.joint_pos_rel",
+      "history": 1,
+      "joint_names": [
+        "fl_hx",
+        "fr_hx",
+        "hl_hx",
+        "hr_hx",
+        "fl_hy",
+        "fr_hy",
+        "hl_hy",
+        "hr_hy",
+        "fl_kn",
+        "fr_kn",
+        "hl_kn",
+        "hr_kn"
+      ],
+      "joint_pos_offsets": [
+        0.10000000149011612,
+        -0.10000000149011612,
+        0.10000000149011612,
+        -0.10000000149011612,
+        0.8999999761581421,
+        0.8999999761581421,
+        1.100000023841858,
+        1.100000023841858,
+        -1.5,
+        -1.5,
+        -1.5,
+        -1.5
+      ],
+      "mdp_type": "Observation",
+      "name": "joint_pos_rel",
+      "names": [
+        "fl_hx",
+        "fr_hx",
+        "hl_hx",
+        "hr_hx",
+        "fl_hy",
+        "fr_hy",
+        "hl_hy",
+        "hr_hy",
+        "fl_kn",
+        "fr_kn",
+        "hl_kn",
+        "hr_kn"
+      ],
+      "observation_type": "JointState",
+      "offset": 0.0,
+      "overloads": {
+        "clip": null,
+        "flatten_history_dim": true,
+        "history_length": 0,
+        "scale": null
+      },
+      "scale": 1.0,
+      "shape": [
+        12
+      ],
+      "units": "rad"
+    },
+    {
+      "dtype": "float32",
+      "extras": {
+        "description": "The joint velocities of the asset w.r.t. the default joint velocities. Note: Only the joints configured in :attr:`asset_cfg.joint_ids` will have their velocities returned.",
+        "modifiers": null,
+        "units": "rad/s"
+      },
+      "frame": "none",
+      "full_path": "isaaclab.envs.mdp.observations.joint_vel_rel",
+      "history": 1,
+      "joint_names": [
+        "fl_hx",
+        "fr_hx",
+        "hl_hx",
+        "hr_hx",
+        "fl_hy",
+        "fr_hy",
+        "hl_hy",
+        "hr_hy",
+        "fl_kn",
+        "fr_kn",
+        "hl_kn",
+        "hr_kn"
+      ],
+      "joint_vel_offsets": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mdp_type": "Observation",
+      "name": "joint_vel_rel",
+      "names": [
+        "fl_hx",
+        "fr_hx",
+        "hl_hx",
+        "hr_hx",
+        "fl_hy",
+        "fr_hy",
+        "hl_hy",
+        "hr_hy",
+        "fl_kn",
+        "fr_kn",
+        "hl_kn",
+        "hr_kn"
+      ],
+      "observation_type": "JointState",
+      "offset": 0.0,
+      "overloads": {
+        "clip": null,
+        "flatten_history_dim": true,
+        "history_length": 0,
+        "scale": null
+      },
+      "scale": 1.0,
+      "shape": [
+        12
+      ],
+      "units": "rad/s"
+    },
+    {
+      "dtype": "float32",
+      "extras": {
+        "description": "The last input action to the environment. The name of the action term for which the action is required. If None, the entire action tensor is returned.",
+        "modifiers": null
+      },
+      "frame": "none",
+      "full_path": "isaaclab.envs.mdp.observations.last_action",
+      "history": 1,
+      "mdp_type": "Observation",
+      "name": "last_action",
+      "observation_type": "Action",
+      "offset": 0.0,
+      "overloads": {
+        "clip": null,
+        "flatten_history_dim": true,
+        "history_length": 0,
+        "scale": null
+      },
+      "scale": 1.0,
+      "shape": [
+        12
+      ],
+      "units": "unitless"
+    }
+  ],
+  "onnx": {
+    "input_name": "obs",
+    "input_shape": [
+      1,
+      48
+    ],
+    "inputs": [
+      {
+        "name": "obs",
+        "shape": [
+          1,
+          48
+        ]
+      }
+    ],
+    "opset": 15,
+    "output_name": "actions",
+    "output_shape": [
+      1,
+      12
+    ],
+    "outputs": [
+      {
+        "name": "actions",
+        "shape": [
+          1,
+          12
+        ]
+      }
+    ],
+    "sha256": "76079616df7f8f13ce970cc5ed912afbd36bea9b7f2798cd0a0ac0f874def6d5"
+  },
+  "physics_profile_id": "spot_250hz",
+  "policy_id": "spot.locomotion",
+  "recurrent_state": [],
+  "robot_id": "spot",
+  "schema_version": 2,
+  "source_task_id": "Template-Xrplayground-Spot-Loco-Walk-v0",
+  "station_id": "spot_loco",
+  "timing": {
+    "deployment_decimation": 5,
+    "deployment_physics_hz": 250,
+    "deployment_sim_dt": 0.004,
+    "policy_dt": 0.02,
+    "policy_hz": 50,
+    "source_physics_hz": 250,
+    "source_sim_dt": 0.004
+  },
+  "torchscript_sha256": "91fe1db4568ca6f51de877e32451377617e48dbb28c567864fed63eee0722d88"
+}

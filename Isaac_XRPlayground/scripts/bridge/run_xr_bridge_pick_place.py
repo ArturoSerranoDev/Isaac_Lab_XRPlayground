@@ -44,7 +44,7 @@ from XRPlayground.bridge.names_agibot import (
     TOPIC_SPAWN,
 )
 from XRPlayground.bridge.pick_place_bridge import PickPlaceBridgeAdapter
-from XRPlayground.bridge.protocol import make_envelope
+from XRPlayground.bridge.protocol import make_envelope, message_type_from_topic
 from XRPlayground.bridge.tcp_server import RosTcpServer
 
 
@@ -89,15 +89,15 @@ def main():
                     continue
 
                 for msg in server.pop_messages():
-                    topic = msg.get("topic")
-                    data = msg.get("data") or {}
-                    if topic == TOPIC_SESSION_COMMAND:
+                    topic = msg.get("message_type")
+                    data = msg.get("payload") or {}
+                    if topic == message_type_from_topic(TOPIC_SESSION_COMMAND):
                         mode = data.get("mode")
                         if mode in (MODE_MIRROR, MODE_AWAIT_SPAWN):
                             session_mode = str(mode)
                             print(f"[XR PickPlace Bridge] mode → {session_mode}")
                             gym_env.reset()
-                    elif topic == TOPIC_SPAWN:
+                    elif topic == message_type_from_topic(TOPIC_SPAWN):
                         adapter.handle_spawn(data)
 
                 actions = _actions(base_env, args_cli.action_mode)
@@ -105,14 +105,17 @@ def main():
 
                 now = time.time()
                 if now - last_publish >= publish_period:
-                    server.publish(adapter.build_robot_state_envelope())
-                    server.publish(adapter.build_objects_state_envelope())
+                    sim_time_s = float(base_env.episode_length_buf[0].item()) * float(base_env.cfg.sim.dt)
+                    server.publish(adapter.build_robot_state_envelope(stamp_s=sim_time_s))
+                    server.publish(adapter.build_objects_state_envelope(stamp_s=sim_time_s))
                     last_publish = now
                 if now - last_heartbeat >= 1.0:
                     server.publish(
                         make_envelope(
                             TOPIC_HEARTBEAT,
                             {"role": "isaac_pick_place", "sim_time": float(base_env.episode_length_buf[0].item())},
+                            station_id="pick_place_table",
+                            sim_time_s=float(base_env.episode_length_buf[0].item()) * float(base_env.cfg.sim.dt),
                         )
                     )
                     server.publish(
@@ -124,6 +127,8 @@ def main():
                                 "policy_loaded": False,
                                 "task": args_cli.task,
                             },
+                            station_id="pick_place_table",
+                            sim_time_s=float(base_env.episode_length_buf[0].item()) * float(base_env.cfg.sim.dt),
                         )
                     )
                     last_heartbeat = now
